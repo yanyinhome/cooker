@@ -1,0 +1,278 @@
+<template>
+  <div id='sureOrder'>
+    <com-head  :opacity='1'>确认订单</com-head>
+    <!-- <div class="addAddress"><i class="iconfont icon-tianjia" /><span>添加上门地址</span></div> -->
+    <router-link to="chooseAddress" tag="div" class="addAddress"  v-if="!myaddress.addr_receiver"><i class="iconfont icon-tianjia" /><span>添加上门地址</span></router-link>
+    <div class="addAddress2" v-if="myaddress.addr_receiver">
+        <p>{{myaddress.addr_receiver}}&emsp;{{myaddress.addr_phone}} </p>
+        <p>{{myaddress.pmc + myaddress.addr_cont}}</p>
+        <i class="iconfont icon-bianji1" @click="rewrite"></i>
+    </div>
+    <div class="server">
+       <div class="item"><span>服务厨师</span><span>{{name}}</span></div>
+       <div class="item" @click="mask = true"><span>上门时间</span><input type="text" v-model="time"  readonly="readonly" placeholder="请选择"><i class="iconfont icon-xiayi"></i></div>
+    </div>
+    <div class="beizhu">
+        <textarea style="resize:none" border maxlength=50  placeholder="请填写订单备注" v-model="content" cols="80" rows="5"></textarea>
+        <span class="number">{{number}}/50</span>
+    </div>
+    <butFoot :click="bespeak">确定预约</butFoot>
+    <!-- 时间弹窗 -->
+    <div class="mask" v-show="mask"  @click="mask = false">
+      <div class="box">
+        <div class="title">请选择预约时间</div>
+        <div class="content"> 
+           <mt-picker ref="picker" :slots="slots" @change="onValuesChange"  :visibleItemCount=3></mt-picker>
+        </div>
+      </div>
+    </div> 
+  </div>
+</template>
+
+<script>
+import { mapState, mapMutations, mapGetters, mapActions } from "vuex";
+export default {
+  name: "sureOrder",
+  data() {
+    return {
+      id: this.$route.query.id,//厨师id
+      mask: false,
+      name: this.$route.query.name,
+      content: "",
+      number: "0",
+      time1: "",
+      time2: "",
+      time: "",
+      slots: [
+        {
+          flex: 1,
+          values: ['今天', '明天', '03', '04', '05', '06'],
+          className: 'slot1',
+          textAlign: 'right',
+          defaultIndex: 1
+        }, {
+          divider: true,
+          content: '————',
+          className: 'slot2'
+        }, {
+          flex: 1,
+          values: ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00'],
+          className: 'slot3',
+          textAlign: 'left',
+          defaultIndex: 1
+        }
+      ]
+    };
+  },
+
+  watch: {
+    content: function(a, b) {
+      this.number = a.length;
+      console.log(this.number);
+      if (this.number > 49) {
+        this.$bus.$emit("toast", "字数不能超过50");
+      }
+    }
+  },
+  computed: {
+    ...mapState(["myaddress", "count"])
+  },
+  created() {
+    console.log(this.$route.query.name);
+    console.log(this.myaddress);
+    this.time = this.nowTime();
+    this.loading();
+  },
+
+  mounted() {},
+
+  methods: {
+    // 确定预约
+    bespeak() {
+      var myDate = new Date();
+      var year = myDate.getFullYear(); 
+      // var year = year < 2000 ? year + 1900 : year 
+      // var yy = year.toString().substr(2, 2); 
+
+      console.log(year);
+      this.axios.post('cook/apimake',{
+        token: this.token(),
+        c_id: this.id,
+        addr_id: this.myaddress.addr_id,
+        dinner:  year + '-' + this.time,
+        order_remark: this.content,
+
+      })
+        .then(({data}) => {
+          console.log(data);
+          if (data.code === '200') {
+            this.$router.push({name:'waitOrder',query:{id: data.order_id}});
+            this.$bus.$emit("toast", data.msg);
+            this.active = !this.active;
+          } else if (data.code === '201') {
+            this.$bus.$emit("toast", data.msg);            
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });      
+    },
+    rewrite (index) {
+      this.$router.push('chooseAddress');
+    },
+    onValuesChange(picker, values) {
+      this.time = picker.getValues()[0]+ " " + picker.getValues()[1];
+      console.log(this.time);
+    },
+     // 预约时间
+    loading () {
+      this.axios.post('index/apiTime')
+        .then(({data}) => {
+          console.log(data);
+          if (data.code === '200') {
+            this.slots[0].values = data.data;
+          } else if (data.code === '201') {
+            
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+  }
+};
+</script>
+<style lang='scss'>
+#sureOrder {
+  padding-top: 100px;
+  padding-bottom: 30px;
+  .addAddress {
+    width: 750px;
+    text-align: center;
+    line-height: 160px;
+    border-top: 4px dashed #F5B1B1;
+    border-bottom: 4px dashed #F5B1B1;
+    background-color: #fff;
+    span {
+      margin-left: 10px;
+      font-size:26px;
+      color: #666;
+    }
+  }
+  .addAddress2 {
+    padding: 20px 30px;
+    box-sizing: border-box;
+    border-top: 4px dashed #F5B1B1;
+    border-bottom: 4px dashed #F5B1B1;
+    background-color: #fff;
+    position: relative;
+    p:nth-of-type(1) {
+      width: 600px;
+      font-size:30px; 
+      line-height: 60px;
+    }
+    p:nth-of-type(2) {
+      width: 600px;
+      font-size:28px;
+      line-height: 60px;
+      color:rgba(102,102,102,1);
+      display: -webkit-box;
+       -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden; 
+    }
+    .iconfont {
+      position: absolute;
+      top: 50px;
+      right: 30px;
+      font-size: 40px;
+    }
+  }
+  .server {
+    margin-top: 30px;
+    background-color: #fff;
+    .item {
+      margin: 0 30px;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1Px solid rgba(238,238,238,1);
+      line-height: 102px;
+      span { 
+        text-align: left;
+       }
+      input {
+      width: 450px;
+      text-align: right;
+      font-size:30px;
+      margin-right: 0;
+      color: #666;
+      }
+    }
+  }
+  .beizhu {
+      position: relative;
+      textarea {
+      width: 750px;
+      margin-top: 30px;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .number {
+      color: #ddd;
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+    }
+  }
+  .mask {
+    position: fixed;
+    top: 0;
+    left: 0; 
+    width: 100vw;
+    height: 100vh;
+    background:rgba(0,0,0,0.5);
+    .box {
+      width:630px;
+      // height:418px;
+      margin: 30vh auto;
+      background:rgba(255,255,255,1);
+      border-radius:20px;
+      .title {
+        text-align: center;
+        line-height: 100px;
+        font-size:34px;
+      }
+      .content {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        .item {
+          width:140px;
+          height:60px;
+          // float: left;
+          margin: 20px 33px;
+          text-align: center;
+          line-height: 60px;
+          border-radius:6px;
+          border:1Px solid rgba(153,153,153,1);
+        }
+      }
+    }
+    .picker {
+      width:630px;
+      padding: 30px;
+      font-size: 30px;
+      .picker-center-highlight {
+        // border-top: 1Px solid #eee;
+        border-bottom: 1Px solid #eee;
+      }
+      .picker-slot-divider {
+        color: #666;
+      }
+      .picker-slot {
+        text-align: center;
+      }
+    }
+  }
+}
+</style>
