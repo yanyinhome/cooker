@@ -32,22 +32,6 @@
       </div>
     </div> 
     
-
-    <!-- <com-time
-    :title="'请选择日期'"
-    :mode="'month'"
-    :startYear="2008"
-    :endYear="2028"
-    :defaultTime="defaultTime"
-    :timeClick="timeClick"
-    ></com-time> -->
-    <!-- 时间弹窗 -->
-    <!-- <mt-datetime-picker
-      ref="picker"
-      v-model="pickerVisible"
-      month-format="{value} 月"
-      date-format="{value} 日">
-    </mt-datetime-picker> -->
   </div>
 </template>
 <script>

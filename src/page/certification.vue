@@ -83,6 +83,8 @@ export default {
       money: "100.00",
       item:[],
       address: "无",
+      address1: "",
+      address2: "",
       myAddressSlots: [
         {
           flex: 1,
@@ -205,20 +207,12 @@ export default {
             (this.name = data.data.user_truename);
             (this.phone = data.data.user_mobile);
             this.cookerSign = data.data.user_sign;
-            
-            // if (data.data.dish_id[1]) {
-            //   this.item.forEach(function(e,index){
-            //     if(e.d_id==data.data.dish_id[0]||e.d_id==data.data.dish_id[1]){
-            //       this.vegetable2.push(this.item[index].name);
-            //       this.vegetable1 = this.vegetable2[0] + ',' + this.vegetable2[1];
-            //     }
-            //   })
-            // } else {
-            //   this.item.forEach(function(e,index){
-            //     this.vegetable1 = this.item[index].name;
-            //     console.log(this.vegetable1);
-            //   })
-            // }
+            this.address = data.data.city_name + ',' + data.data.area;
+            if (data.data.dish_id[1]) {
+              this.vegetable1 = data.data.dish_id[0] + ',' +data.data.dish_id[1];
+            } else {
+              this.vegetable1 = data.data.dish_id[0]              
+            }
             this.$bus.$emit("toast", data.msg);
           } else if (data.code === "203") {
             // 审核不通过
@@ -248,7 +242,9 @@ export default {
           user_truename: this.name,
           user_mobile: this.phone,
           dish_id: this.dish_id,
-          user_sign: this.cookerSign
+          user_sign: this.cookerSign,
+          city_name: address1,
+          area: address2,
         })
         .then(({ data }) => {
           console.log(data);
@@ -355,7 +351,9 @@ export default {
         this.myAddressProvince = values[0];
         this.myAddressCity = values[1];
         this.myAddresscounty = values[2];
-        this.address = values[0] + values[1] + values[2];
+        this.address1 = values[1];
+        this.address2 = values[2];
+        this.address = values[1] + values[2];
       }
     }
   }
