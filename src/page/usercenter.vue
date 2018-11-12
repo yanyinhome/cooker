@@ -13,8 +13,8 @@
       <router-link to="myaddress" tag="div" class="box"><div class="img"><img src="../assets/image/address.png"></div><p>地址管理</p></router-link>
       <router-link to="collection" tag="div" class="box"><div class="img"><img src="../assets/image/shoucang.png"></div><p>我的收藏</p></router-link>
       <router-link to="certification" tag="div" class="box"><div class="img"><img src="../assets/image/cookers.png"></div><p>认证厨师</p></router-link>
-      <router-link to="qiangOrder" tag="div" class="box"><div class="img"><img src="../assets/image/qiangdan.png"></div><p>我要抢单</p></router-link>
-      <router-link to="serverOrder" tag="div" class="box"><div class="img"><img src="../assets/image/server.png"></div><p>服务订单</p></router-link>
+      <router-link v-if="message.status=='1'" to="qiangOrder" tag="div" class="box"><div class="img"><img src="../assets/image/qiangdan.png"></div><p>厨师抢单</p></router-link>
+      <router-link v-if="message.status=='1'" to="serverOrder" tag="div" class="box"><div class="img"><img src="../assets/image/server.png"></div><p>我的订单</p></router-link>
       <router-link to="setPassword" tag="div" class="box"><div class="img"><img src="../assets/image/password.png"></div><p>密码设置</p></router-link>
       <div @click="signOut" class="box"><div class="img"><img src="../assets/image/tuichu.png"></div><p>退出登录</p></div>
     </div>
@@ -145,7 +145,7 @@ export default {
   }
   .centernav {
     width:690px;
-    height:642px;
+    // height:642px;
     margin: 30px auto;
     padding-top: 50px;
     background:rgba(255,255,255,1);

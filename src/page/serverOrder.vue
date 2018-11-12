@@ -1,6 +1,6 @@
 <template>
   <div id='serverOrder'>
-    <com-head :opacity='0'>服务订单</com-head>
+    <com-head :opacity='0'>我的订单</com-head>
     <div class="nav">
         <div @click="orderlist1" :class="{active: status==='0'}">待接受</div>
         <div @click="orderlist2" :class="{active: status==='1'}">已接受</div>
@@ -194,6 +194,7 @@ export default {
     }
     .active {
       border-bottom: 1Px solid #ffb84b;
+      box-sizing: border-box;
     }
   }
   .warn {

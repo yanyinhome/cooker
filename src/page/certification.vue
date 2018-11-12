@@ -11,9 +11,29 @@
         </div>
         <div class="item"><span>真实姓名</span><input type="text" v-model="name" readonly="readonly"></div>
         <div class="item"><span>手机号</span><input type="text" v-model="phone" readonly="readonly"></div>
+        <div class="xiaogong">
+          <span>请选择</span>
+          清真<input type="radio" id="1" value="1" v-model="checked4">
+          非清真<input type="radio" id="2" value="0" v-model="checked4">
+        </div> 
         <div class="item" @click="loading1"><span>菜系</span><input type="text" v-model="vegetable1" readonly="readonly" placeholder="请选择擅长菜系"><i class="iconfont icon-xiayi"></i></div>
         <div class="item" @click="cityalert = true"><span>区域选择</span><input type="text" v-model="address" readonly="readonly" placeholder="请选择服务范围"><i class="iconfont icon-xiayi"></i></div>
         <div class="item"><span>特长简介</span><input type="text" v-model="cookerSign" placeholder="请输入你的特长简介"></div>
+        <div class="xiaogong">
+          <span>有无犯罪记录</span>
+          有<input type="radio" id="1" value="1" v-model="checked1">无<input type="radio" id="0" value="0" v-model="checked1">
+        </div> 
+        <div class="xiaogong">
+          <span>是否有吸毒</span>
+          有<input type="radio" id="1" value="1" v-model="checked2">无<input type="radio" id="0" value="0" v-model="checked2">
+        </div> 
+        <div class="xiaogong">
+          <span>有无精神病史</span>
+          有<input type="radio" id="1" value="1" v-model="checked3">无<input type="radio" id="0" value="0" v-model="checked3">
+        </div> 
+        <div class="item"><span>紧急联系人姓名</span><input type="text" v-model="urgentname" placeholder="请输入紧急联系人姓名"></div>
+        <div class="item"><span>紧急联系人电话</span><input type="text" v-model="urgenttel" placeholder="请输入紧急联系人电话"></div>
+
         <div class="box1"  @click="portrait2">
             <span>厨师证</span>
             <input class="imginp"  ref="portrait2" name="imgLocal" id="imgLocal2" type='file' accept="image/*" @change="shangchuan2"/>
@@ -24,9 +44,24 @@
             <input class="imginp"  ref="portrait3" name="imgLocal" id="imgLocal3" type='file' accept="image/*" @change="shangchuan3"/>
             <div class="tou"><div class="zheng"><img :src="img3"></div><i class="iconfont icon-xiayi"></i></div>
         </div>
-        <div class="item"><span>认证保证金</span><div style="color:#EE0000">&yen;{{money}}&nbsp;</div></div>
+        <div class="box1"  @click="portrait4">
+            <span>身份证正面</span>
+            <input class="imginp"  ref="portrait4" name="imgLocal" id="imgLocal4" type='file' accept="image/*" @change="shangchuan4"/>
+            <div class="tou"><div class="zheng"><img :src="img4"></div><i class="iconfont icon-xiayi"></i></div>
+        </div>
+        <div class="box1"  @click="portrait5">
+            <span>身份证反面</span>
+            <input class="imginp"  ref="portrait5" name="imgLocal" id="imgLocal5" type='file' accept="image/*" @change="shangchuan5"/>
+            <div class="tou"><div class="zheng"><img :src="img5"></div><i class="iconfont icon-xiayi"></i></div>
+        </div>
+        <div class="box1"  @click="portrait6">
+            <span>手持身份证照片</span>
+            <input class="imginp"  ref="portrait6" name="imgLocal" id="imgLocal6" type='file' accept="image/*" @change="shangchuan6"/>
+            <div class="tou"><div class="zheng"><img :src="img6"></div><i class="iconfont icon-xiayi"></i></div>
+        </div>
+        <!-- <div class="item"><span>认证保证金</span><div style="color:#EE0000">&yen;{{money}}&nbsp;</div></div> -->
         <div class="agreement"><input type="checkbox" :disabled="checked" v-model="active"> 我已阅读并同意《 <router-link :to="{name: 'protocol',query: {status: '5'}}" tag="span"> 厨师协议 </router-link> 》内容，并同意缴纳厨师认证保障金。</div>
-        <com-button :click="renzheng" :disabled="!active||prohibit" :class="{active: !active||prohibit}">{{btnmes}}</com-button>
+        <com-button :click="renzheng1" :disabled="!active||prohibit" :class="{active: !active||prohibit}">{{btnmes}}</com-button>
     </div>
 
     <div id='cookerCheck' v-if="status">
@@ -67,12 +102,21 @@ export default {
       active: false,
       checked: false,
       prohibit: false,
+      checked1: '0',
+      checked2: '0',
+      checked3: '0',
+      checked4: '0',
+      urgentname: '',
+      urgenttel: '',
       activeCai1: '0',
       activeCai2: '-1',
       btnmes: "确定认证",
       img1: require("../assets/image/zanshi/touxiang.jpg"),
       img2: require("../assets/image/zanshi/zheng.jpg"),
       img3: require("../assets/image/zanshi/zheng.jpg"),
+      img4: '',
+      img5: '',
+      img6: '',
       name: "你好",
       phone: "188888888888",
       cookerSign: '',
@@ -213,6 +257,16 @@ export default {
             } else {
               this.vegetable1 = data.data.dish_id[0]              
             }
+            this.urgenttel = data.data.urgent_mobile;
+            this.urgentname = data.data.urgent_name;
+            this.checked1 = data.data.sign;
+            this.checked2 = data.data.drug;
+            this.checked3 = data.data.psychosis;
+            this.checked4 = data.data.isiamic;
+            this.img4 = data.data.user_front;
+            this.img5 = data.data.user_side;
+            this.img6 = data.data.user_hand_card;
+
             this.$bus.$emit("toast", data.msg);
           } else if (data.code === "203") {
             // 审核不通过
@@ -221,6 +275,14 @@ export default {
             (this.img3 = data.data.health_card);
             (this.name = data.data.user_truename);
             (this.phone = data.data.user_mobile);
+            this.urgenttel = data.data.urgent_mobile;
+            this.urgentname = data.data.urgent_name;
+            this.checked1 = data.data.sign;
+            this.checked2 = data.data.drug;
+            this.checked3 = data.data.psychosis;
+            this.img4 = data.data.user_front;
+            this.img5 = data.data.user_side;
+            this.img6 = data.data.user_hand_card;
             this.$bus.$emit("toast", data.msg);
           }
         })
@@ -229,7 +291,18 @@ export default {
         });
     },
     //认证
+    renzheng1 () {
+      let regTel = /^(1[3-9])\d{9}$/;
+      if (!this.urgentname||!this.urgenttel||!this.cookerSign||!this.img1||!this.img2||!this.img3||!this.img4||!this.img5||!this.img6||!this.dish_id||!this.address1||!this.address2) {
+        this.$bus.$emit("toast", "请完善信息");
+      } else if (!regTel.test(this.urgenttel)) {
+        this.$bus.$emit('toast', '手机号码不合法');
+      } else{
+        this.renzheng();
+      }
+    },
     renzheng() {
+      console.log(this.checked1);
       this.active = true;
       this.checked = true;
       this.prohibit = true;
@@ -243,8 +316,17 @@ export default {
           user_mobile: this.phone,
           dish_id: this.dish_id,
           user_sign: this.cookerSign,
-          city_name: address1,
-          area: address2,
+          city_name: this.address1,
+          area: this.address2,
+          urgent_mobile: this.urgenttel,
+          urgent_name: this.urgentname,
+          sin: this.checked1,
+          drug: this.checked2,
+          psychosis: this.checked3, 
+          user_front: this.img4, 
+          user_side: this.img5, 
+          user_hand_card: this.img6, 
+          isiamic: this.checked4, 
         })
         .then(({ data }) => {
           console.log(data);
@@ -266,6 +348,15 @@ export default {
     },
     portrait3() {
       this.$refs.portrait3.click(); // 获取ref为portrait的元素相当于获取id为portrait的元素
+    },
+    portrait4() {
+      this.$refs.portrait4.click(); // 获取ref为portrait的元素相当于获取id为portrait的元素
+    },
+    portrait5() {
+      this.$refs.portrait5.click(); // 获取ref为portrait的元素相当于获取id为portrait的元素
+    },
+    portrait6() {
+      this.$refs.portrait6.click(); // 获取ref为portrait的元素相当于获取id为portrait的元素
     },
     // 上传图片
     shangchuan1(e) {
@@ -319,7 +410,6 @@ export default {
         });
     },
     shangchuan3(e) {
-      console.log(this.$refs.portrait3.id);
       var self = this;
       let file = e.target.files[0]; // 上传照片
       /* eslint-disable no-undef */
@@ -338,6 +428,75 @@ export default {
           console.log(data);
           this.img3 = `http://cschushi.cadhx.com/${data.imgurl}`;
           console.log(this.img3);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    shangchuan4(e) {
+      var self = this;
+      let file = e.target.files[0]; // 上传照片
+      /* eslint-disable no-undef */
+      let formData = new FormData(); // 创建form对象
+      formData.append("imgLocal", file); // 通过append向form对象添加数据
+      // formData.append("token", this.token()); // 添加form表单中其他数据
+      console.log(formData.get("imgLocal")); // FormData私有类对象，访问不到，可以通过get判断值是否传进去
+      let config = {
+        emulateJSON: true,
+        withCredentials: true,
+        headers: { "Content-Type": "multipart/form-data" }
+      };
+      this.$axios
+        .post("http://cschushi.cadhx.com/api/order/upImg", formData, config)
+        .then(({ data }) => {
+          console.log(data);
+          this.img4 = `http://cschushi.cadhx.com/${data.imgurl}`;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    shangchuan5(e) {
+      var self = this;
+      let file = e.target.files[0]; // 上传照片
+      /* eslint-disable no-undef */
+      let formData = new FormData(); // 创建form对象
+      formData.append("imgLocal", file); // 通过append向form对象添加数据
+      // formData.append("token", this.token()); // 添加form表单中其他数据
+      console.log(formData.get("imgLocal")); // FormData私有类对象，访问不到，可以通过get判断值是否传进去
+      let config = {
+        emulateJSON: true,
+        withCredentials: true,
+        headers: { "Content-Type": "multipart/form-data" }
+      };
+      this.$axios
+        .post("http://cschushi.cadhx.com/api/order/upImg", formData, config)
+        .then(({ data }) => {
+          console.log(data);
+          this.img5 = `http://cschushi.cadhx.com/${data.imgurl}`;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    shangchuan6(e) {
+      var self = this;
+      let file = e.target.files[0]; // 上传照片
+      /* eslint-disable no-undef */
+      let formData = new FormData(); // 创建form对象
+      formData.append("imgLocal", file); // 通过append向form对象添加数据
+      // formData.append("token", this.token()); // 添加form表单中其他数据
+      console.log(formData.get("imgLocal")); // FormData私有类对象，访问不到，可以通过get判断值是否传进去
+      let config = {
+        emulateJSON: true,
+        withCredentials: true,
+        headers: { "Content-Type": "multipart/form-data" }
+      };
+      this.$axios
+        .post("http://cschushi.cadhx.com/api/order/upImg", formData, config)
+        .then(({ data }) => {
+          console.log(data);
+          this.img6 = `http://cschushi.cadhx.com/${data.imgurl}`;
         })
         .catch(function(error) {
           console.log(error);
@@ -380,7 +539,7 @@ export default {
       align-items: center;
       border-bottom: 1Px solid #eee;
       input {
-        width: 300px;
+        width: 200px;
         opacity: 0;
         filter: alpha(opacity=0);
       }
@@ -422,7 +581,7 @@ export default {
       line-height: 100px;
       border-bottom: 1Px solid #eee;
       span {
-        width: 150px;
+        width: 250px;
         text-align: left;
       }
       input {
@@ -450,6 +609,21 @@ export default {
       input:-ms-input-placeholder {
         /* Internet Explorer 10+ */
         color: #ddd;
+      }
+    }
+    .xiaogong {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      line-height: 102px;
+      border-bottom: 1Px solid rgba(238, 238, 238, 1);
+      span {
+        width: 300px;
+        text-align: left;
+      }
+      input {
+        width: 30px;
+        height: 30px;
       }
     }
     .agreement {
@@ -535,7 +709,7 @@ export default {
           border: 1Px solid rgba(153, 153, 153, 1);
         }
         .activeCai {
-          background-color: #FFB84B;
+          background-color: #ffb84b;
           color: #fff;
         }
       }
@@ -544,12 +718,12 @@ export default {
   .mask {
     height: 100vh;
     width: 100vw;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
     position: fixed;
     top: 0;
     left: 0;
     .addressAlert {
-      width:630px;
+      width: 630px;
       padding: 30px;
       border-radius: 10px;
       position: absolute;

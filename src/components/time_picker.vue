@@ -321,7 +321,7 @@ export default {
         color: $mainColor;
         height: 70px;
         line-height: 70px;
-        border-bottom: 1px solid $mainColor;
+        border-bottom: 1Px solid $mainColor;
         position: absolute;
         top: 0;
         left: 0;
@@ -370,7 +370,7 @@ export default {
         .time_picker_change {
           position: absolute;
           width: 120px;
-          height: 1px;
+          height: 1Px;
           background: $mainColor;
           top: 215px;
           left: 50%;
@@ -382,7 +382,7 @@ export default {
           top: 50px;
           left: 0;
           width: 100%;
-          height: 1px;
+          height: 1Px;
           background: $pickerBgColor;
           box-shadow: 0 25px 60px 40px $pickerBgColor;
           z-index: 2;
@@ -393,7 +393,7 @@ export default {
           bottom: 50px;
           left: 0;
           width: 100%;
-          height: 1px;
+          height: 1Px;
           background: $pickerBgColor;
           box-shadow: 0 25px 60px 40px $pickerBgColor;
           z-index: 2;

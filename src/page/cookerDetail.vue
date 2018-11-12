@@ -4,10 +4,10 @@
     <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded">
     <div class="detailhead">
       <div class="headimg"><img :src="message.user_avat"></div>
-      <p>{{message.user_truename}}</p>
+      <p>{{message.user_truename}}<span>&emsp;LV{{message.grade}}</span></p>
       <p>{{message.user_mobile | hideTel}}</p>
       <p>已服务过{{message.order_num}}家庭</p>
-      <div class="box3"> <div class="cai">{{message.dish[0]}}</div> <div class="cai">{{message.dish[1]}}</div> </div>
+      <div class="box3"> <div class="cai">{{message.isiamic}}</div> <div class="cai">{{message.dish[0]}}</div> <div class="cai">{{message.dish[1]}}</div></div>
     </div>
     <div class="zhengjian">
         <div class="box">
@@ -220,6 +220,9 @@ export default {
     p:nth-of-type(1) {
       font-size: 32px;
       line-height: 70px;
+      span {
+        color: #FFB84B;
+      }
     }
     p:nth-of-type(2) {
       font-size: 30px;

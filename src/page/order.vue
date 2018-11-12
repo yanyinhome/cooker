@@ -8,8 +8,9 @@
         <div class="box2">下单时间：{{item.order_create_time}}</div>
       </div>
       <div class="orderCenter">
-        <div class="box1"><img :src="item.user_avat"></div>
-        <div class="box2">
+        <div class="box1"  v-if="item.status!='1'"><img :src="item.user_avat"></div>
+        <div class="box2"  v-if="item.status=='1'">暂无厨师接单</div>
+        <div class="box2" v-if="item.status!='1'">
           <p>{{item.user_truename}}<i class="iconfont icon-xiayi" /></p>
           <p>{{item.user_sign}}</p>
         </div>
@@ -27,7 +28,7 @@
         <div class="box2">下单时间：{{item.order_create_time}}</div>
       </div>
       <div class="orderCenter">
-        <div class="box1"><img :src="item.user_avat"></div>
+        <div class="box1"><img :src="item.user_avat" alt=""></div>
         <div class="box2">
           <p>{{item.user_truename}}<i class="iconfont icon-xiayi" /></p>
           <p>{{item.user_sign}}</p>
@@ -222,7 +223,7 @@ export default {
       font-size: 24px;
       color: #666;
       line-height: 66px;
-      border-bottom: 1px solid #eee;
+      border-bottom: 1Px solid #eee;
     }
     .orderCenter {
       margin: 20px 30px;
@@ -269,14 +270,14 @@ export default {
       padding-bottom: 20px;
       box-sizing: border-box;
       font-size: 26px;
-      border-top: 1px dashed #eee;
+      border-top: 1Px dashed #eee;
       button {
         margin: 20px 0 10px 20px;
         background: none;
         padding: 10px 20px;
         font-size: 26px;
         border-radius: 6px;
-        border: 1px solid rgba(153, 153, 153, 1);
+        border: 1Px solid rgba(153, 153, 153, 1);
       }
       .evaluate {
         margin: 20px 0 10px 20px;
@@ -284,7 +285,7 @@ export default {
         font-size: 26px;
         border-radius: 6px;
         color: #ee0000;
-        border: 1px solid #ee0000;
+        border: 1Px solid #ee0000;
       }
       .noborder {
         color: #666;

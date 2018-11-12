@@ -5,13 +5,34 @@
         <p>发布订单</p>
         <p>选择您喜欢的菜式来预约厨师吧，发布订单后需等待厨师接单哦！</p>
         <div class="item" @click="addressTo"><span>选择地址</span><input type="text" v-model="address" placeholder="请选择"><i class="iconfont icon-xiayi"></i></div>
+        <div class="xiaogong">
+          <span>请选择</span>
+          清真<input type="radio" id="1" value="1" v-model="checked2">
+          非清真<input type="radio" id="2" value="2" v-model="checked2">
+        </div> 
         <div class="item" @click="loading1"><span>菜系</span><input type="text" v-model="vegetable" readonly="readonly" placeholder="请选择"><i class="iconfont icon-xiayi"></i></div>
+        
         <div class="item"  @click="loading2"><span>预约时间</span><input type="text" v-model="time"  readonly="readonly" placeholder="请选择"><i class="iconfont icon-xiayi"></i></div>
         <!-- <div class="item"><span>姓名</span><input type="text" v-model="name" placeholder="请输入你的名字"></div>
         <div class="item"><span>手机号</span><input type="text" v-model="phone" placeholder="请输入手机号"></div> -->
+        <div class="item"><span>用餐人数</span><input type="text" v-model="num" placeholder="请输入用餐人数"></div>
+        <div class="xiaogong">
+          <span>是否需要小工</span>
+          需要<input type="radio" id="1" value="1" v-model="checked1">
+          不需要<input type="radio" id="2" value="0" v-model="checked1">
+        </div> 
+        <div class="item" v-show="checked1==='1'"><span>小工服务费</span><input type="text" v-model="servermoney" placeholder="请输入小工服务费"></div>        
+        <div class="xiaogong grade">
+          <span>请选择厨师级别</span> 
+          <select v-model="selected">
+            <option disabled value="">请选择等级服务费</option>
+            <option v-for="(item,index) in grade" :value="item.grade_id" :key="index">{{item.severgrade}}</option>
+          </select>
+        </div>
+          
         <div class="beizhu"><textarea style="resize:none" border maxlength=50  placeholder="备注信息" v-model="content" cols="80" rows="5"></textarea>
         <span class="number">{{number}}/50</span></div>
-        <com-button :click="fabu">确定发布</com-button>
+        <com-button class="btn" :click="fabu">确定发布</com-button>
     </div>
     <!-- 菜系弹窗 -->
     <div class="mask" v-show="mask1"  @click="mask1=false">
@@ -46,6 +67,11 @@ export default {
       datas: [],
       canReq: true,
       noMore: false,
+      num: '',
+      checked1: '0',
+      checked2: '1',
+      servermoney: '',
+      selected: '请选择等级服务费',
       vegetable: "",
       content: "",
       time: "",
@@ -55,6 +81,7 @@ export default {
       mask2: false,
       pickerVisible: "",
       number: "0",
+      grade:[],
       slots: [
         {
           flex: 1,
@@ -120,6 +147,7 @@ export default {
     //   this.time = localStorage.getItem('time');
     //   this.vegetable = localStorage.getItem('vegetable');
     // }
+    this.loading3();
     if (this.dingwei.addr_receiver) {
       this.address =
         this.dingwei.addr_receiver +
@@ -179,8 +207,31 @@ export default {
           console.log(error);
         });
     },
+    // 等级
+    loading3() {
+      this.axios
+        .post("index/serverGrade")
+        .then(({ data }) => {
+          console.log(data);
+          if (data.code === "200") {
+            this.grade = data.data;
+          } else if (data.code === "201") {
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    fabu () {
+      if (!this.addr_id||!this.d_id||!this.time||!this.checked2) {
+        this.$bus.$emit("toast", "请完善发布信息");
+      }  else{
+        this.fabu1();
+      }
+    },
     // 发布订单
-    fabu() {
+    fabu1() {
+      console.log(this.selected);
       var myDate = new Date();
       var year = myDate.getFullYear(); 
       this.axios
@@ -189,7 +240,11 @@ export default {
           addr_id: this.addr_id,
           d_id: this.d_id,
           dinner: year + '-' + this.time,
-          order_remark: this.content
+          order_remark: this.content,
+          isiamic: this.checked2,
+          number: this.num,
+          coolie: this.servermoney,
+          grade_id: this.selected
         })
         .then(({ data }) => {
           console.log(data);
@@ -282,11 +337,12 @@ export default {
       border-bottom: 1Px solid rgba(238, 238, 238, 1);
       line-height: 102px;
       span {
-        width: 120px;
+        width: 200px;
         text-align: left;
       }
       input {
         width: 450px;
+        // height: 52px;
         text-align: right;
         font-size: 30px;
         margin-right: 0;
@@ -317,6 +373,31 @@ export default {
         box-sizing: border-box;
       }
     }
+    .xiaogong {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      line-height: 102px;
+      border-bottom: 1Px solid rgba(238, 238, 238, 1);
+      span {
+        width: 300px;
+        text-align: left;
+      }
+      input {
+        width: 30px;
+        height: 30px;
+      }
+    }
+    .grade {
+      select {
+        width: 360px;
+        // line-height: 100px;
+        text-align: right;
+        font-size: 30px;
+        margin-right: 0;
+        color: #666;
+      }
+    }
     .beizhu {
       position: relative;
       textarea {
@@ -332,6 +413,9 @@ export default {
         bottom: 8px;
         right: 8px;
       }
+    }
+    .btn {
+      margin-top: 30px;
     }
   }
   .mask {

@@ -11,9 +11,9 @@
       <div class="itemlist recommend" v-for="(item,index) in message" :key="index" @click="toDetail(item.c_id)">
         <div class="left"><img :src="item.user_avat"></div>
         <div class="center">
-          <div class="box1">{{item.user_truename}}</div>
+          <div class="box1">{{item.user_truename}}<span>&emsp;LV{{item.grade}}</span></div>
           <div class="box2">{{item.user_sign}}</div>
-          <div class="box3"> <div class="cai">{{item.dish[0]}}</div> <div class="cai">{{item.dish[1]}}</div> </div>
+          <div class="box3"> <div class="cai">{{item.isiamic}}</div> <div class="cai">{{item.dish[0]}}</div> <div class="cai">{{item.dish[1]}}</div></div>
         </div>
         <div class="right">
           <div class="box1">{{price}}</div>
@@ -408,9 +408,14 @@ export default {
       }
       .center {
         width: 300px;
-        padding-left: 30px;
+        padding-left: 20px;
         // text-align: left;
         box-sizing: border-box;
+        .box1 {
+          span {
+            color: #FFB84B;
+          }
+        }
         .box2 {
           font-size: 24px;
           font-family: PingFangSC-Regular;

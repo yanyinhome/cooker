@@ -10,8 +10,21 @@
     </div>
     <div class="server">
        <div class="item"><span>服务厨师</span><span>{{name}}</span></div>
+       <div class="xiaogong">
+          <span>请选择需求</span>
+          清真<input type="radio" id="1" value="1" v-model="checked2">
+          非清真<input type="radio" id="2" value="2" v-model="checked2">
+      </div> 
+       <div class="item"><span>用餐人数</span><input type="text" v-model="num" placeholder="请输入用餐人数"></div>
+        <div class="xiaogong">
+          <span>是否需要小工</span>
+          需要<input type="radio" id="1" value="1" v-model="checked1">
+          不需要<input type="radio" id="2" value="0" v-model="checked1">
+        </div> 
+        <div class="item" v-show="checked1==='1'"><span>小工服务费</span><input type="text" v-model="servermoney" placeholder="请输入小工服务费"></div>        
        <div class="item" @click="mask = true"><span>上门时间</span><input type="text" v-model="time"  readonly="readonly" placeholder="请选择"><i class="iconfont icon-xiayi"></i></div>
     </div>
+
     <div class="beizhu">
         <textarea style="resize:none" border maxlength=50  placeholder="请填写订单备注" v-model="content" cols="80" rows="5"></textarea>
         <span class="number">{{number}}/50</span>
@@ -40,9 +53,13 @@ export default {
       name: this.$route.query.name,
       content: "",
       number: "0",
+      num: '',
       time1: "",
       time2: "",
       time: "",
+      checked1: '0',
+      checked2: '1',
+      servermoney: '',
       slots: [
         {
           flex: 1,
@@ -101,7 +118,9 @@ export default {
         addr_id: this.myaddress.addr_id,
         dinner:  year + '-' + this.time,
         order_remark: this.content,
-
+        isiamic: this.checked2,
+        number: this.num,
+        coolie: this.servermoney,
       })
         .then(({data}) => {
           console.log(data);
@@ -206,6 +225,22 @@ export default {
       font-size:30px;
       margin-right: 0;
       color: #666;
+      }
+    }
+    .xiaogong {
+      margin: 0 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      line-height: 102px;
+      border-bottom: 1Px solid rgba(238, 238, 238, 1);
+      span {
+        width: 300px;
+        text-align: left;
+      }
+      input {
+        width: 30px;
+        height: 30px;
       }
     }
   }

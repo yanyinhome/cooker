@@ -3,26 +3,24 @@
       <div class="login_top"></div>
       <div class="login_inp">
           <div class="box1"><img src="../assets/image/login2.png" ></div>
-          <input type="text" v-model="phone" placeholder="请输入你的手机号">
+          <input type="text" v-model="phone" placeholder="请绑定你的手机号">
       </div>
       <div class="login_inp yanzheng">
           <div class="box1"><img src="../assets/image/reg2.png" ></div>
           <input type="text" placeholder="请输入验证码" v-model="verify">
           <button class="verify" @click="verification" :disabled='isSend' :class="{'send-sms' : isSend}">{{btntxt}}</button>
       </div>
-      <div class="login_inp logn_mima">
+      <!-- <div class="login_inp logn_mima">
           <div class="box1"><img src="../assets/image/login3.png" ></div>
           <input type="password" v-model="password" placeholder="请输入你的登录密码">
-      </div>
+      </div> -->
       <router-link :to="{name: 'protocol',query: {status: '3'}}" tag="a" class="protocol">《信息服务》</router-link> 
       <router-link :to="{name: 'protocol',query: {status: '4'}}" tag="a" class="protocol">《隐私政策》</router-link> 
       <div id="example-4">
-        <input type="radio" id="1" value="1" v-model="checked">
+        <input type="checkbox" id="1" value="checked" v-model="checked">
         <label for="1">我已阅读并同意</label>
-        <input type="radio" id="2" value="2" v-model="checked">
-        <label for="2">不同意</label>
       </div>
-      <com-button :click="register" :disabled =" checked==2 " :class="{active: checked==2}">注册</com-button>
+      <com-button :click="register" :disabled ="!checked" :class="{active: !checked}">确定绑定</com-button>
   </div>
 </template>
 <script>
@@ -30,7 +28,7 @@ export default {
   name: "register",
   data() {
     return {
-      checked: '1',
+      checked: false,
       phone: "",
       password: "",
       btntxt: "获取验证码",
@@ -153,6 +151,7 @@ export default {
     padding-right: 10px;
     padding-left: 30px;
     margin-top: 10px;
+    margin-bottom: 50px;
     .box1 {
       width: 48px;
       height: 46px;
