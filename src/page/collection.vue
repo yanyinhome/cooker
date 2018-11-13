@@ -7,7 +7,7 @@
         infinite-scroll-distance="50"
         :auto-fill="false">
         <li class="list-item " v-for="(item,index) in list " data-type="0" :key="index">
-        <div class="list-box" @touchstart.capture="touchStart" @touchend.capture="touchEnd" @click="skip">
+        <div class="list-box" @touchstart.capture="touchStart" @touchend.capture="touchEnd" @click="skip(item.user_id)">
             <div  class="list-img"><img :src="item.user_avat"></div>
             <div class="list-content">
             <p class="title">{{item.user_truename}}</p>
@@ -157,11 +157,12 @@ export default {
   },
   methods: {
     //跳转
-    skip() {
+    skip(id) {
       if (this.checkSlide()) {
         this.restSlide();
       } else {
-        alert("You click the slide!");
+        // alert("You click the slide!");
+        this.$router.push({ name: "cookerDetail", query: { id: id }});
       }
     },
     loadMore() {

@@ -9,7 +9,9 @@
             <input class="imginp"  ref="portrait1" name="imgLocal" id="imgLocal1" type='file' accept="image/*" @change="shangchuan1"/>
             <div class="tou"><div class="touxiang"><img :src="img1"></div><i class="iconfont icon-xiayi"></i></div>
         </div>
-        <div class="item"><span>真实姓名</span><input type="text" v-model="name" readonly="readonly"></div>
+        <!-- <div class="item"><span>真实姓名</span><input type="text" v-model="name" readonly="readonly"></div> -->
+        <div class="item" v-if="!name"><span>真实姓名</span><input type="text" v-model="name" placeholder="请输入姓名"></div>
+        <div class="item" v-else><span>真实姓名</span><input type="text" v-model="name" readonly="readonly"></div>
         <div class="item"><span>手机号</span><input type="text" v-model="phone" readonly="readonly"></div>
         <div class="xiaogong">
           <span>请选择</span>
@@ -117,8 +119,8 @@ export default {
       img4: '',
       img5: '',
       img6: '',
-      name: "你好",
-      phone: "188888888888",
+      name: "",
+      phone: "",
       cookerSign: '',
       vegetable1: '',//值
       vegetable2: [],//数组
@@ -189,6 +191,9 @@ export default {
         .then(({ data }) => {
           console.log(data);
           if (data.code === "200") {
+            data.data.forEach(e => {
+              e.select = false;
+            });
             this.item = data.data;
           } else if (data.code === "201") {
           }
@@ -200,8 +205,18 @@ export default {
     chooce(index, id) {
       // this.mask1 = false;
        this.d_id = id;
-       this.vegetableId.push(this.item[index].d_id);
-       this.vegetable2.push(this.item[index].name);
+       if (this.vegetableId[1]!=this.item[index].d_id) {
+          this.vegetableId.push(this.item[index].d_id);
+          this.vegetable2.push(this.item[index].name);
+       }
+      // this.vegetableId.forEach(e => {
+      //   if (e!=this.item[index].d_id) {
+      //      this.vegetableId.push(this.item[index].d_id);
+      //      this.vegetable2.push(this.item[index].name);
+      //   } 
+      // });
+      
+      console.log(this.vegetableId);
       if(this.vegetableId.length > 2) {
        this.vegetableId.splice(0,1).push(this.item[index].d_id);
        this.vegetable2.splice(0,1).push(this.item[index].name);
@@ -307,7 +322,7 @@ export default {
       this.checked = true;
       this.prohibit = true;
       this.axios
-        .post("user/apigs", {
+        .post("user/apiGs", {
           token: this.token(),
           user_avat: this.img1,
           cool_card: this.img2,
@@ -331,6 +346,8 @@ export default {
         .then(({ data }) => {
           console.log(data);
           if (data.code === "200") {
+            this.$bus.$emit("toast", "已发送审核");
+            this.$router.push('usercenter')
           } else if (data.code === "201") {
             this.$bus.$emit("toast", data.msg);
           }

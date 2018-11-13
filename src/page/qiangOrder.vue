@@ -134,6 +134,9 @@ export default {
       .then(({ data }) => {
         console.log(data);
         if (data.code === "200") {
+          this.status2 = true;
+          this.status1 = false;
+          this.loading1();
           this.$bus.$emit("toast", data.msg);
         } else if (data.code === "201") {
           this.$bus.$emit("toast", data.msg);

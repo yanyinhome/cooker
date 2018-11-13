@@ -11,7 +11,7 @@
       <div class="itemlist recommend" v-for="(item,index) in message" :key="index" @click="toDetail(item.c_id)">
         <div class="left"><img :src="item.user_avat"></div>
         <div class="center">
-          <div class="box1">{{item.user_truename}}<span>&emsp;LV{{item.grade}}</span></div>
+          <div class="box1">{{item.user_truename}}<span v-if="item.grade>0">&emsp;LV{{item.grade}}</span><span v-else>&emsp;LV0</span></div>
           <div class="box2">{{item.user_sign}}</div>
           <div class="box3"> <div class="cai">{{item.isiamic}}</div> <div class="cai">{{item.dish[0]}}</div> <div class="cai">{{item.dish[1]}}</div></div>
         </div>
@@ -55,6 +55,7 @@ export default {
   name: "cooker",
   data() {
     return {
+      grade: '',
       caixiId: '',
       price: "议价",
       mask1: false,
@@ -430,10 +431,10 @@ export default {
             display: inline-block;
             // width:72px;
             padding: 2px 10px;
-            height: 32px;
+            height: 28px;
             border-radius: 18px;
             font-size: 20px;
-            line-height: 32px;
+            line-height: 28px;
             text-align: center;
             color: rgba(255, 113, 22, 1);
             border: 1Px solid rgba(255, 113, 22, 1);

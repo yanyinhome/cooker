@@ -7,7 +7,7 @@
         <div class="box1">订单号：{{item.order_no}}</div>
         <div class="box2">下单时间：{{item.order_create_time}}</div>
       </div>
-      <div class="orderCenter">
+      <div class="orderCenter" @click="orderdetail(item.order_id,item.status,item.order_cid)">
         <div class="box1"  v-if="item.status!='1'"><img :src="item.user_avat"></div>
         <div class="box2"  v-if="item.status=='1'">暂无厨师接单</div>
         <div class="box2" v-if="item.status!='1'">
@@ -27,18 +27,20 @@
         <div class="box1">订单号：{{item.order_no}}</div>
         <div class="box2">下单时间：{{item.order_create_time}}</div>
       </div>
-      <div class="orderCenter">
+      <router-link tag="div" class="orderCenter" :to="{name:'cookerDetail',query:{id: item.order_cid}}">
         <div class="box1"><img :src="item.user_avat" alt=""></div>
-        <div class="box2">
-          <p>{{item.user_truename}}<i class="iconfont icon-xiayi" /></p>
-          <p>{{item.user_sign}}</p>
-        </div>
-        <div class="box3"><p>{{server[5]}}</p> <p>议价</p></div>
-      </div>
+          <div class="box2">
+            <p>{{item.user_truename}}<i class="iconfont icon-xiayi" /></p>
+            <p>{{item.user_sign}}</p>
+          </div>
+          <div class="box3"><p>{{server[5]}}</p> <p>议价</p></div>
+      </router-link>
+        
       <div class="orderFoot">
         <p>预约时间：{{item.dinner + ':00'}}</p>
-        <router-link :to="{name:'evaluate',query:{id: item.order_cid}}" tag="button"  class="evaluate">评价厨师</router-link>
-        <!-- <button :class="{ 'evaluate': item.status === 4}">评价厨师</button> -->
+        <router-link  v-if="item.status === 4" :to="{name:'evaluate',query:{id: item.order_id,uid: item.order_cid}}" tag="button"  class="evaluate">评价厨师</router-link>
+        <button v-if="item.status === 3">已评价</button>
+        <button v-if="item.status === 5">已取消</button>
         <button  @click="reappoint(item.order_cid,item.user_truename)">再次预约</button>
       </div>
     </div>
@@ -118,6 +120,16 @@ export default {
           console.log(error);
         });
     },
+    orderdetail(id,status,uid){
+      if (status === 1) {
+        //等待接单
+        console.log(id);
+        this.$router.push({name:'waitOrder',query:{id: id}})
+      } else {
+        // 厨师详情
+        this.$router.push({name:'cookerDetail',query:{id: uid}})
+      }
+    },
     cancleOrder(id, index, status) {
       if (status === 1) {
         //取消预约
@@ -129,7 +141,7 @@ export default {
       } else if (status === 2) {
         //查看是否接单
         // console.log(id);
-        this.$router.push({name:'waitOrder',query:{id: id}})
+        // this.$router.push({name:'waitOrder',query:{id: id}})
       }
     },
     // 再次预约

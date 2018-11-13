@@ -4,9 +4,10 @@
     <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded">
     <div class="detailhead">
       <div class="headimg"><img :src="message.user_avat"></div>
-      <p>{{message.user_truename}}<span>&emsp;LV{{message.grade}}</span></p>
+      <p>{{message.user_truename}}</p>
       <p>{{message.user_mobile | hideTel}}</p>
       <p>已服务过{{message.order_num}}家庭</p>
+      <p>等级：<span v-if="message.grade>0">LV{{message.grade}}</span><span v-else>LV0</span> &emsp;服务费：<span v-if="message.service>0">{{message.service}}</span><span v-else>无</span></p>
       <div class="box3"> <div class="cai">{{message.isiamic}}</div> <div class="cai">{{message.dish[0]}}</div> <div class="cai">{{message.dish[1]}}</div></div>
     </div>
     <div class="zhengjian">
@@ -49,8 +50,6 @@ export default {
     return {
       active:false,
       id: this.$route.query.id,
-      caiid: this.$route.query.caiid,
-      time: this.$route.query.time,
       message: {
         // name: "张三",
         // img1: require("../assets/image/zanshi/head.jpg"),
@@ -232,6 +231,11 @@ export default {
       font-size: 26px;
       line-height: 56px;
       color: #666;
+    }
+    p:nth-of-type(4) {
+      span {
+        color: #FFB84B;
+      }
     }
     .box3 {
       border-top: 1Px dashed #888;

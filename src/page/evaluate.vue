@@ -25,6 +25,7 @@ export default {
   data() {
     return {
       id: this.$route.query.id,
+      uid: this.$route.query.uid,
       active: false,
       content: this.$route.query.sign,
       number: '0',
@@ -49,14 +50,13 @@ export default {
   created() {},
 
   mounted() {
-    console.log(this.id);
     this.loading();
   },
 
   methods: {
     loading () {
       this.axios.post('order/getInfo',{
-        c_id: this.id
+        c_id: this.uid
       })
         .then(({data}) => {
           console.log(data);

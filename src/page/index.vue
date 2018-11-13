@@ -13,7 +13,7 @@
       <div class="itemlist recommend" v-for="(item,index) in message1" :key="index"  @click="toDetail(item.c_id)">
         <div class="left"><img :src="item.user_avat"></div>
         <div class="center">
-          <div class="box1">{{item.user_truename}}</div>
+          <div class="box1">{{item.user_truename}}<span>&emsp;LV{{item.grade}}</span></div>
           <div class="box2">{{item.user_sign}}</div>
           <div class="box3"> <div class="cai">{{item.dish[0]}}</div> <div class="cai">{{item.dish[1]}}</div> </div>
         </div>
@@ -29,7 +29,7 @@
       <div class="itemlist recommend" v-for="(item,index) in message2" :key="index"  @click="toDetail(item.c_id)">
         <div class="left"><img :src="item.user_avat"></div>
         <div class="center">
-          <div class="box1">{{item.user_truename}}</div>
+          <div class="box1">{{item.user_truename}}<span>&emsp;LV{{item.grade}}</span></div>
           <div class="box2">{{item.user_sign}}</div>
           <div class="box3"> <div class="cai">{{item.dish[0]}}</div> <div class="cai">{{item.dish[1]}}</div> </div>
         </div>
@@ -152,16 +152,19 @@ export default {
       this.axios
         .post("index/index", {
           token: this.token(),
-          city_name: "",
-          area: ""
+          user_city: "",
+          user_address: ""
         })
         .then(({ data }) => {
           console.log(data);
-          if (data.code === "200") {
-            this.area = data.addr.area;
+          if (data.code === "200") { 
+            if(data.addr.area){
+              this.area = data.addr.area;
+            }
             this.images = data.pic;
             this.message1 = data.guess;
             this.message2 = data.rand;
+            // this.loading2()
           } else if (data.code === "201") {
             this.$bus.$emit("toast", data.msg);
           }
@@ -176,8 +179,8 @@ export default {
       this.axios
         .post("index/index", {
           token: this.token(),
-          city_name: this.city_name,
-          area: this.area
+          user_city: this.city_name,
+          user_address: this.area
         })
         .then(({ data }) => {
           console.log(data);
@@ -295,6 +298,11 @@ export default {
         width: 280px;
         padding-left: 30px;
         box-sizing: border-box;
+        .box1 {
+          span {
+            color: #FFB84B;
+          }
+        }
         .box2 {
           font-size: 24px;
           font-family: PingFangSC-Regular;
@@ -309,10 +317,10 @@ export default {
             display: inline-block;
             // width:72px;
             padding: 2px 10px;
-            height: 32px;
+            height: 28px;
             border-radius: 18px;
             font-size: 20px;
-            line-height: 32px;
+            line-height: 28px;
             text-align: center;
             color: rgba(255, 113, 22, 1);
             border: 1Px solid rgba(255, 113, 22, 1);

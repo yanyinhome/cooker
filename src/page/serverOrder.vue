@@ -29,7 +29,7 @@
         <div  class="btn" @click="sureOrder(item.order_id)" v-else-if="status==='1'">确认已服务</div>
         <div  class="recommend" v-else  @click="lookdetail(index,item.order_id)">查看评论</div>
       </div>
-      <div class="detail" v-if="detail.length && content === index ">{{detail}}</div>
+      <div class="detail" v-if="detail && content === index ">{{detail}}</div>
     </div>
   </div>
 </template>
@@ -41,7 +41,7 @@ export default {
     return {
       status: "0",
       content: "-1",
-      detail: '',
+      detail: false,
       data: [
         // {
         //   cai: "川菜",
@@ -90,7 +90,11 @@ export default {
         .then(({data}) => {
           console.log(data);
           if (data.code === '200') {
-            this.detail = data.data;
+            if(data.data) {
+              this.detail = data.data;
+            } else {
+              this.$bus.$emit('toast', '无评论信息');            
+            }
           } else if (data.code === '201') {
             this.$bus.$emit('toast', data.msg);            
           }
