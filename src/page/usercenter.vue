@@ -15,7 +15,7 @@
       <router-link to="certification" tag="div" class="box"><div class="img"><img src="../assets/image/cookers.png"></div><p>认证厨师</p></router-link>
       <router-link v-if="message.status=='1'" to="qiangOrder" tag="div" class="box"><div class="img"><img src="../assets/image/qiangdan.png"></div><p>厨师抢单</p></router-link>
       <router-link v-if="message.status=='1'" to="serverOrder" tag="div" class="box"><div class="img"><img src="../assets/image/server.png"></div><p>我的订单</p></router-link>
-      <router-link to="setPassword" tag="div" class="box"><div class="img"><img src="../assets/image/password.png"></div><p>密码设置</p></router-link>
+      <!-- <router-link to="setPassword" tag="div" class="box"><div class="img"><img src="../assets/image/password.png"></div><p>密码设置</p></router-link> -->
       <div @click="signOut" class="box"><div class="img"><img src="../assets/image/tuichu.png"></div><p>退出登录</p></div>
     </div>
     <com-foot :select="4"></com-foot>

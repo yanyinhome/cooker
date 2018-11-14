@@ -25,7 +25,7 @@
         <div class="xiaogong grade">
           <span>请选择厨师级别</span> 
           <select v-model="selected">
-            <option disabled value="">请选择等级服务费</option>
+            <option disabled value="请选择等级服务费" selected>请选择等级服务费</option>
             <option v-for="(item,index) in grade" :value="item.grade_id" :key="index">{{item.severgrade}}</option>
           </select>
         </div>

@@ -13,7 +13,7 @@
       <div class="itemlist recommend" v-for="(item,index) in message1" :key="index"  @click="toDetail(item.c_id)">
         <div class="left"><img :src="item.user_avat"></div>
         <div class="center">
-          <div class="box1">{{item.user_truename}}<span>&emsp;LV{{item.grade}}</span></div>
+          <div class="box1">{{item.user_truename}}<span v-if="item.grade>0">&emsp;LV{{item.grade}}</span><span v-else>&emsp;LV0</span></div>
           <div class="box2">{{item.user_sign}}</div>
           <div class="box3"> <div class="cai">{{item.dish[0]}}</div> <div class="cai">{{item.dish[1]}}</div> </div>
         </div>
@@ -29,7 +29,7 @@
       <div class="itemlist recommend" v-for="(item,index) in message2" :key="index"  @click="toDetail(item.c_id)">
         <div class="left"><img :src="item.user_avat"></div>
         <div class="center">
-          <div class="box1">{{item.user_truename}}<span>&emsp;LV{{item.grade}}</span></div>
+          <div class="box1">{{item.user_truename}}<span v-if="item.grade>0">&emsp;LV{{item.grade}}</span><span v-else>&emsp;LV0</span></div>          
           <div class="box2">{{item.user_sign}}</div>
           <div class="box3"> <div class="cai">{{item.dish[0]}}</div> <div class="cai">{{item.dish[1]}}</div> </div>
         </div>
@@ -98,7 +98,7 @@ export default {
         },
         {
           flex: 1,
-          values: ['市辖区'],
+          values: ["市辖区"],
           className: "slot3",
           textAlign: "center"
         },
@@ -109,7 +109,7 @@ export default {
         },
         {
           flex: 1,
-          values: ['东城区'],
+          values: ["东城区"],
           className: "slot5",
           textAlign: "center"
         }
@@ -124,7 +124,7 @@ export default {
   },
   created() {
     // if (!localStorage.address) {
-     
+
     //   this.area = "选择城市";
 
     //   console.log(11);
@@ -133,8 +133,10 @@ export default {
     //    this.area = localStorage.getItem('address.area');
     //   this.city_name = localStorage.getItem('address.city_name');
     // }
-    this.loading1();
+    // window.location.href = 'http://cschushi.cadhx.com/api/wechat/login';
+    
 
+    this.loading1();
   },
   mounted() {
     this.$nextTick(() => {
@@ -157,8 +159,8 @@ export default {
         })
         .then(({ data }) => {
           console.log(data);
-          if (data.code === "200") { 
-            if(data.addr.area){
+          if (data.code === "200") {
+            if (data.addr.area) {
               this.area = data.addr.area;
             }
             this.images = data.pic;
@@ -197,12 +199,11 @@ export default {
         });
     },
     toDetail(id) {
-      this.$router.push({ name: "cookerDetail", query: { id: id }});
+      this.$router.push({ name: "cookerDetail", query: { id: id } });
     },
     chooceAddress() {
       // this.$router.push("dingwei");
       this.cityalert = true;
-
     },
     onMyAddressChange(picker, values) {
       if (myaddress[values[0]]) {
@@ -217,14 +218,13 @@ export default {
         // if(!this.myAddressCity){
         //   this.area = this.myAddressProvince;
         // } else {
-          this.city_name = values[1];
-          this.area = values[2];
-       
-        
+        this.city_name = values[1];
+        this.area = values[2];
+
         // if (localStorage.address) {
         //   localStorage.removeItem("address");
-          // localStorage.setItem("address.city_name", values[1]);
-          // localStorage.setItem("address.area", values[2]);
+        // localStorage.setItem("address.city_name", values[1]);
+        // localStorage.setItem("address.area", values[2]);
         // } else {
         //   localStorage.setItem("address.city_name", values[1]);
         //   localStorage.setItem("address.area", values[2]);
@@ -284,7 +284,7 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1Px solid rgba(238, 238, 238, 1);
+      border-bottom: 1px solid rgba(238, 238, 238, 1);
       .left {
         width: 130px;
         height: 130px;
@@ -300,7 +300,7 @@ export default {
         box-sizing: border-box;
         .box1 {
           span {
-            color: #FFB84B;
+            color: #ffb84b;
           }
         }
         .box2 {
@@ -316,14 +316,15 @@ export default {
           .cai {
             display: inline-block;
             // width:72px;
-            padding: 2px 10px;
+            padding: 4px 8px;
             height: 28px;
-            border-radius: 18px;
+            border-radius: 15px;
             font-size: 20px;
-            line-height: 28px;
+            line-height: 24px;
             text-align: center;
+            box-sizing: border-box;
             color: rgba(255, 113, 22, 1);
-            border: 1Px solid rgba(255, 113, 22, 1);
+            border: 1px solid rgba(255, 113, 22, 1);
           }
         }
       }
@@ -331,7 +332,7 @@ export default {
         width: 230px;
         height: 90px;
         text-align: center;
-        border-left: 1Px solid rgba(238, 238, 238, 1);
+        border-left: 1px solid rgba(238, 238, 238, 1);
         .box1 {
           font-size: 32px;
           font-weight: 700;

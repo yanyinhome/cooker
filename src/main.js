@@ -52,6 +52,15 @@ Vue.prototype.$bus = new Vue();
 //   }
 // });
 
+// 是否是微信浏览器
+Vue.prototype.IsWechat = () => {
+  if (navigator.userAgent.toLowerCase().match(/MicroMessenger/i)) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 // 获取token
 Vue.prototype.token = function () {
   if (localStorage.token) {

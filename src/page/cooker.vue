@@ -430,12 +430,13 @@ export default {
           .cai {
             display: inline-block;
             // width:72px;
-            padding: 2px 10px;
+            padding: 4px 8px;
             height: 28px;
-            border-radius: 18px;
+            border-radius: 15px;
             font-size: 20px;
-            line-height: 28px;
+            line-height: 24px;
             text-align: center;
+            box-sizing: border-box;
             color: rgba(255, 113, 22, 1);
             border: 1Px solid rgba(255, 113, 22, 1);
           }

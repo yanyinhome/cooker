@@ -152,7 +152,7 @@ export default {
       endX: 0
     };
   },
-  created () {
+  created() {
     this.loadMore();
   },
   methods: {
@@ -162,26 +162,27 @@ export default {
         this.restSlide();
       } else {
         // alert("You click the slide!");
-        this.$router.push({ name: "cookerDetail", query: { id: id }});
+        this.$router.push({ name: "cookerDetail", query: { id: id } });
       }
     },
     loadMore() {
       this.loading = false;
       console.log(11111111);
-      this.axios.post('user/apicole',{
+      this.axios
+        .post("user/apicole", {
           token: this.token()
         })
-          .then(({data}) => {
-            console.log(data)
-            if (data.code === '200') {
-              this.list = data.data;             
-            } else if (data.code === '201') {
-              this.$bus.$emit('toast', data.msg);
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+        .then(({ data }) => {
+          console.log(data);
+          if (data.code === "200") {
+            this.list = data.data;
+          } else if (data.code === "201") {
+            this.$bus.$emit("toast", data.msg);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
     //滑动开始
     touchStart(e) {
@@ -226,26 +227,27 @@ export default {
       }
     },
     //删除
-    deleteItem(index,id) {
+    deleteItem(index, id) {
       // // 复位
       this.restSlide();
       // 删除
-      this.axios.post('user/dcook',{
+      this.axios
+        .post("user/dcook", {
           token: this.token(),
           user_id: id
         })
-          .then(({data}) => {
-            console.log(data)
-            if (data.code === '200') {
-              this.$bus.$emit('toast', data.msg);
-              this.list.splice(index, 1);              
-            } else if (data.code === '201') {
-              this.$bus.$emit('toast', data.msg);
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+        .then(({ data }) => {
+          console.log(data);
+          if (data.code === "200") {
+            this.$bus.$emit("toast", data.msg);
+            this.list.splice(index, 1);
+          } else if (data.code === "201") {
+            this.$bus.$emit("toast", data.msg);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   }
 };
@@ -262,8 +264,8 @@ export default {
     left: 0;
     bottom: 60px;
     right: 10px;
-    height: 1Px;
-    border-bottom: 1Px solid #ccc;
+    height: 1px;
+    border-bottom: 1px solid #ccc;
     color: #ccc;
     -webkit-transform-origin: 0 100%;
     transform-origin: 0 100%;
@@ -289,8 +291,8 @@ export default {
     left: 0.2rem;
     bottom: 0;
     right: 15px;
-    height: 1Px;
-    border-bottom: 1Px solid #ccc;
+    height: 1px;
+    border-bottom: 1px solid #ccc;
     color: #ccc;
     -webkit-transform-origin: 0 100%;
     transform-origin: 0 100%;
@@ -352,15 +354,16 @@ export default {
     margin-top: 10px;
     .cai {
       display: inline-block;
-      margin-right: 10px;
-      padding: 2px 10px;
-      height: 32px;
-      border-radius: 18px;
+      // width:72px;
+      padding: 4px 8px;
+      height: 28px;
+      border-radius: 15px;
       font-size: 20px;
-      line-height: 32px;
+      line-height: 24px;
       text-align: center;
+      box-sizing: border-box;
       color: rgba(255, 113, 22, 1);
-      border: 1Px solid rgba(255, 113, 22, 1);
+      border: 1px solid rgba(255, 113, 22, 1);
     }
   }
   .list-item .delete {

@@ -90,7 +90,9 @@ export default {
 
   computed: {},
 
-  created() {},
+  created() {
+    
+  },
 
   mounted() {
     this.loading();
@@ -156,6 +158,50 @@ export default {
       this.status1 = false;
       this.loading1();
     },
+    // 获取oppenid
+    // if (response.data.status === "2") {
+    //       window.location.href = response.data.url;
+    //     }
+     // 支付
+    // recharge() {
+    //   console.log(this.idnum);
+    //   this.axios
+    //     .post("Wxpay/wxPay", {
+    //       id: this.idnum
+    //     })
+    //     .then(res => {
+    //       const jsApiParameters = res.data;
+    //       this.jsSdk(jsApiParameters);
+    //     });
+    // },
+    // jsSdk(jsApiParameters) {
+    //   WeixinJSBridge.invoke(
+    //     "getBrandWCPayRequest",
+    //     {
+    //       appId: jsApiParameters.appId,
+    //       package: jsApiParameters.package,
+    //       nonceStr: jsApiParameters.nonceStr,
+    //       timeStamp: jsApiParameters.timeStamp,
+    //       signType: jsApiParameters.signType,
+    //       paySign: jsApiParameters.paySign
+    //     },
+    //     // jsApiParameters,
+    //     function(res) {
+    //       WeixinJSBridge.log(res.err_msg);
+    //       var result = res.err_msg;
+    //       // alert(JSON.stringify(res));
+    //       // return;
+    //       if (result == "get_brand_wcpay_request:ok") {
+    //         alert("充值成功");
+    //         var url = "http://www.hnprkj.com/#/userCenter";
+    //       } else {
+    //         alert("你取消了支付");
+    //         var url = "http://www.hnprkj.com/#/userCenter";
+    //       }
+    //       window.location.href = url;
+    //     }
+    //   );
+    // },
   }
 };
 </script>

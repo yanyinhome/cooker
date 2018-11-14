@@ -48,7 +48,7 @@ export default {
   name: "cookerDetail",
   data() {
     return {
-      active:false,
+      active: false,
       id: this.$route.query.id,
       message: {
         // name: "张三",
@@ -106,7 +106,7 @@ export default {
         //     "张师傅做的菜品非常精致，味道也很棒，家人都很喜欢，大力推荐，平台推荐的很好！&#128077"
         // },
       ],
-      allLoaded: false,
+      allLoaded: false
     };
   },
 
@@ -120,8 +120,8 @@ export default {
   },
   // 局部过滤器，隐藏名字
   filters: {
-    hideName (value) {
-      if (!value){
+    hideName(value) {
+      if (!value) {
         return;
       }
       if (typeof value !== "string") {
@@ -132,22 +132,23 @@ export default {
   },
   methods: {
     //厨师详情 用户评论
-    loading () {
-      this.axios.post('cook/detail',{
-        token: this.token(),
-        c_id: this.id
-      })
-        .then(({data}) => {
+    loading() {
+      this.axios
+        .post("cook/detail", {
+          token: this.token(),
+          c_id: this.id
+        })
+        .then(({ data }) => {
           console.log(data);
-          if (data.code === '200') {
+          if (data.code === "200") {
             this.message = data.data;
-            this.recommend = data.comment; 
-            this.active = data.is_sc;          
-          } else if (data.code === '201') {
-            this.$bus.$emit("toast", data.msg);                        
+            this.recommend = data.comment;
+            this.active = data.is_sc;
+          } else if (data.code === "201") {
+            this.$bus.$emit("toast", data.msg);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
     },
@@ -158,31 +159,35 @@ export default {
       // this.$refs.loadmore.onBottomLoaded();
     },
     // 收藏厨师
-    collect () {
+    collect() {
       // !this.active = false? this.active = 1 : this.active =0
-      this.axios.post('cook/storeup',{
-        token: this.token(),
-        c_id: this.id,
-        is_sc: !this.active === false? '1' : '0'
-      })
-        .then(({data}) => {
+      this.axios
+        .post("cook/storeup", {
+          token: this.token(),
+          c_id: this.id,
+          is_sc: !this.active === false ? "1" : "0"
+        })
+        .then(({ data }) => {
           console.log(data);
-          if (data.code === '200') {
+          if (data.code === "200") {
             this.$bus.$emit("toast", data.msg);
             this.active = !this.active;
-          } else if (data.code === '201') {
-            this.$bus.$emit("toast", data.msg);            
+          } else if (data.code === "201") {
+            this.$bus.$emit("toast", data.msg);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
     },
     // 预约厨师
-    toOrder () {
-      this.$router.push({ name: "sureOrder", query: { id: this.id ,name: this.message.user_truename}})
-    }  
- }
+    toOrder() {
+      this.$router.push({
+        name: "sureOrder",
+        query: { id: this.id, name: this.message.user_truename }
+      });
+    }
+  }
 };
 </script>
 <style lang='scss'>
@@ -220,7 +225,7 @@ export default {
       font-size: 32px;
       line-height: 70px;
       span {
-        color: #FFB84B;
+        color: #ffb84b;
       }
     }
     p:nth-of-type(2) {
@@ -234,23 +239,23 @@ export default {
     }
     p:nth-of-type(4) {
       span {
-        color: #FFB84B;
+        color: #ffb84b;
       }
     }
     .box3 {
-      border-top: 1Px dashed #888;
+      border-top: 1px dashed #888;
       .cai {
         display: inline-block;
-        margin-top: 15px;
-        margin-right: 15px;
-        padding: 2px 10px;
-        height: 32px;
-        border-radius: 18px;
+        // width:72px;
+        padding: 4px 8px;
+        height: 28px;
+        border-radius: 15px;
         font-size: 20px;
-        line-height: 32px;
+        line-height: 24px;
         text-align: center;
+        box-sizing: border-box;
         color: rgba(255, 113, 22, 1);
-        border: 1Px solid rgba(255, 113, 22, 1);
+        border: 1px solid rgba(255, 113, 22, 1);
       }
     }
   }
@@ -283,7 +288,7 @@ export default {
       width: 750px;
       padding: 0 30px;
       box-sizing: border-box;
-      border-bottom: 1Px solid #dddddd;
+      border-bottom: 1px solid #dddddd;
       .iconfont {
         font-size: 34px;
       }
@@ -294,7 +299,7 @@ export default {
     }
     .recommend {
       box-sizing: border-box;
-      border-bottom: 1Px solid #eee;
+      border-bottom: 1px solid #eee;
       .shang {
         margin: 20px 30px;
         display: flex;
@@ -356,7 +361,6 @@ export default {
     .active {
       color: #ee0000;
       font-size: 50px;
-
     }
     button:nth-of-type(2) {
       position: fixed;
@@ -366,7 +370,7 @@ export default {
       color: #000000;
       width: 490px;
       height: 80px;
-      background: #FFB84B;
+      background: #ffb84b;
     }
   }
 }
