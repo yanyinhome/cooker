@@ -142,6 +142,7 @@ export default {
           this.$bus.$emit("toast", data.msg);
         } else if (data.code === "201") {
           this.$bus.$emit("toast", data.msg);
+          this.wxpay();
         }
       })
       .catch(error => {
@@ -163,45 +164,54 @@ export default {
     //       window.location.href = response.data.url;
     //     }
      // 支付
-    // recharge() {
-    //   console.log(this.idnum);
-    //   this.axios
-    //     .post("Wxpay/wxPay", {
-    //       id: this.idnum
-    //     })
-    //     .then(res => {
-    //       const jsApiParameters = res.data;
-    //       this.jsSdk(jsApiParameters);
-    //     });
-    // },
-    // jsSdk(jsApiParameters) {
-    //   WeixinJSBridge.invoke(
-    //     "getBrandWCPayRequest",
-    //     {
-    //       appId: jsApiParameters.appId,
-    //       package: jsApiParameters.package,
-    //       nonceStr: jsApiParameters.nonceStr,
-    //       timeStamp: jsApiParameters.timeStamp,
-    //       signType: jsApiParameters.signType,
-    //       paySign: jsApiParameters.paySign
-    //     },
-    //     // jsApiParameters,
-    //     function(res) {
-    //       WeixinJSBridge.log(res.err_msg);
-    //       var result = res.err_msg;
-    //       // alert(JSON.stringify(res));
-    //       // return;
-    //       if (result == "get_brand_wcpay_request:ok") {
-    //         alert("充值成功");
-    //         var url = "http://www.hnprkj.com/#/userCenter";
-    //       } else {
-    //         alert("你取消了支付");
-    //         var url = "http://www.hnprkj.com/#/userCenter";
-    //       }
-    //       window.location.href = url;
-    //     }
-    //   );
-    // },
+    wxpay() {
+      // window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx85c8ad7b84b0d265&redirect_uri=http%3a%2f%2fcschushi.cadhx.com%2fapi%2fwxpay%2fwxpay&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect';
+      // var myDate = new Date();
+      // var time =new Date().getTime();
+            
+      // console.log(time);
+      this.axios.post("wxpay/wxpay",{
+        token: this.token()
+      })
+        .then(({data}) => {
+          console.log(data);
+          // window.location.href = data.data;
+          const jsApiParameters = data.data;
+          this.jsSdk(jsApiParameters);
+        });
+    },
+    jsSdk(jsApiParameters) {
+      WeixinJSBridge.invoke(
+        "getBrandWCPayRequest",
+        {
+          appId: jsApiParameters.appId,
+          package: jsApiParameters.package,
+          nonceStr: jsApiParameters.nonceStr,
+          timeStamp: jsApiParameters.timeStamp,
+          signType: jsApiParameters.signType,
+          paySign: jsApiParameters.paySign
+        },
+        // jsApiParameters,
+        function(res) {
+          WeixinJSBridge.log(res.err_msg);
+          var result = res.err_msg;
+          // alert(JSON.stringify(res));
+          // return;
+          if (result == "get_brand_wcpay_request:ok") {
+            console.log(1);
+            alert("充值成功");
+            // var url = "http://www.hnprkj.com/#/userCenter";
+            var url = "http://chushiq.cadhx.com/#/qiangOrder";
+          } else {
+            console.log(2);
+            alert("你取消了支付");
+            // var url = "http://www.hnprkj.com/#/userCenter";
+            var url = "http://chushiq.cadhx.com/#/qiangOrder";
+          }
+          // window.location.href = url;
+        }
+      );
+    },
   }
 };
 </script>

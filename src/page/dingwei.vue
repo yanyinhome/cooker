@@ -2,7 +2,7 @@
   <div id='dingwei'>
     <com-head :opacity='0'>地址</com-head>
     <div class="address1">
-      <div class="address">定位当前位置：</div>
+      <!-- <div class="address">定位当前位置：</div> -->
       <div class="map"></div> <baidu-map :center="center" :zoom="zoom" @ready="handler" :showAddressBar="true" :autoLocation="true"></baidu-map>
       <div class="title">我的地址</div>
       <div class="myaddress" v-for="(item,index) in myaddress" :key="index" @click="selected(index,item.select)">
@@ -53,13 +53,13 @@ export default {
 
     this.loading();
 
-    navigator.geolocation.getCurrentPosition(function (position) {
+    // navigator.geolocation.getCurrentPosition(function (position) {
   
-      //得到html5定位结果
-      var x = position.coords.longitude;
-      var y = position.coords.latitude;
-      console.log(`${x}:${y}`);
-    })
+    //   //得到html5定位结果
+    //   var x = position.coords.longitude;
+    //   var y = position.coords.latitude;
+    //   console.log(`${x}:${y}`);
+    // })
   },
 
   methods: {
@@ -135,44 +135,44 @@ export default {
     // 经纬度转换成具体位置，请求百度接口
     locationTo(lng, lat) {
       // 坐标转换
-      // this.$axios.get("proxy/geoconv/v1/?coords="+lat+","+lng+"&from=5&to=3&ak=ZYLW9so4V2ypx7az6smCreNeVwZE8Ohk",
-      // // this.$axios.get("proxy/geocoder/v2/?callback=renderReverse&location=113.64964385,34.75661006&output=json&pois=1&ak=ZYLW9so4V2ypx7az6smCreNeVwZE8Ohk",
-      //    {parms:{
-      //       location: lat+","+lng,
-      //       // location: `${lat},${lng}`,
-      //       // location: '113.64964385,34.75661006',
-      //       ak: "ZYLW9so4V2ypx7az6smCreNeVwZE8Ohk",
-      //       ret_coordtype: 'gcj02ll',
-      //     }}
-      //   )
-      //   .then((data) => {
-      //     console.log(data);
-      //   })
-      //   .catch(function(error) {
-      //     console.log(error);
-      //   });
-
-
-
-
-      this.$axios.get("proxy/geocoder/v2/?callback=renderReverse&location="+lat+","+lng+"&output=json&pois=1&ak=ZYLW9so4V2ypx7az6smCreNeVwZE8Ohk",
+      this.$axios.get("proxy/geoconv/v1/?coords="+lat+","+lng+"&from=5&to=3&ak=ZYLW9so4V2ypx7az6smCreNeVwZE8Ohk",
       // this.$axios.get("proxy/geocoder/v2/?callback=renderReverse&location=113.64964385,34.75661006&output=json&pois=1&ak=ZYLW9so4V2ypx7az6smCreNeVwZE8Ohk",
-         {params:{
+         {parms:{
             location: lat+","+lng,
             // location: `${lat},${lng}`,
             // location: '113.64964385,34.75661006',
             ak: "ZYLW9so4V2ypx7az6smCreNeVwZE8Ohk",
             ret_coordtype: 'gcj02ll',
-            latest_admin: 1,
           }}
         )
         .then((data) => {
-          console.log(data.data);
-          alert(data.data)
+          console.log(data);
         })
         .catch(function(error) {
           console.log(error);
         });
+
+
+
+
+      // this.$axios.get("proxy/geocoder/v2/?callback=renderReverse&location="+lat+","+lng+"&output=json&pois=1&ak=ZYLW9so4V2ypx7az6smCreNeVwZE8Ohk",
+      // // this.$axios.get("proxy/geocoder/v2/?callback=renderReverse&location=113.64964385,34.75661006&output=json&pois=1&ak=ZYLW9so4V2ypx7az6smCreNeVwZE8Ohk",
+      //    {params:{
+      //       location: lat+","+lng,
+      //       // location: `${lat},${lng}`,
+      //       // location: '113.64964385,34.75661006',
+      //       ak: "ZYLW9so4V2ypx7az6smCreNeVwZE8Ohk",
+      //       ret_coordtype: 'gcj02ll',
+      //       latest_admin: 1,
+      //     }}
+      //   )
+      //   .then((data) => {
+      //     console.log(data.data);
+      //     alert(data.data)
+      //   })
+      //   .catch(function(error) {
+      //     console.log(error);
+      //   });
     },
     addnew() {
       this.$router.push({ name: "addAddress", query: { status: '1' }});

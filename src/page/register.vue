@@ -10,10 +10,10 @@
           <input type="text" placeholder="请输入验证码" v-model="verify">
           <button class="verify" @click="verification" :disabled='isSend' :class="{'send-sms' : isSend}">{{btntxt}}</button>
       </div>
-      <!-- <div class="login_inp logn_mima">
+      <div class="login_inp logn_mima">
           <div class="box1"><img src="../assets/image/login3.png" ></div>
           <input type="password" v-model="password" placeholder="请输入你的登录密码">
-      </div> -->
+      </div>
       <router-link :to="{name: 'protocol',query: {status: '3'}}" tag="a" class="protocol">《信息服务》</router-link> 
       <router-link :to="{name: 'protocol',query: {status: '4'}}" tag="a" class="protocol">《隐私政策》</router-link> 
       <div id="example-4">
@@ -38,9 +38,31 @@ export default {
       verify: ''
     };
   },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      if (vm.IsWechat()) {
+        // vm.$bus.$emit("toast", "是微信浏览器");
+        // window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx85c8ad7b84b0d265&redirect_uri=http%3a%2f%2fcschushi.cadhx.com%2fapi%2fwechat%2fset_openid&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
+        vm.login();
+
+      } else {
+        vm.$bus.$emit("toast", "请在微信浏览器中打开");
+      }
+
+    });
+  },
   created() {},
   mounted() {},
   methods: {
+    login() {
+      this.axios.post("wechat/login").then(({ data }) => {
+        console.log(data);
+        if (data.url) {
+          // this.$router.push('login');
+          window.location.href = data.url
+        }
+      });
+    },
     verification() {
       let regTel = /^(1[3-9])\d{9}$/;
       if (!this.phone) {
@@ -151,7 +173,7 @@ export default {
     padding-right: 10px;
     padding-left: 30px;
     margin-top: 10px;
-    margin-bottom: 50px;
+    // margin-bottom: 50px;
     .box1 {
       width: 48px;
       height: 46px;
