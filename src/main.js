@@ -55,6 +55,31 @@ Vue.prototype.$bus = new Vue();
 //   }
 // });
 
+//设置cookie,增加到vue实例方便全局调用
+Vue.prototype.setCookie= function (cname, cvalue, exdays){
+  var d = new Date();
+  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+  var expires = "expires=" + d.toGMTString();
+  document.cookie = cname + "=" + cvalue + "; " + expires;
+};
+// 获取
+Vue.prototype.getCookie = function (cname){
+  var name = cname + "=";
+  var ca = document.cookie.split(';');
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i].trim();
+    if (c.indexOf(name) == 0) { return c.substring(name.length, c.length); }
+  }
+  return "";
+};
+// 删除
+Vue.prototype.delCookie =function (name) {
+  var exp = new Date();
+  exp.setTime(exp.getTime() - 1);
+  var cval = getCookie(name);
+  if (cval != null)
+    document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
+}
 // 是否是微信浏览器
 Vue.prototype.IsWechat = () => {
   if (navigator.userAgent.toLowerCase().match(/MicroMessenger/i)) {

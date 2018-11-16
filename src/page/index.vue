@@ -124,26 +124,22 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
-      console.log(111);
       if (vm.IsWechat()) {
         // vm.$bus.$emit("toast", "是微信浏览器");
-        console.log("本地" + localStorage.openid);
-        if (!localStorage.openid) {
+        console.log(vm.getCookie("openid"));        
+        if (!vm.getCookie("openid")) {
           console.log("跳转");
-          window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx85c8ad7b84b0d265&redirect_uri=http%3a%2f%2fcschushi.cadhx.com%2fapi%2fwechat%2fset_openid&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
-           console.log(222);
-           
-              console.log(333);
-              var openid = vm.getUrlKey("openid");
-              console.log('openid'+openid);
-              if (!localStorage.openid) {
-                localStorage.setItem("openid", openid);
-              } else {
-                localStorage.removeItem("openid");
-                localStorage.setItem("openid", openid);
-              }
-              console.log(444);
-            
+          window.location.href =
+            "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx85c8ad7b84b0d265&redirect_uri=http%3a%2f%2fcschushi.cadhx.com%2fapi%2fwechat%2fset_openid&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
+
+          var openid = vm.getUrlKey("openid");
+          console.log("openid" + openid);
+          if (!vm.getCookie("openid")) {
+            vm.setCookie("openid", openid, 3000);
+          } else {
+            vm.delCookie("openid");
+            vm.setCookie("openid", openid, 3000);
+          }
         }
       } else {
         vm.$bus.$emit("toast", "请在微信浏览器中打开");
@@ -153,7 +149,7 @@ export default {
   created() {
     // hasgo = 3;
     // console.log(hasgo);
-    
+    // this.setCookie('aaaaaaaaaaaaaaaaaaa','3',3000)
     this.loading1();
   },
   mounted() {
@@ -170,18 +166,16 @@ export default {
   methods: {
     getUrlKey: function(name) {
       //获取url 参数
-      return (
-        decodeURIComponent(
-          (new RegExp("[?|&]" + name + "=" + "([^&;]+?)(&|#|;|$)").exec(
-            window.location.href
-          ) || [, ""])[1].replace(/\+/g, "%20")
-        )
+      return decodeURIComponent(
+        (new RegExp("[?|&]" + name + "=" + "([^&;]+?)(&|#|;|$)").exec(
+          window.location.href
+        ) || [, ""])[1].replace(/\+/g, "%20")
       );
     },
     loading1() {
       this.axios
         .post("index/index", {
-          openid: this.getUrlKey("openid"),
+          openid: this.getCookie("openid"),
           user_city: "",
           user_address: ""
         })
@@ -194,6 +188,13 @@ export default {
             } else {
               localStorage.setItem("token", data.token);
             }
+            console.log(data.token);
+            // if (!this.getCookie("token")) {
+            //   this.setCookie("token", data.token, 3000);
+            // } else {
+            //   this.delCookie("token");
+            //   this.setCookie("token", data.token, 3000);
+            // }
             if (data.addr.area) {
               this.area = data.addr.area;
             }
@@ -214,13 +215,22 @@ export default {
       this.cityalert = false;
       this.axios
         .post("index/index", {
-          openid: this.getUrlKey("openid"),
+          openid: this.getCookie("openid"),
           user_city: this.city_name,
           user_address: this.area
         })
         .then(({ data }) => {
           console.log(data);
           if (data.code === "200") {
+            console.log(data.token);
+
+            // if (!this.getCookie("token")) {
+            //   this.setCookie("token", data.token, 3000);
+            // } else {
+            //   this.delCookie("token");
+            //   this.setCookie("token", data.token, 3000);
+            // }
+
             if (localStorage.token) {
               localStorage.removeItem("token");
               localStorage.setItem("token", data.token);
