@@ -41,6 +41,10 @@ export default new Router({
 	base: '/',
 	routes: [
 		{
+			path: '/',
+			component: index,
+			name: 'index'
+		},{
 			path: '/index',
 			component: index,
 			name: 'index'
@@ -56,11 +60,13 @@ export default new Router({
 			path: '/usercenter',
 			component: usercenter,
 			name: 'usercenter'
-		}, {
-			path: '/',
-			component: login,
-			name: 'login'
-		}, {
+		}, 
+		// {
+		// 	path: 'login',
+		// 	component: login,
+		// 	name: 'login'
+		// }, 
+		{
 			path: '/register',
 			component: register,
 			name: 'register'

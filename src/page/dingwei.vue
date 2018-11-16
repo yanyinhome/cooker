@@ -36,16 +36,15 @@ export default {
           select: false
         }
       ],
-      nam: '6'
+      nam: "6"
     };
   },
 
   computed: {},
 
   created() {
-    
-
     console.log(this.nam.sub());
+    this.wxlocation()
   },
 
   mounted() {
@@ -54,7 +53,7 @@ export default {
     this.loading();
 
     // navigator.geolocation.getCurrentPosition(function (position) {
-  
+
     //   //得到html5定位结果
     //   var x = position.coords.longitude;
     //   var y = position.coords.latitude;
@@ -64,19 +63,20 @@ export default {
 
   methods: {
     // 地址列表
-    loading () {
-      this.axios.post('user/addrlist',{
-        token: this.token()
-      })
-        .then(({data}) => {
-          console.log(data)
-          if (data.code === '200') {
+    loading() {
+      this.axios
+        .post("user/addrlist", {
+          token: this.token()
+        })
+        .then(({ data }) => {
+          console.log(data);
+          if (data.code === "200") {
             this.myaddress = data.data;
-          } else if (data.code === '201') {
-            this.$bus.$emit('toast', data.msg);
+          } else if (data.code === "201") {
+            this.$bus.$emit("toast", data.msg);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
     },
@@ -89,93 +89,129 @@ export default {
         type: "increment",
         dingwei: this.myaddress[index]
       });
-
-
     },
-    // 浏览器定定位
-    handler({ BMap, map }) {
-      let _this = this; // 设置一个临时变量指向vue实例，因为在百度地图回调里使用this，指向的不是vue实例；
-      var geolocation = new BMap.Geolocation();
-      geolocation.getCurrentPosition(
-        function(r) {
-          if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-            var mk = new BMap.Marker(r.point);
-            map.addOverlay(mk);
-            map.panTo(r.point);
-            console.log("您的位置：" + r.point.lng + "," + r.point.lat);
-            _this.locationTo(r.point.lng, r.point.lat);
-          } else {
-            console.log("failed" + this.getStatus());
-          }
-        },
-        { enableHighAccuracy: true }
-      );
-    },
-    // handler({ BMap, map }) {
-    //   let _this = this;
-    //   // var map = new BMap.Map("allmap");
-    //   // var point = new BMap.Point(116.331398,39.897445);
-    //   // map.centerAndZoom(point,12);
-    //   var geolocation = new BMap.Geolocation();
-    //   // 开启SDK辅助定位
-    //   geolocation.enableSDKLocation();
-    //   geolocation.getCurrentPosition(function(r){
-    //     if(this.getStatus() == BMAP_STATUS_SUCCESS){
-    //       var mk = new BMap.Marker(r.point);
-    //       map.addOverlay(mk);
-    //       map.panTo(r.point);
-    //       console.log("您的位置：" + r.point.lng + "," + r.point.lat);
-    //       _this.locationTo(r.point.lng, r.point.lat);
-    //     }
-    //     else {
-    //       console.log("failed" + this.getStatus());
-    //     }        
-    //   });
-    // },
-    // 经纬度转换成具体位置，请求百度接口
-    locationTo(lng, lat) {
-      // 坐标转换
-      this.$axios.get("proxy/geoconv/v1/?coords="+lat+","+lng+"&from=5&to=3&ak=ZYLW9so4V2ypx7az6smCreNeVwZE8Ohk",
-      // this.$axios.get("proxy/geocoder/v2/?callback=renderReverse&location=113.64964385,34.75661006&output=json&pois=1&ak=ZYLW9so4V2ypx7az6smCreNeVwZE8Ohk",
-         {parms:{
-            location: lat+","+lng,
-            // location: `${lat},${lng}`,
-            // location: '113.64964385,34.75661006',
-            ak: "ZYLW9so4V2ypx7az6smCreNeVwZE8Ohk",
-            ret_coordtype: 'gcj02ll',
-          }}
-        )
-        .then((data) => {
+    wxlocation() {
+      this.axios.post("Position/getLocation")
+        .then(({ data }) => {
           console.log(data);
+          if (data.code === "200") {
+            const location = data.data;
+            this.getShopWxConfig(location)
+          } else if (data.code === "201") {
+            this.$bus.$emit("toast", data.msg);
+          }
         })
-        .catch(function(error) {
+        .catch(error => {
           console.log(error);
         });
-
-
-
-
-      // this.$axios.get("proxy/geocoder/v2/?callback=renderReverse&location="+lat+","+lng+"&output=json&pois=1&ak=ZYLW9so4V2ypx7az6smCreNeVwZE8Ohk",
-      // // this.$axios.get("proxy/geocoder/v2/?callback=renderReverse&location=113.64964385,34.75661006&output=json&pois=1&ak=ZYLW9so4V2ypx7az6smCreNeVwZE8Ohk",
-      //    {params:{
-      //       location: lat+","+lng,
-      //       // location: `${lat},${lng}`,
-      //       // location: '113.64964385,34.75661006',
-      //       ak: "ZYLW9so4V2ypx7az6smCreNeVwZE8Ohk",
-      //       ret_coordtype: 'gcj02ll',
-      //       latest_admin: 1,
-      //     }}
-      //   )
-      //   .then((data) => {
-      //     console.log(data.data);
-      //     alert(data.data)
-      //   })
-      //   .catch(function(error) {
-      //     console.log(error);
-      //   });
     },
+    //获取微信配置
+    getShopWxConfig(location) {
+      let that = this;
+      let params = {
+        url: location.url
+      };
+      getShopWxConfigData(params)
+        .then(res => {
+          console.log(res);
+          wx.config({
+            debug: false,
+            appId: location.appId,
+            nonceStr: location.nonceStr,
+            timestamp: location.timestamp,
+            url: location.url,
+            signature: location.signature,
+            jsApiList: ["checkJsApi", "openLocation", "getLocation"]
+          });
+          wx.checkJsApi({
+            jsApiList: ["getLocation"],
+            success: function(res) {
+              if (res.checkResult.getLocation == false) {
+                alert(
+                  "你的微信版本太低，不支持微信JS接口，请升级到最新的微信版本！"
+                );
+                return;
+              }
+            }
+          });
+          wx.ready(function() {
+            //                wx.invoke('getLocation', 'openLocation', {}, function(res) {
+            //                    //alert(res.err_msg + "唯一");
+            //                });
+            wx.getLocation({
+              success: function(res) {
+                //                                console.log(res)
+                that.pointY = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+                that.pointX = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+
+                that.point = new BMap.Point(that.pointX, that.pointY);
+                that.marker = new BMap.Marker(that.point); // 创建点
+                console.log(that.pointY);
+                console.log(that.pointX);
+                console.log(that.point);
+                console.log(that.marker);
+                that.getShopFjStudio();
+              },
+              cancel: function(res) {
+                alert("用户拒绝授权获取地理位置");
+                that.getShopFjStudio();
+              }
+            });
+          });
+
+          wx.error(function(res) {
+            //                        console.log(res)
+            that.getShopFjStudio();
+          });
+        })
+        .catch(res => {
+          console.log(res);
+        });
+    },
+
+    // 浏览器定定位
+    // handler({ BMap, map }) {
+    //   let _this = this; // 设置一个临时变量指向vue实例，因为在百度地图回调里使用this，指向的不是vue实例；
+    //   var geolocation = new BMap.Geolocation();
+    //   geolocation.getCurrentPosition(
+    //     function(r) {
+    //       if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+    //         var mk = new BMap.Marker(r.point);
+    //         map.addOverlay(mk);
+    //         map.panTo(r.point);
+    //         console.log("您的位置：" + r.point.lng + "," + r.point.lat);
+    //         _this.locationTo(r.point.lng, r.point.lat);
+    //       } else {
+    //         console.log("failed" + this.getStatus());
+    //       }
+    //     },
+    //     { enableHighAccuracy: true }
+    //   );
+    // },
+
+    // // 经纬度转换成具体位置，请求百度接口
+    // locationTo(lng, lat) {
+    //   // 坐标转换
+    //   this.$axios.get("proxy/geoconv/v1/?coords="+lat+","+lng+"&from=5&to=3&ak=ZYLW9so4V2ypx7az6smCreNeVwZE8Ohk",
+    //   // this.$axios.get("proxy/geocoder/v2/?callback=renderReverse&location=113.64964385,34.75661006&output=json&pois=1&ak=ZYLW9so4V2ypx7az6smCreNeVwZE8Ohk",
+    //      {parms:{
+    //         location: lat+","+lng,
+    //         // location: `${lat},${lng}`,
+    //         // location: '113.64964385,34.75661006',
+    //         ak: "ZYLW9so4V2ypx7az6smCreNeVwZE8Ohk",
+    //         ret_coordtype: 'gcj02ll',
+    //       }}
+    //     )
+    //     .then((data) => {
+    //       console.log(data);
+    //     })
+    //     .catch(function(error) {
+    //       console.log(error);
+    //     });
+
+    // },
     addnew() {
-      this.$router.push({ name: "addAddress", query: { status: '1' }});
+      this.$router.push({ name: "addAddress", query: { status: "1" } });
     }
   }
 };
@@ -233,6 +269,5 @@ export default {
       color: #ffb84b;
     }
   }
-
 }
 </style>

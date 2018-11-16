@@ -10,10 +10,10 @@
           <input type="text" placeholder="请输入验证码" v-model="verify">
           <button class="verify" @click="verification" :disabled='isSend' :class="{'send-sms' : isSend}">{{btntxt}}</button>
       </div>
-      <div class="login_inp logn_mima">
+      <!-- <div class="login_inp logn_mima">
           <div class="box1"><img src="../assets/image/login3.png" ></div>
           <input type="password" v-model="password" placeholder="请输入你的登录密码">
-      </div>
+      </div> -->
       <router-link :to="{name: 'protocol',query: {status: '3'}}" tag="a" class="protocol">《信息服务》</router-link> 
       <router-link :to="{name: 'protocol',query: {status: '4'}}" tag="a" class="protocol">《隐私政策》</router-link> 
       <div id="example-4">
@@ -35,22 +35,10 @@ export default {
       sendSMSTime: 0,
       isSend: false,
       disabled: false,
-      verify: ''
+      verify: ""
     };
   },
-  beforeRouteEnter(to, from, next) {
-    next(vm => {
-      if (vm.IsWechat()) {
-        // vm.$bus.$emit("toast", "是微信浏览器");
-        // window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx85c8ad7b84b0d265&redirect_uri=http%3a%2f%2fcschushi.cadhx.com%2fapi%2fwechat%2fset_openid&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
-        vm.login();
 
-      } else {
-        vm.$bus.$emit("toast", "请在微信浏览器中打开");
-      }
-
-    });
-  },
   created() {},
   mounted() {},
   methods: {
@@ -59,7 +47,7 @@ export default {
         console.log(data);
         if (data.url) {
           // this.$router.push('login');
-          window.location.href = data.url
+          window.location.href = data.url;
         }
       });
     },
@@ -68,27 +56,30 @@ export default {
       if (!this.phone) {
         this.$bus.$emit("toast", "手机号不能为空");
       } else if (!regTel.test(this.phone)) {
-        this.$bus.$emit('toast', '手机号码不合法');
+        this.$bus.$emit("toast", "手机号码不合法");
       } else {
-        this.axios.post('login/getcode',{
-          type:'register',
-          user_mobile: this.phone
-        })
-          .then(({data}) => {
-            console.log(data)
-            if (data.code === '200') {
-              this.$bus.$emit('toast', data.msg);
+        this.axios
+          .post("login/getcode", {
+            type: "register",
+            user_mobile: this.phone,
+            openid: this.openid()
+          })
+          .then(({ data }) => {
+            console.log(data);
+            if (data.code === "200") {
+              
+              this.$bus.$emit("toast", data.msg);
               this.sendSMSTime = 60;
               this.isSend = true;
               this.disabled = true;
               this.btntxt = "已发送(" + this.sendSMSTime + ")s";
               this.timer();
-            } else if (data.code === '201') {
+            } else if (data.code === "201") {
               this.disabled = false;
-              this.$bus.$emit('toast', data.msg);
+              this.$bus.$emit("toast", data.msg);
             }
           })
-          .catch((error) => {
+          .catch(error => {
             console.log(error);
           });
       }
@@ -108,23 +99,24 @@ export default {
     },
     register() {
       console.log(this.checked);
-      this.axios.post('login/register',{
+      this.axios
+        .post("login/register", {
           code: this.verify,
           user_mobile: this.phone,
-          user_pwd: this.password
+          user_pwd: '123456'
         })
-          .then(({data}) => {
-            console.log(data)
-            if (data.code === '200') {
-              this.$router.push("/");
-              this.$bus.$emit('toast', data.msg);
-            } else if (data.code === '201') {
-              this.$bus.$emit('toast', data.msg);
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+        .then(({ data }) => {
+          console.log(data);
+          if (data.code === "200") {
+            this.$router.go(-1);
+            this.$bus.$emit("toast", data.msg);
+          } else if (data.code === "201") {
+            this.$bus.$emit("toast", data.msg);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   }
 };
@@ -149,7 +141,7 @@ export default {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    border-bottom: 1Px solid rgba(238, 238, 238, 1);
+    border-bottom: 1px solid rgba(238, 238, 238, 1);
     .box1 {
       width: 38px;
       height: 46px;
@@ -173,7 +165,7 @@ export default {
     padding-right: 10px;
     padding-left: 30px;
     margin-top: 10px;
-    // margin-bottom: 50px;
+    margin-bottom: 50px;
     .box1 {
       width: 48px;
       height: 46px;
@@ -193,7 +185,7 @@ export default {
       font-size: 26px;
       font-family: PingFangSC-Regular;
       padding-left: 10px;
-      border-left: 1Px solid rgba(221, 221, 221, 1);
+      border-left: 1px solid rgba(221, 221, 221, 1);
     }
     .send-sms {
       color: #999999;
@@ -216,7 +208,7 @@ export default {
   }
   .protocol {
     font-size: 28px;
-    color: #0085FF;
+    color: #0085ff;
   }
   .active {
     background-color: #ddd;

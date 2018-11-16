@@ -122,20 +122,38 @@ export default {
       area: "选择城市"
     };
   },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      console.log(111);
+      if (vm.IsWechat()) {
+        // vm.$bus.$emit("toast", "是微信浏览器");
+        console.log("本地" + localStorage.openid);
+        if (!localStorage.openid) {
+          console.log("跳转");
+          window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx85c8ad7b84b0d265&redirect_uri=http%3a%2f%2fcschushi.cadhx.com%2fapi%2fwechat%2fset_openid&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
+           console.log(222);
+           
+              console.log(333);
+              var openid = vm.getUrlKey("openid");
+              console.log('openid'+openid);
+              if (!localStorage.openid) {
+                localStorage.setItem("openid", openid);
+              } else {
+                localStorage.removeItem("openid");
+                localStorage.setItem("openid", openid);
+              }
+              console.log(444);
+            
+        }
+      } else {
+        vm.$bus.$emit("toast", "请在微信浏览器中打开");
+      }
+    });
+  },
   created() {
-    // if (!localStorage.address) {
-
-    //   this.area = "选择城市";
-
-    //   console.log(11);
-    // } else {
-    //   console.log(22);
-    //    this.area = localStorage.getItem('address.area');
-    //   this.city_name = localStorage.getItem('address.city_name');
-    // }
-    // window.location.href = 'http://cschushi.cadhx.com/api/wechat/login';
+    // hasgo = 3;
+    // console.log(hasgo);
     
-
     this.loading1();
   },
   mounted() {
@@ -150,16 +168,32 @@ export default {
     ...mapState(["dingwei"])
   },
   methods: {
+    getUrlKey: function(name) {
+      //获取url 参数
+      return (
+        decodeURIComponent(
+          (new RegExp("[?|&]" + name + "=" + "([^&;]+?)(&|#|;|$)").exec(
+            window.location.href
+          ) || [, ""])[1].replace(/\+/g, "%20")
+        )
+      );
+    },
     loading1() {
       this.axios
         .post("index/index", {
-          token: this.token(),
+          openid: this.getUrlKey("openid"),
           user_city: "",
           user_address: ""
         })
         .then(({ data }) => {
           console.log(data);
           if (data.code === "200") {
+            if (localStorage.token) {
+              localStorage.removeItem("token");
+              localStorage.setItem("token", data.token);
+            } else {
+              localStorage.setItem("token", data.token);
+            }
             if (data.addr.area) {
               this.area = data.addr.area;
             }
@@ -180,13 +214,19 @@ export default {
       this.cityalert = false;
       this.axios
         .post("index/index", {
-          token: this.token(),
+          openid: this.getUrlKey("openid"),
           user_city: this.city_name,
           user_address: this.area
         })
         .then(({ data }) => {
           console.log(data);
           if (data.code === "200") {
+            if (localStorage.token) {
+              localStorage.removeItem("token");
+              localStorage.setItem("token", data.token);
+            } else {
+              localStorage.setItem("token", data.token);
+            }
             this.images = data.pic;
             this.message1 = data.guess;
             this.message2 = data.rand;

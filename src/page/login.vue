@@ -23,11 +23,10 @@ export default {
       password: ""
     };
   },
-  
 
   // if(this.IsWechat()) {
   // 				var wurl = encodeURIComponent(window.location.href);
-  // 				if(!window.localStorage.__openId__ || window.localStorage.__openId__ === '') {   
+  // 				if(!window.localStorage.__openId__ || window.localStorage.__openId__ === '') {
   // 					this.code = this.getQueryString('code');
   // 					if(!this.code || this.code === '') {
   // 						window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + this.gappId + '&redirect_uri=' + wurl + '&response_type=code&scope=snsapi_base&state=123#wechat_redirect';
@@ -53,9 +52,37 @@ export default {
   //     getCodeApi("123");
   //   }
   // },
-
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      if (vm.IsWechat()) {
+        // vm.$bus.$emit("toast", "是微信浏览器");
+        console.log('本地'+!vm.openid());
+        if (!vm.openid()) {
+          console.log('跳转');
+          window.location.href =
+            "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx85c8ad7b84b0d265&redirect_uri=http%3a%2f%2fcschushi.cadhx.com%2fapi%2fwechat%2fset_openid&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
+          // vm.login();
+        }
+      } else {
+        vm.$bus.$emit("toast", "请在微信浏览器中打开");
+      }
+    });
+  },
   created() {
     // this.login();
+    // console.log(window.location.href);
+    // var openid = this.getUrlKey("openid");
+    // if (localStorage.openid) {
+    //   localStorage.removeItem("openid");
+    //   localStorage.setItem("openid", openid);
+    // } else {
+    //   localStorage.setItem("openid", openid);
+    // }
+    // console.log(this.getUrlKey("openid"));
+    // console.log(!this.openid());
+    // if(localStorage.token){
+    //   console.log(66);
+    // }
   },
   mounted() {},
   methods: {
@@ -64,7 +91,7 @@ export default {
     //   return (
     //     decodeURIComponent(
     //       (new RegExp("[?|&]" + name + "=" + "([^&;]+?)(&|#|;|$)").exec(
-    //         location.href
+    //         window.location.href
     //       ) || [, ""])[1].replace(/\+/g, "%20")
     //     ) || null
     //   );
@@ -89,6 +116,15 @@ export default {
     //     }
     //   });
     // },
+    // login() {
+    //   this.axios.post("wechat/login").then(({ data }) => {
+    //     console.log(data);
+    //     if (data.url) {
+    //       // this.$router.push('login');
+    //       window.location.href = data.url;
+    //     }
+    //   });
+    // },
     loginTo() {
       if (!this.phone || !this.password) {
         this.$bus.$emit("toast", "账号/密码不能为空");
@@ -102,12 +138,7 @@ export default {
             console.log(data);
             if (data.code === "200") {
               this.$router.push("index");
-              if (localStorage.token) {
-                localStorage.removeItem("token");
-                localStorage.setItem("token", data.token);
-              } else {
-                localStorage.setItem("token", data.token);
-              }
+              
               this.$bus.$emit("toast", data.msg);
             } else if (data.code === "201") {
               this.$bus.$emit("toast", data.msg);

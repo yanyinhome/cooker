@@ -31,17 +31,20 @@ Vue.config.productionTip = false;
 Vue.prototype.$bus = new Vue();
 
 // 限制跳转
-// const Other = ['login', 'register', 'forget'];
+// const Other = ['login', 'register', 'forget', 'index'];
 // router.beforeEach((to, from, next) => {
 //   // 跳转前判断是否登录
 //   if (Other.join('*').match(to.fullPath.replace('/', '')) || Other.join('*').match(to.name) !== null) {
 //     next();
 //   } else {
-//     Vue.prototype.axios.post('')
+//     Vue.prototype.axios.post('login/verifylogin',{
+//       token: localStorage.getItem('token')
+//     })
 //       .then(({data}) => {
-//         // 如果返回值为2000，则跳转到登录页
-//         if (data.status === 2000) {
-//           router.push('login');
+//         console.log(data);
+//         // 如果返回值为201，则跳转到绑定
+//         if (data.code === '201') {
+//           router.push('register');
 //         } else {
 //           next();
 //         }
@@ -67,6 +70,17 @@ Vue.prototype.token = function () {
     var getToken = localStorage.getItem('token');
   } 
   return getToken;
+};
+
+// 获取openid
+Vue.prototype.openid = function () {
+  if (!localStorage.openid) {
+    var getopenid = localStorage.getItem('openid');
+    return getopenid;
+  } else {
+    return false;
+  } 
+  
 };
 
 // 计算当前时间
@@ -120,6 +134,7 @@ Vue.prototype.axios = axios.create({
   headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
 });
 
+window.hasgo = true;
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
