@@ -31,7 +31,7 @@ Vue.config.productionTip = false;
 Vue.prototype.$bus = new Vue();
 
 // 限制跳转
-// const Other = ['login', 'register', 'forget', 'index'];
+// const Other = ['login', 'register', 'forget', 'index', 'cooker', 'cookerDetail', 'index'];
 // router.beforeEach((to, from, next) => {
 //   // 跳转前判断是否登录
 //   if (Other.join('*').match(to.fullPath.replace('/', '')) || Other.join('*').match(to.name) !== null) {

@@ -162,7 +162,7 @@ export default {
 </script>
 <style lang='scss' scoped>
 #usercenter {
-  padding-bottom: 450px;
+  // padding-bottom: 450px;
   padding-top: 120px;
   background: url("../assets/image/navbg.png") no-repeat;
   background-size: 100%;
@@ -255,7 +255,7 @@ export default {
       height: 50px;
       margin: 30px auto;
       color: #696666;
-      margin-top: 30px;
+      margin-bottom: 300px;
       border-bottom: 1Px solid #696666;
     }
   }

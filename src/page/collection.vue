@@ -264,8 +264,8 @@ export default {
     left: 0;
     bottom: 60px;
     right: 10px;
-    height: 1px;
-    border-bottom: 1px solid #ccc;
+    height: 1Px;
+    border-bottom: 1Px solid #ccc;
     color: #ccc;
     -webkit-transform-origin: 0 100%;
     transform-origin: 0 100%;
@@ -291,8 +291,8 @@ export default {
     left: 0.2rem;
     bottom: 0;
     right: 15px;
-    height: 1px;
-    border-bottom: 1px solid #ccc;
+    height: 1Px;
+    border-bottom: 1Px solid #ccc;
     color: #ccc;
     -webkit-transform-origin: 0 100%;
     transform-origin: 0 100%;
@@ -363,7 +363,7 @@ export default {
       text-align: center;
       box-sizing: border-box;
       color: rgba(255, 113, 22, 1);
-      border: 1px solid rgba(255, 113, 22, 1);
+      border: 1Px solid rgba(255, 113, 22, 1);
     }
   }
   .list-item .delete {

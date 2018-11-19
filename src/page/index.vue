@@ -122,34 +122,51 @@ export default {
       area: "选择城市"
     };
   },
-  beforeRouteEnter(to, from, next) {
-    next(vm => {
-      if (vm.IsWechat()) {
-        // vm.$bus.$emit("toast", "是微信浏览器");
-        console.log(vm.getCookie("openid"));        
-        if (!vm.getCookie("openid")) {
-          console.log("跳转");
-          window.location.href =
-            "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx85c8ad7b84b0d265&redirect_uri=http%3a%2f%2fcschushi.cadhx.com%2fapi%2fwechat%2fset_openid&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
+  // beforeRouteEnter(to, from, next) {
+  //   next(vm => {
+  //     if (vm.IsWechat()) {
+  //       // vm.$bus.$emit("toast", "是微信浏览器");
+  //       console.log(vm.getCookie("openid"));
+  //       if (!vm.getCookie("openid")) {
+  //         console.log("跳转");
+  //         window.location.href =
+  //           "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx85c8ad7b84b0d265&redirect_uri=http%3a%2f%2fcschushi.cadhx.com%2fapi%2fwechat%2fset_openid&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
 
-          var openid = vm.getUrlKey("openid");
-          console.log("openid" + openid);
-          if (!vm.getCookie("openid")) {
-            vm.setCookie("openid", openid, 3000);
-          } else {
-            vm.delCookie("openid");
-            vm.setCookie("openid", openid, 3000);
-          }
-        }
-      } else {
-        vm.$bus.$emit("toast", "请在微信浏览器中打开");
-      }
-    });
-  },
+  //         var openid = vm.getUrlKey("openid");
+  //         console.log("openid" + openid);
+  //         if (!vm.getCookie("openid")) {
+  //           vm.setCookie("openid", openid, 3000);
+  //         } else {
+  //           vm.delCookie("openid");
+  //           vm.setCookie("openid", openid, 3000);
+  //         }
+  //       }
+  //     } else {
+  //       vm.$bus.$emit("toast", "请在微信浏览器中打开");
+  //     }
+  //   });
+  // },
   created() {
-    // hasgo = 3;
-    // console.log(hasgo);
-    // this.setCookie('aaaaaaaaaaaaaaaaaaa','3',3000)
+    if (this.IsWechat()) {
+      // this.$bus.$emit("toast", "是微信浏览器");
+      console.log(this.getCookie("openid"));
+      if (!this.getCookie("openid")) {
+        console.log("跳转");
+        window.location.href =
+          "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx85c8ad7b84b0d265&redirect_uri=http%3a%2f%2fcschushi.cadhx.com%2fapi%2fwechat%2fset_openid&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
+
+        var openid = this.getUrlKey("openid");
+        console.log("openid" + openid);
+        if (!this.getCookie("openid")) {
+          this.setCookie("openid", openid, 3000);
+        } else {
+          this.delCookie("openid");
+          this.setCookie("openid", openid, 3000);
+        }
+      }
+    } else {
+      this.$bus.$emit("toast", "请在微信浏览器中打开");
+    }
     this.loading1();
   },
   mounted() {
@@ -334,7 +351,7 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid rgba(238, 238, 238, 1);
+      border-bottom: 1Px solid rgba(238, 238, 238, 1);
       .left {
         width: 130px;
         height: 130px;
@@ -374,7 +391,7 @@ export default {
             text-align: center;
             box-sizing: border-box;
             color: rgba(255, 113, 22, 1);
-            border: 1px solid rgba(255, 113, 22, 1);
+            border: 1Px solid rgba(255, 113, 22, 1);
           }
         }
       }
@@ -382,7 +399,7 @@ export default {
         width: 230px;
         height: 90px;
         text-align: center;
-        border-left: 1px solid rgba(238, 238, 238, 1);
+        border-left: 1Px solid rgba(238, 238, 238, 1);
         .box1 {
           font-size: 32px;
           font-weight: 700;

@@ -2,7 +2,7 @@
   <div id='fabu'>
     <com-head :opacity='1'></com-head>
     <div class="outside">
-        <p>发布订单</p>
+        <p>下单</p>
         <p>选择您喜欢的菜式来预约厨师吧，发布订单后需等待厨师接单哦！</p>
         <div class="item" @click="addressTo"><span>选择地址</span><input type="text" v-model="address" placeholder="请选择"><i class="iconfont icon-xiayi"></i></div>
         <div class="xiaogong">
@@ -130,6 +130,26 @@ export default {
       ]
     };
   },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.axios.post('login/verifylogin',{
+        token: localStorage.getItem('token')
+      })
+        .then(({data}) => {
+          console.log(data);
+          // 如果返回值为201，则跳转到绑定
+          if (data.code === '201') {
+            vm.$bus.$emit("toast", "请先绑定手机号");
+            vm.$router.push('register');
+          } else {
+            next();
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      });
+  },
   created() {
     // var thetime = '2018-04-17 19:09:00';
     //     var d=new   Date(Date.parse(thetime .replace(/-/g,"/")));
@@ -223,7 +243,7 @@ export default {
         });
     },
     fabu () {
-      if (!this.addr_id||!this.d_id||!this.time||!this.checked2) {
+      if (!this.addr_id||!this.d_id||!this.time||!this.checked2||!grade_id) {
         this.$bus.$emit("toast", "请完善发布信息");
       }  else{
         this.fabu1();

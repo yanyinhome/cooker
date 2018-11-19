@@ -172,7 +172,7 @@ export default {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    border-bottom: 1px solid rgba(238, 238, 238, 1);
+    border-bottom: 1Px solid rgba(238, 238, 238, 1);
     .box1 {
       width: 38px;
       height: 46px;

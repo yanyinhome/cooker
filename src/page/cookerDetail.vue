@@ -243,7 +243,7 @@ export default {
       }
     }
     .box3 {
-      border-top: 1px dashed #888;
+      border-top: 1Px dashed #888;
       .cai {
         display: inline-block;
         // width:72px;
@@ -255,7 +255,7 @@ export default {
         text-align: center;
         box-sizing: border-box;
         color: rgba(255, 113, 22, 1);
-        border: 1px solid rgba(255, 113, 22, 1);
+        border: 1Px solid rgba(255, 113, 22, 1);
       }
     }
   }
@@ -288,7 +288,7 @@ export default {
       width: 750px;
       padding: 0 30px;
       box-sizing: border-box;
-      border-bottom: 1px solid #dddddd;
+      border-bottom: 1Px solid #dddddd;
       .iconfont {
         font-size: 34px;
       }
@@ -299,7 +299,7 @@ export default {
     }
     .recommend {
       box-sizing: border-box;
-      border-bottom: 1px solid #eee;
+      border-bottom: 1Px solid #eee;
       .shang {
         margin: 20px 30px;
         display: flex;

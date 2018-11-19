@@ -101,6 +101,7 @@ export default {
       console.log(this.checked);
       this.axios
         .post("login/register", {
+          openid: this.getCookie("openid"),
           code: this.verify,
           user_mobile: this.phone,
           user_pwd: '123456'
@@ -141,7 +142,7 @@ export default {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    border-bottom: 1px solid rgba(238, 238, 238, 1);
+    border-bottom: 1Px solid rgba(238, 238, 238, 1);
     .box1 {
       width: 38px;
       height: 46px;
@@ -154,6 +155,7 @@ export default {
       width: 550px;
       // height: 60px;
       margin-left: 30px;
+      font-size: 30px;
       background: #fafafa;
     }
   }
@@ -176,6 +178,7 @@ export default {
     }
     input {
       width: 340px;
+      font-size: 30px;
       margin-left: 30px;
     }
     .verify {
@@ -185,7 +188,7 @@ export default {
       font-size: 26px;
       font-family: PingFangSC-Regular;
       padding-left: 10px;
-      border-left: 1px solid rgba(221, 221, 221, 1);
+      border-left: 1Px solid rgba(221, 221, 221, 1);
     }
     .send-sms {
       color: #999999;

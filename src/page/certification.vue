@@ -170,6 +170,27 @@ export default {
 
   computed: {},
 
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.axios.post('login/verifylogin',{
+        token: localStorage.getItem('token')
+      })
+        .then(({data}) => {
+          console.log(data);
+          // 如果返回值为201，则跳转到绑定
+          if (data.code === '201') {
+            vm.$bus.$emit("toast", "请先绑定手机号");
+            vm.$router.push('register');            
+          } else {
+            next();
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      });
+  },
+
   created() {},
 
   mounted() {
