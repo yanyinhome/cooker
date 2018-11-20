@@ -8,7 +8,8 @@
         <!-- <img :src="item.iconfont1"> -->
         <p :class="[select === index ? 'selectText' : '', 'page_foot_name']" class="" v-if="index!==2">{{ item.name }}</p>
       </div>
-      <div class="fabu" @click="fabu()"><img src="../assets/image/fabu.png"></div>
+      <!-- <div class="fabu" @click="fabu()"><img src="../assets/image/fabu.png"></div> -->
+      <div class="fabu" @click="fabu()">下单</div>
     </div>
   </div>
 </template>
@@ -119,12 +120,14 @@ export default {
       .fabu {
         width: 120px;
         height: 120px;
+        border-radius: 60px;
         position: absolute;
         left: 50%;
+        text-align: center;
+        line-height: 120px;
+        color: #fff;
+        background: #FFB84B;
         transform: translateX(-50%) translateY(-50%);
-        img {
-          width: 100%;
-        }
       }
     }
   }
