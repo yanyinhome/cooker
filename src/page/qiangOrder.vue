@@ -10,7 +10,7 @@
     <div class="nav_title" v-if="status2"><span>———</span><div class="box">已抢订单</div><span>———</span></div>
     <div class="message" v-for="(item,index) in data" :key="index">
       <div class="box1">
-        <p>菜系：{{item.d_name}}</p>
+        <p  v-if="item.d_name">菜系：{{item.d_name[0] +'，'+ item.d_name[1]}}</p>
         <p>预约时间：{{item.dinner + ':00'}}</p>
         <button @click="qiangdan(item.order_id)"  v-if="status1">立即抢单</button>
       </div>
@@ -39,51 +39,51 @@ export default {
       status2: false,
       img: require("../assets/image/lunbo.png"),
       data: [
-        {
-          cai: "川菜",
-          time: "2018-09-14 11:00",
-          img: require("../assets/image/zanshi/head.jpg"),
-          name: "张三1",
-          phone: "188888888888",
-          address: "瀚海北金瀚海北金",
-          time: "2018-09-14 11:00"
-        },
-        {
-          cai: "川菜",
-          time: "2018-09-14 11:00",
-          img: require("../assets/image/zanshi/head.jpg"),
-          name: "张三2",
-          phone: "188888888888",
-          address: "瀚海北金瀚海北金",
-          time: "2018-09-14 11:00"
-        },
-        {
-          cai: "川菜",
-          time: "2018-09-14 11:00",
-          img: require("../assets/image/zanshi/head.jpg"),
-          name: "张三3",
-          phone: "188888888888",
-          address: "瀚海北金瀚海北金",
-          time: "2018-09-14 11:00"
-        },
-        {
-          cai: "川菜",
-          time: "2018-09-14 11:00",
-          img: require("../assets/image/zanshi/head.jpg"),
-          name: "张三4",
-          phone: "188888888888",
-          address: "瀚海北金瀚海北金",
-          time: "2018-09-14 11:00"
-        },
-        {
-          cai: "川菜",
-          time: "2018-09-14 11:00",
-          img: require("../assets/image/zanshi/head.jpg"),
-          name: "张三5",
-          phone: "188888888888",
-          address: "瀚海北金瀚海北金",
-          time: "2018-09-14 11:00"
-        }
+        // {
+        //   cai: "川菜",
+        //   time: "2018-09-14 11:00",
+        //   img: require("../assets/image/zanshi/head.jpg"),
+        //   name: "张三1",
+        //   phone: "188888888888",
+        //   address: "瀚海北金瀚海北金",
+        //   time: "2018-09-14 11:00"
+        // },
+        // {
+        //   cai: "川菜",
+        //   time: "2018-09-14 11:00",
+        //   img: require("../assets/image/zanshi/head.jpg"),
+        //   name: "张三2",
+        //   phone: "188888888888",
+        //   address: "瀚海北金瀚海北金",
+        //   time: "2018-09-14 11:00"
+        // },
+        // {
+        //   cai: "川菜",
+        //   time: "2018-09-14 11:00",
+        //   img: require("../assets/image/zanshi/head.jpg"),
+        //   name: "张三3",
+        //   phone: "188888888888",
+        //   address: "瀚海北金瀚海北金",
+        //   time: "2018-09-14 11:00"
+        // },
+        // {
+        //   cai: "川菜",
+        //   time: "2018-09-14 11:00",
+        //   img: require("../assets/image/zanshi/head.jpg"),
+        //   name: "张三4",
+        //   phone: "188888888888",
+        //   address: "瀚海北金瀚海北金",
+        //   time: "2018-09-14 11:00"
+        // },
+        // {
+        //   cai: "川菜",
+        //   time: "2018-09-14 11:00",
+        //   img: require("../assets/image/zanshi/head.jpg"),
+        //   name: "张三5",
+        //   phone: "188888888888",
+        //   address: "瀚海北金瀚海北金",
+        //   time: "2018-09-14 11:00"
+        // }
       ]
     };
   },
@@ -142,7 +142,7 @@ export default {
           this.$bus.$emit("toast", data.msg);
         } else if (data.code === "201") {
           this.$bus.$emit("toast", data.msg);
-          this.wxpay();
+          // this.wxpay();
         }
       })
       .catch(error => {

@@ -17,10 +17,10 @@ import 'mint-ui/lib/style.css';
 Vue.use(Mint);
 
 // 引入百度地图
-import BaiduMap from 'vue-baidu-map';
-Vue.use(BaiduMap, {
-  ak: 'ZYLW9so4V2ypx7az6smCreNeVwZE8Ohk'
-})
+// import BaiduMap from 'vue-baidu-map';
+// Vue.use(BaiduMap, {
+//   ak: 'ZYLW9so4V2ypx7az6smCreNeVwZE8Ohk'
+// })
 
 // import BScroll from "better-scroll";
 // Vue.use(BScroll);
@@ -76,7 +76,7 @@ Vue.prototype.getCookie = function (cname){
 Vue.prototype.delCookie =function (name) {
   var exp = new Date();
   exp.setTime(exp.getTime() - 1);
-  var cval = getCookie(name);
+  var cval = this.getCookie(name);
   if (cval != null)
     document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
 }

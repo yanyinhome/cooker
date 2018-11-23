@@ -12,7 +12,7 @@
             <div class="list-content">
             <p class="title">{{item.user_truename}}</p>
             <p class="tips">{{item.user_sign}}</p>
-            <div class="box3"> <div class="cai">{{item.dish[0]}}</div> <div class="cai">{{item.dish[1]}}</div> </div>
+            <div class="box3"> <div class="cai"  v-if="item.isiamic=='清真'">{{item.isiamic}}</div> <div class="cai" v-if="item.isiamic!='清真'">{{item.dish[0]}}</div> <div class="cai" v-if="item.isiamic!='清真'">{{item.dish[1]}}</div> </div>
             </div>
         </div>
         <div class="delete" @click="deleteItem(index,item.user_id)" :data-index="index"><i class="iconfont icon-shanchu" /></div>
@@ -28,125 +28,125 @@ export default {
   data() {
     return {
       list: [
-        {
-          title: "张三1",
-          imgUrl: require("../assets/image/zanshi/head.jpg"),
-          tips: "个人简介",
-          cai1: "川菜",
-          cai2: "豫菜"
-        },
-        {
-          title: "张三2",
-          imgUrl: require("../assets/image/zanshi/head.jpg"),
-          tips: "个人简介",
-          cai1: "川菜",
-          cai2: "豫菜"
-        },
-        {
-          title: "张三3",
-          imgUrl: require("../assets/image/zanshi/head.jpg"),
-          tips: "个人简介",
-          cai1: "川菜",
-          cai2: "豫菜"
-        },
-        {
-          title: "张三4",
-          imgUrl: require("../assets/image/zanshi/head.jpg"),
-          tips: "个人简介",
-          cai1: "川菜",
-          cai2: "豫菜"
-        },
-        {
-          title: "张三5",
-          imgUrl: require("../assets/image/zanshi/head.jpg"),
-          tips: "个人简介",
-          cai1: "川菜",
-          cai2: "豫菜"
-        },
-        {
-          title: "张三6",
-          imgUrl: require("../assets/image/zanshi/head.jpg"),
-          tips: "个人简介",
-          cai1: "川菜",
-          cai2: "豫菜"
-        },
-        {
-          title: "张三7",
-          imgUrl: require("../assets/image/zanshi/head.jpg"),
-          tips: "个人简介",
-          cai1: "川菜",
-          cai2: "豫菜"
-        },
-        {
-          title: "张三8",
-          imgUrl: require("../assets/image/zanshi/head.jpg"),
-          tips: "个人简介",
-          cai1: "川菜",
-          cai2: "豫菜"
-        },
-        {
-          title: "张三9",
-          imgUrl: require("../assets/image/zanshi/head.jpg"),
-          tips: "个人简介",
-          cai1: "川菜",
-          cai2: "豫菜"
-        },
-        {
-          title: "张三0",
-          imgUrl: require("../assets/image/zanshi/head.jpg"),
-          tips: "个人简介",
-          cai1: "川菜",
-          cai2: "豫菜"
-        },
-        {
-          title: "张三11",
-          imgUrl: require("../assets/image/zanshi/head.jpg"),
-          tips: "个人简介",
-          cai1: "川菜",
-          cai2: "豫菜"
-        },
-        {
-          title: "张三12",
-          imgUrl: require("../assets/image/zanshi/head.jpg"),
-          tips: "个人简介",
-          cai1: "川菜",
-          cai2: "豫菜"
-        },
-        {
-          title: "张三13",
-          imgUrl: require("../assets/image/zanshi/head.jpg"),
-          tips: "个人简介",
-          cai1: "川菜",
-          cai2: "豫菜"
-        },
-        {
-          title: "张三14",
-          imgUrl: require("../assets/image/zanshi/head.jpg"),
-          tips: "个人简介",
-          cai1: "川菜",
-          cai2: "豫菜"
-        },
-        {
-          title: "张三15",
-          imgUrl: require("../assets/image/zanshi/head.jpg"),
-          tips: "个人简介",
-          cai1: "川菜",
-          cai2: "豫菜"
-        },
-        {
-          title: "张三16",
-          imgUrl: require("../assets/image/zanshi/head.jpg"),
-          tips: "个人简介",
-          cai1: "川菜",
-          cai2: "豫菜"
-        },
-        {
-          title: "张三17",
-          imgUrl: require("../assets/image/zanshi/head.jpg"),
-          tips: "个人简介",
-          cai1: "川菜",
-          cai2: "豫菜"
-        }
+        // {
+        //   title: "张三1",
+        //   imgUrl: require("../assets/image/zanshi/head.jpg"),
+        //   tips: "个人简介",
+        //   cai1: "川菜",
+        //   cai2: "豫菜"
+        // },
+        // {
+        //   title: "张三2",
+        //   imgUrl: require("../assets/image/zanshi/head.jpg"),
+        //   tips: "个人简介",
+        //   cai1: "川菜",
+        //   cai2: "豫菜"
+        // },
+        // {
+        //   title: "张三3",
+        //   imgUrl: require("../assets/image/zanshi/head.jpg"),
+        //   tips: "个人简介",
+        //   cai1: "川菜",
+        //   cai2: "豫菜"
+        // },
+        // {
+        //   title: "张三4",
+        //   imgUrl: require("../assets/image/zanshi/head.jpg"),
+        //   tips: "个人简介",
+        //   cai1: "川菜",
+        //   cai2: "豫菜"
+        // },
+        // {
+        //   title: "张三5",
+        //   imgUrl: require("../assets/image/zanshi/head.jpg"),
+        //   tips: "个人简介",
+        //   cai1: "川菜",
+        //   cai2: "豫菜"
+        // },
+        // {
+        //   title: "张三6",
+        //   imgUrl: require("../assets/image/zanshi/head.jpg"),
+        //   tips: "个人简介",
+        //   cai1: "川菜",
+        //   cai2: "豫菜"
+        // },
+        // {
+        //   title: "张三7",
+        //   imgUrl: require("../assets/image/zanshi/head.jpg"),
+        //   tips: "个人简介",
+        //   cai1: "川菜",
+        //   cai2: "豫菜"
+        // },
+        // {
+        //   title: "张三8",
+        //   imgUrl: require("../assets/image/zanshi/head.jpg"),
+        //   tips: "个人简介",
+        //   cai1: "川菜",
+        //   cai2: "豫菜"
+        // },
+        // {
+        //   title: "张三9",
+        //   imgUrl: require("../assets/image/zanshi/head.jpg"),
+        //   tips: "个人简介",
+        //   cai1: "川菜",
+        //   cai2: "豫菜"
+        // },
+        // {
+        //   title: "张三0",
+        //   imgUrl: require("../assets/image/zanshi/head.jpg"),
+        //   tips: "个人简介",
+        //   cai1: "川菜",
+        //   cai2: "豫菜"
+        // },
+        // {
+        //   title: "张三11",
+        //   imgUrl: require("../assets/image/zanshi/head.jpg"),
+        //   tips: "个人简介",
+        //   cai1: "川菜",
+        //   cai2: "豫菜"
+        // },
+        // {
+        //   title: "张三12",
+        //   imgUrl: require("../assets/image/zanshi/head.jpg"),
+        //   tips: "个人简介",
+        //   cai1: "川菜",
+        //   cai2: "豫菜"
+        // },
+        // {
+        //   title: "张三13",
+        //   imgUrl: require("../assets/image/zanshi/head.jpg"),
+        //   tips: "个人简介",
+        //   cai1: "川菜",
+        //   cai2: "豫菜"
+        // },
+        // {
+        //   title: "张三14",
+        //   imgUrl: require("../assets/image/zanshi/head.jpg"),
+        //   tips: "个人简介",
+        //   cai1: "川菜",
+        //   cai2: "豫菜"
+        // },
+        // {
+        //   title: "张三15",
+        //   imgUrl: require("../assets/image/zanshi/head.jpg"),
+        //   tips: "个人简介",
+        //   cai1: "川菜",
+        //   cai2: "豫菜"
+        // },
+        // {
+        //   title: "张三16",
+        //   imgUrl: require("../assets/image/zanshi/head.jpg"),
+        //   tips: "个人简介",
+        //   cai1: "川菜",
+        //   cai2: "豫菜"
+        // },
+        // {
+        //   title: "张三17",
+        //   imgUrl: require("../assets/image/zanshi/head.jpg"),
+        //   tips: "个人简介",
+        //   cai1: "川菜",
+        //   cai2: "豫菜"
+        // }
       ],
       startX: 0,
       endX: 0

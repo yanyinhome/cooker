@@ -13,7 +13,7 @@
         <div class="center">
           <div class="box1">{{item.user_truename}}<span v-if="item.grade>0">&emsp;LV{{item.grade}}</span><span v-else>&emsp;LV0</span></div>
           <div class="box2">{{item.user_sign}}</div>
-          <div class="box3"> <div class="cai">{{item.isiamic}}</div> <div class="cai">{{item.dish[0]}}</div> <div class="cai">{{item.dish[1]}}</div></div>
+          <div class="box3"> <div class="cai"  v-if="item.isiamic=='清真'">{{item.isiamic}}</div> <div class="cai" v-if="!item.isiamic=='清真'">{{item.dish[0]}}</div> <div class="cai"  v-if="!item.isiamic=='清真'">{{item.dish[1]}}</div></div>
         </div>
         <div class="right">
           <div class="box1">{{price}}</div>

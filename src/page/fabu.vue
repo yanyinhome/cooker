@@ -8,9 +8,9 @@
         <div class="xiaogong">
           <span>请选择</span>
           清真<input type="radio" id="1" value="1" v-model="checked2">
-          非清真<input type="radio" id="2" value="2" v-model="checked2">
+          汉餐<input type="radio" id="2" value="2" v-model="checked2">
         </div> 
-        <div class="item" @click="loading1"><span>菜系</span><input type="text" v-model="vegetable" readonly="readonly" placeholder="请选择"><i class="iconfont icon-xiayi"></i></div>
+        <div class="item" @click="loading1" v-if="checked2==2"><span>菜系</span><input type="text" v-model="vegetable1" readonly="readonly" placeholder="请选择"><i class="iconfont icon-xiayi"></i></div>
         
         <div class="item"  @click="loading2"><span>预约时间</span><input type="text" v-model="time"  readonly="readonly" placeholder="请选择"><i class="iconfont icon-xiayi"></i></div>
         <!-- <div class="item"><span>姓名</span><input type="text" v-model="name" placeholder="请输入你的名字"></div>
@@ -26,7 +26,7 @@
           <span>请选择厨师级别</span> 
           <select v-model="selected">
             <option disabled value="请选择等级服务费" selected>请选择等级服务费</option>
-            <option v-for="(item,index) in grade" :value="item.grade_id" :key="index">{{item.severgrade}}</option>
+            <option v-for="(item,index) in grade" :value="item.id" :key="index">{{item.severgrade}}</option>
           </select>
         </div>
           
@@ -35,11 +35,11 @@
         <com-button class="btn" :click="fabu">确定发布</com-button>
     </div>
     <!-- 菜系弹窗 -->
-    <div class="mask" v-show="mask1"  @click="mask1=false">
+    <div class="mask" v-show="mask1">
       <div class="box">
-        <div class="title">请选择菜系</div>
+        <div class="title"><span>请选择菜系</span><span @click="mask1=false">&emsp;确定&emsp;</span></div>
         <div class="content">
-          <div v-for="(item,index) in item" :key="index"><div class="item"  @click="chooce(index,item.d_id)">{{item.name}}</div></div>  
+          <div v-for="(item,index) in item" :key="index"><div class="item" :class="{activeCai: activeCai1 == item.d_id || activeCai2 == item.d_id }"   @click="chooce(index,item.d_id)">{{item.name}}</div></div>  
         </div>
       </div>
     </div> 
@@ -73,6 +73,10 @@ export default {
       servermoney: '',
       selected: '请选择等级服务费',
       vegetable: "",
+      vegetable1: '',//值
+      vegetable2: [],//数组
+      vegetableId: [],
+      dish_id: '',
       content: "",
       time: "",
       address: "",
@@ -243,7 +247,7 @@ export default {
         });
     },
     fabu () {
-      if (!this.addr_id||!this.d_id||!this.time||!this.checked2||!grade_id) {
+      if (!this.addr_id||!this.time||!this.checked2||!this.selected) {
         this.$bus.$emit("toast", "请完善发布信息");
       }  else{
         this.fabu1();
@@ -258,13 +262,13 @@ export default {
         .post("index/release", {
           token: this.token(),
           addr_id: this.addr_id,
-          d_id: this.d_id,
+          dish_id: this.dish_id,
           dinner: year + '-' + this.time,
           order_remark: this.content,
           isiamic: this.checked2,
           number: this.num,
           coolie: this.servermoney,
-          grade_id: this.selected
+          grade_id: this.selected,
         })
         .then(({ data }) => {
           console.log(data);
@@ -297,17 +301,39 @@ export default {
       this.$router.push({ path: "./dingwei" });
     },
     chooce(index, id) {
-      console.log(index);
-      this.mask1 = false;
+      // console.log(index);
+      // this.mask1 = false;
+      // this.d_id = id;
+      // this.vegetable = this.item[index].name;
       this.d_id = id;
-      this.vegetable = this.item[index].name;
-       // 存储菜系
-      // if (localStorage.vegetable) {
-      //   localStorage.removeItem("vegetable");
-      //   localStorage.setItem("vegetable", this.vegetable);
-      // } else {
-      //   localStorage.setItem("vegetable", this.vegetable);
-      // }
+       if (this.vegetableId[1]!=this.item[index].d_id) {
+          this.vegetableId.push(this.item[index].d_id);
+          this.vegetable2.push(this.item[index].name);
+       }
+      // this.vegetableId.forEach(e => {
+      //   if (e!=this.item[index].d_id) {
+      //      this.vegetableId.push(this.item[index].d_id);
+      //      this.vegetable2.push(this.item[index].name);
+      //   } 
+      // });
+      
+      console.log(this.vegetableId);
+      if(this.vegetableId.length > 2) {
+       this.vegetableId.splice(0,1).push(this.item[index].d_id);
+       this.vegetable2.splice(0,1).push(this.item[index].name);
+      }
+      this.activeCai1 = this.vegetableId[0];
+      this.activeCai2 = this.vegetableId[1];
+      if (this.vegetable2[1]) {
+        this.vegetable1 = this.vegetable2[0] + ',' + this.vegetable2[1];
+      } else {
+        this.vegetable1 = this.vegetable2[0];
+      }
+      if (this.vegetableId[1]) {
+        this.dish_id = `${this.vegetableId[0]},${this.vegetableId[1]},`;
+      } else {
+        this.dish_id = `${this.vegetableId[0]},`;      
+      }
     }
   }
 };
@@ -411,7 +437,7 @@ export default {
     .grade {
       select {
         width: 360px;
-        // line-height: 100px;
+        height: 60px;
         text-align: right;
         font-size: 30px;
         margin-right: 0;
@@ -469,6 +495,10 @@ export default {
           line-height: 60px;
           border-radius: 6px;
           border: 1Px solid rgba(153, 153, 153, 1);
+        }
+        .activeCai {
+          background-color: #ffb84b;
+          color: #fff;
         }
       }
     }

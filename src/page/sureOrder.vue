@@ -1,6 +1,6 @@
 <template>
   <div id='sureOrder'>
-    <com-head  :opacity='1'>确认订单</com-head>
+    <com-head  :opacity='0'>确认订单</com-head>
     <!-- <div class="addAddress"><i class="iconfont icon-tianjia" /><span>添加上门地址</span></div> -->
     <router-link to="chooseAddress" tag="div" class="addAddress"  v-if="!myaddress.addr_receiver"><i class="iconfont icon-tianjia" /><span>添加上门地址</span></router-link>
     <div class="addAddress2" v-if="myaddress.addr_receiver">
@@ -50,7 +50,7 @@ export default {
     return {
       id: this.$route.query.id,//厨师id
       mask: false,
-      name: this.$route.query.name,
+      name: '',
       content: "",
       number: "0",
       num: '',
@@ -115,15 +115,34 @@ export default {
       });
   },
   created() {
-    console.log(this.$route.query.name);
+    // console.log(this.$route.query.name);
     console.log(this.myaddress);
     this.time = this.nowTime();
     this.loading();
+    this.loading1();
   },
 
   mounted() {},
 
   methods: {
+    loading1() {
+      this.axios
+        .post("cook/detail", {
+          token: this.token(),
+          c_id: this.id
+        })
+        .then(({ data }) => {
+          console.log(data);
+          if (data.code === "200") {
+            this.name = data.data.user_truename;
+          } else if (data.code === "201") {
+            this.$bus.$emit("toast", data.msg);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     // 确定预约
     bespeak() {
       var myDate = new Date();

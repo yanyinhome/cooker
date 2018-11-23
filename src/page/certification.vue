@@ -10,16 +10,17 @@
             <div class="tou"><div class="touxiang"><img :src="img1"></div><i class="iconfont icon-xiayi"></i></div>
         </div>
         <!-- <div class="item"><span>真实姓名</span><input type="text" v-model="name" readonly="readonly"></div> -->
-        <div class="item" v-if="!name"><span>真实姓名</span><input type="text" v-model="name" placeholder="请输入姓名"></div>
-        <div class="item" v-else><span>真实姓名</span><input type="text" v-model="name" readonly="readonly"></div>
+        <div class="item"><span>真实姓名</span><input type="text" v-model="name" placeholder="请输入姓名"></div>
+        <!-- <div class="item" v-else><span>真实姓名</span><input type="text" v-model="name" readonly="readonly"></div> -->
         <div class="item"><span>手机号</span><input type="text" v-model="phone" readonly="readonly"></div>
         <div class="xiaogong">
           <span>请选择</span>
           清真<input type="radio" id="1" value="1" v-model="checked4">
-          非清真<input type="radio" id="2" value="0" v-model="checked4">
+          汉餐<input type="radio" id="2" value="0" v-model="checked4">
         </div> 
-        <div class="item" @click="loading1"><span>菜系</span><input type="text" v-model="vegetable1" readonly="readonly" placeholder="请选择擅长菜系"><i class="iconfont icon-xiayi"></i></div>
+        <div class="item" @click="loading1"  v-if="checked2==0"><span>菜系</span><input type="text" v-model="vegetable1" readonly="readonly" placeholder="请选择擅长菜系"><i class="iconfont icon-xiayi"></i></div>
         <div class="item" @click="cityalert = true"><span>区域选择</span><input type="text" v-model="address" readonly="readonly" placeholder="请选择服务范围"><i class="iconfont icon-xiayi"></i></div>
+        <div class="item"><span>详细地址</span><input type="text" v-model="addressdetail" placeholder="请输入你的详细地址"></div>
         <div class="item"><span>特长简介</span><input type="text" v-model="cookerSign" placeholder="请输入你的特长简介"></div>
         <div class="xiaogong">
           <span>有无犯罪记录</span>
@@ -35,6 +36,7 @@
         </div> 
         <div class="item"><span>紧急联系人姓名</span><input type="text" v-model="urgentname" placeholder="请输入紧急联系人姓名"></div>
         <div class="item"><span>紧急联系人电话</span><input type="text" v-model="urgenttel" placeholder="请输入紧急联系人电话"></div>
+        <div class="item"><span>紧急联系人地址</span><input type="text" v-model="urgent_address" placeholder="请输入紧急联系人电话"></div>
 
         <div class="box1"  @click="portrait2">
             <span>厨师证</span>
@@ -131,6 +133,8 @@ export default {
       address: "无",
       address1: "",
       address2: "",
+      urgent_address: '',
+      addressdetail: '',
       myAddressSlots: [
         {
           flex: 1,
@@ -270,6 +274,10 @@ export default {
             (this.img3 = data.data.health_card);
             (this.name = data.data.user_truename);
             (this.phone = data.data.user_mobile);
+            if (!data.data.user_truename) {
+              this.$router.push('information');
+              this.$bus.$emit("toast", "请先设置自己的真实姓名");
+            }
           } else if (data.code === "202") {
             // 待审核
             this.status = true;
@@ -302,7 +310,8 @@ export default {
             this.img4 = data.data.user_front;
             this.img5 = data.data.user_side;
             this.img6 = data.data.user_hand_card;
-
+            this.urgent_address = data.data.urgent_address;
+            this.addressdetail= data.data.address; 
             this.$bus.$emit("toast", data.msg);
           } else if (data.code === "203") {
             // 审核不通过
@@ -319,6 +328,8 @@ export default {
             this.img4 = data.data.user_front;
             this.img5 = data.data.user_side;
             this.img6 = data.data.user_hand_card;
+            this.urgent_address = data.data.urgent_address;
+            this.addressdetail= data.data.address; 
             this.$bus.$emit("toast", data.msg);
           }
         })
@@ -329,7 +340,7 @@ export default {
     //认证
     renzheng1 () {
       let regTel = /^(1[3-9])\d{9}$/;
-      if (!this.urgentname||!this.urgenttel||!this.cookerSign||!this.img1||!this.img2||!this.img3||!this.img4||!this.img5||!this.img6||!this.dish_id||!this.address1||!this.address2) {
+      if (!this.urgentname||!this.urgenttel||!this.cookerSign||!this.img1||!this.img2||!this.img3||!this.img4||!this.img5||!this.img6||!this.address1||!this.address2) {
         this.$bus.$emit("toast", "请完善信息");
       } else if (!regTel.test(this.urgenttel)) {
         this.$bus.$emit('toast', '手机号码不合法');
@@ -356,6 +367,8 @@ export default {
           area: this.address2,
           urgent_mobile: this.urgenttel,
           urgent_name: this.urgentname,
+          urgent_address: this.urgent_address,
+          address: this.addressdetail,
           sin: this.checked1,
           drug: this.checked2,
           psychosis: this.checked3, 

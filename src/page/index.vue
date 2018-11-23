@@ -8,14 +8,14 @@
             </mt-swipe>
         </div>
     </div> 
-    <div class="nav_title"><span>———</span><div class="box">新厨推荐</div><span>———</span></div>
+    <div class="nav_title"><span>———</span><div class="box">名厨推荐</div><span>———</span></div>
     <div class="outside">
       <div class="itemlist recommend" v-for="(item,index) in message1" :key="index"  @click="toDetail(item.c_id)">
         <div class="left"><img :src="item.user_avat"></div>
         <div class="center">
           <div class="box1">{{item.user_truename}}<span v-if="item.grade>0">&emsp;LV{{item.grade}}</span><span v-else>&emsp;LV0</span></div>
           <div class="box2">{{item.user_sign}}</div>
-          <div class="box3"> <div class="cai">{{item.dish[0]}}</div> <div class="cai">{{item.dish[1]}}</div> </div>
+          <div class="box3">  <div class="cai"  v-if="item.isiamic=='清真'">{{item.isiamic}}</div><div class="cai"  v-if="item.isiamic!='清真'">{{item.dish[0]}}</div> <div class="cai"  v-if="item.isiamic!='清真'">{{item.dish[1]}}</div> </div>
         </div>
         <div class="right">
           <div class="box1">{{price}}</div>
@@ -24,14 +24,14 @@
       </div>
     </div> 
 
-    <div class="nav_title"><span>———</span><div class="box">猜你喜欢</div><span>———</span></div>
+    <div class="nav_title"><span>———</span><div class="box">商务套餐《敬请关注》</div><span>———</span></div>
     <div class="outside">
       <div class="itemlist recommend" v-for="(item,index) in message2" :key="index"  @click="toDetail(item.c_id)">
         <div class="left"><img :src="item.user_avat"></div>
         <div class="center">
           <div class="box1">{{item.user_truename}}<span v-if="item.grade>0">&emsp;LV{{item.grade}}</span><span v-else>&emsp;LV0</span></div>          
           <div class="box2">{{item.user_sign}}</div>
-          <div class="box3"> <div class="cai">{{item.dish[0]}}</div> <div class="cai">{{item.dish[1]}}</div> </div>
+          <div class="box3">  <div class="cai"  v-if="item.isiamic=='清真'">{{item.isiamic}}</div><div class="cai"   v-if="item.isiamic!='清真'">{{item.dish[0]}}</div> <div class="cai"   v-if="item.isiamic!='清真'">{{item.dish[1]}}</div> </div>
         </div>
         <div class="right">
           <div class="box1">{{price}}</div>
@@ -58,9 +58,9 @@ export default {
     return {
       price: "议价",
       images: [
-        require("../assets/image/lunbo.png"),
-        require("../assets/image/lunbo.png"),
-        require("../assets/image/lunbo.png")
+        // require("../assets/image/lunbo.png"),
+        // require("../assets/image/lunbo.png"),
+        // require("../assets/image/lunbo.png")
       ],
       message1: [
         // {
@@ -82,7 +82,7 @@ export default {
         //   server: "20"
         // }
       ],
-      message2: {},
+      message2: [],
       myAddressSlots: [
         {
           flex: 1,
@@ -167,9 +167,9 @@ export default {
     } else {
       this.$bus.$emit("toast", "请在微信浏览器中打开");
     }
-    this.loading1();
   },
   mounted() {
+    this.loading1();
     this.$nextTick(() => {
       //vue里面全部加载好了再执行的函数  （类似于setTimeout）
       this.myAddressSlots[0].defaultIndex = 0;
@@ -218,9 +218,11 @@ export default {
             this.images = data.pic;
             this.message1 = data.guess;
             this.message2 = data.rand;
-            // this.loading2()
+            this.loading2()
           } else if (data.code === "201") {
             this.$bus.$emit("toast", data.msg);
+          } else if (data.code === "204") {
+            this.delCookie("openid");
           }
         })
         .catch(error => {
@@ -240,7 +242,6 @@ export default {
           console.log(data);
           if (data.code === "200") {
             console.log(data.token);
-
             // if (!this.getCookie("token")) {
             //   this.setCookie("token", data.token, 3000);
             // } else {
@@ -259,6 +260,8 @@ export default {
             this.message2 = data.rand;
           } else if (data.code === "201") {
             this.$bus.$emit("toast", data.msg);
+          } else if (data.code === "204") {
+            this.delCookie("openid");
           }
         })
         .catch(error => {
@@ -452,7 +455,7 @@ export default {
     justify-content: center;
     align-items: center;
     .box {
-      width: 116px;
+      // width: 116px;
       font-size: 28px;
       margin: 0 37px;
       font-family: PingFangSC-Medium;

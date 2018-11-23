@@ -3,7 +3,7 @@
     <com-head :opacity='0'>地址</com-head>
     <div class="address1">
       <!-- <div class="address">定位当前位置：{{address}}</div> -->
-      <div class="map"></div> <baidu-map :center="center" :zoom="zoom" @ready="handler" :showAddressBar="true" :autoLocation="true"></baidu-map>
+      <!-- <div class="map"></div> <baidu-map :center="center" :zoom="zoom" @ready="handler" :showAddressBar="true" :autoLocation="true"></baidu-map> -->
       <div class="title">我的地址</div>
       <div class="myaddress" v-for="(item,index) in myaddress" :key="index" @click="selected(index,item.select)">
           <p>{{item.addr_receiver}}&emsp;{{item.addr_phone}} </p>
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import BMap from "BMap";
+// import BMap from "BMap";
 export default {
   name: "dingwei",
   data() {
@@ -113,7 +113,9 @@ export default {
     },
     wxlocation() {
       this.axios
-        .post("Position/getLocation")
+        .post("Position/getLocation",{
+          token: this.token()
+        })
         .then(({ data }) => {
           console.log(data);
           const location = data.data;
