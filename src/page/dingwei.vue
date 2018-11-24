@@ -2,7 +2,7 @@
   <div id='dingwei'>
     <com-head :opacity='0'>地址</com-head>
     <div class="address1">
-      <!-- <div class="address">定位当前位置：{{address}}</div> -->
+      <!-- <div class="address" @click="dingwei()">定位当前位置：{{address}}</div> -->
       <!-- <div class="map"></div> <baidu-map :center="center" :zoom="zoom" @ready="handler" :showAddressBar="true" :autoLocation="true"></baidu-map> -->
       <div class="title">我的地址</div>
       <div class="myaddress" v-for="(item,index) in myaddress" :key="index" @click="selected(index,item.select)">
@@ -47,12 +47,11 @@ export default {
 
   created() {
     console.log(this.nam.sub());
-    this.wxlocation();
+    // this.wxlocation();
   },
 
   mounted() {
     this.loading();
-
     // let _this = this;
     // var geolocation = new BMap.Geolocation();
     // geolocation.getCurrentPosition(function(r) {
@@ -110,6 +109,9 @@ export default {
         type: "increment",
         dingwei: this.myaddress[index]
       });
+    },
+    dingwei(){
+
     },
     wxlocation() {
       this.axios
