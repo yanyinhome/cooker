@@ -110,9 +110,6 @@ export default {
         dingwei: this.myaddress[index]
       });
     },
-    dingwei(){
-
-    },
     wxlocation() {
       this.axios
         .post("Position/getLocation",{
@@ -136,7 +133,8 @@ export default {
         nonceStr: location.nonceStr, // 必填，生成签名的随机串
         signature: location.signature, // 必填，签名，见附录1
         jsApiList: [
-          "getLocation" //获取地理位置接口
+          "getLocation", //获取地理位置接口
+          "translateVoice"
         ]
       });
       wx.getLocation({

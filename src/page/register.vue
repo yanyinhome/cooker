@@ -8,7 +8,7 @@
       <div class="login_inp yanzheng">
           <div class="box1"><img src="../assets/image/reg2.png" ></div>
           <input type="text" placeholder="请输入验证码" v-model="verify">
-          <button class="verify" @click="verification" :disabled='isSend' :class="{'send-sms' : isSend}">{{btntxt}}</button>
+          <button class="verify" @click="getTelcode" :disabled = 'isSend' :class="{'send-sms' : isSend}">{{btntxt}}</button>
       </div>
       <!-- <div class="login_inp logn_mima">
           <div class="box1"><img src="../assets/image/login3.png" ></div>
@@ -20,7 +20,7 @@
         <input type="checkbox" id="1" value="checked" v-model="checked">
         <label for="1">我已阅读并同意</label>
       </div>
-      <com-button :click="register" :disabled ="!checked" :class="{active: !checked}">确定绑定</com-button>
+      <com-button :click="register" :class="{active: !checked}">确定绑定</com-button>
   </div>
 </template>
 <script>
@@ -34,8 +34,9 @@ export default {
       btntxt: "获取验证码",
       sendSMSTime: 0,
       isSend: false,
-      disabled: false,
-      verify: ""
+      // disabled: false,
+      verify: "",
+      isclick: true,
     };
   },
 
@@ -51,6 +52,15 @@ export default {
         }
       });
     },
+    getTelcode (){
+      console.log(this.isclick);
+      if (this.isclick) {
+        this.isclick = false;
+        this.verification();
+      } else {
+        this.$bus.$emit("toast", '不能重复点击');
+      }
+    },
     verification() {
       let regTel = /^(1[3-9])\d{9}$/;
       if (!this.phone) {
@@ -58,6 +68,7 @@ export default {
       } else if (!regTel.test(this.phone)) {
         this.$bus.$emit("toast", "手机号码不合法");
       } else {
+
         this.axios
           .post("login/getcode", {
             type: "register",
@@ -67,14 +78,13 @@ export default {
           .then(({ data }) => {
             console.log(data);
             if (data.code === "200") {
-              
               this.$bus.$emit("toast", data.msg);
               this.sendSMSTime = 60;
               this.isSend = true;
-              this.disabled = true;
               this.btntxt = "已发送(" + this.sendSMSTime + ")s";
               this.timer();
-            } else if (data.code === "201") {
+            } else {
+              this.isclick = true;
               this.disabled = false;
               this.$bus.$emit("toast", data.msg);
             }
@@ -92,13 +102,13 @@ export default {
           this.timer();
         }, 1000);
       } else {
+        this.isclick = true;
         this.sendSMSTime = 0;
         this.btntxt = "重新获取";
         this.isSend = false;
       }
     },
     register() {
-      console.log(this.checked);
       this.axios
         .post("login/register", {
           openid: this.getCookie("openid"),

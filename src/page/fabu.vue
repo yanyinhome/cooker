@@ -17,7 +17,7 @@
         <div class="item"><span>手机号</span><input type="text" v-model="phone" placeholder="请输入手机号"></div> -->
         <div class="item"><span>用餐人数</span><input type="text" v-model="num" placeholder="请输入用餐人数"></div>
         <div class="xiaogong">
-          <span>是否需要小工</span>
+          <span>小工（￥150/次）</span>
           需要<input type="radio" id="1" value="1" v-model="checked1">
           不需要<input type="radio" id="2" value="0" v-model="checked1">
         </div> 
@@ -37,7 +37,7 @@
     <!-- 菜系弹窗 -->
     <div class="mask" v-show="mask1">
       <div class="box">
-        <div class="title"><span>请选择菜系</span><span @click="mask1=false">&emsp;确定&emsp;</span></div>
+        <div class="title"><span>请选择菜系</span><span @click="mask1=false">&emsp;&emsp;&emsp;确定&emsp;</span></div>
         <div class="content">
           <div v-for="(item,index) in item" :key="index"><div class="item" :class="{activeCai: activeCai1 == item.d_id || activeCai2 == item.d_id }"   @click="chooce(index,item.d_id)">{{item.name}}</div></div>  
         </div>

@@ -18,7 +18,7 @@
           清真<input type="radio" id="1" value="1" v-model="checked4">
           汉餐<input type="radio" id="2" value="0" v-model="checked4">
         </div> 
-        <div class="item" @click="loading1"  v-if="checked2==0"><span>菜系</span><input type="text" v-model="vegetable1" readonly="readonly" placeholder="请选择擅长菜系"><i class="iconfont icon-xiayi"></i></div>
+        <div class="item" @click="loading1"  v-if="checked4=='0'"><span>菜系</span><input type="text" v-model="vegetable1" readonly="readonly" placeholder="请选择擅长菜系"><i class="iconfont icon-xiayi"></i></div>
         <div class="item" @click="cityalert = true"><span>区域选择</span><input type="text" v-model="address" readonly="readonly" placeholder="请选择服务范围"><i class="iconfont icon-xiayi"></i></div>
         <div class="item"><span>详细地址</span><input type="text" v-model="addressdetail" placeholder="请输入你的详细地址"></div>
         <div class="item"><span>特长简介</span><input type="text" v-model="cookerSign" placeholder="请输入你的特长简介"></div>
@@ -77,9 +77,9 @@
     <!-- 菜系弹窗 -->
     <div class="mask" v-show="mask1">
       <div class="box">
-        <div class="title"><span>请选择菜系</span><span @click="mask1=false">&emsp;确定&emsp;</span></div>
+        <div class="title"><span>请选择菜系</span><span @click="getAllid">&emsp;确定&emsp;</span></div>
         <div class="content">
-          <div v-for="(item,index) in item" :key="index"><div class="item" :class="{activeCai: activeCai1 == item.d_id || activeCai2 == item.d_id }" @click="chooce(index,item.d_id)">{{item.name}}</div></div>  
+          <div v-for="(item,index) in item" :key="index"><div class="item" :class="{activeCai: item.select}" @click="chooce(index,item.d_id)">{{item.name}}</div></div>  
         </div>
       </div>
     </div>
@@ -135,6 +135,7 @@ export default {
       address2: "",
       urgent_address: '',
       addressdetail: '',
+      selectarr: [],
       myAddressSlots: [
         {
           flex: 1,
@@ -174,26 +175,26 @@ export default {
 
   computed: {},
 
-  beforeRouteEnter(to, from, next) {
-    next(vm => {
-      vm.axios.post('login/verifylogin',{
-        token: localStorage.getItem('token')
-      })
-        .then(({data}) => {
-          console.log(data);
-          // 如果返回值为201，则跳转到绑定
-          if (data.code === '201') {
-            vm.$bus.$emit("toast", "请先绑定手机号");
-            vm.$router.push('register');            
-          } else {
-            next();
-          }
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-      });
-  },
+  // beforeRouteEnter(to, from, next) {
+  //   next(vm => {
+  //     vm.axios.post('login/verifylogin',{
+  //       token: localStorage.getItem('token')
+  //     })
+  //       .then(({data}) => {
+  //         console.log(data);
+  //         // 如果返回值为201，则跳转到绑定
+  //         if (data.code === '201') {
+  //           vm.$bus.$emit("toast", "请先绑定手机号");
+  //           vm.$router.push('register');            
+  //         } else {
+  //           next();
+  //         }
+  //       })
+  //       .catch(function (error) {
+  //         console.log(error);
+  //       });
+  //     });
+  // },
 
   created() {},
 
@@ -230,35 +231,25 @@ export default {
     chooce(index, id) {
       // this.mask1 = false;
        this.d_id = id;
-       if (this.vegetableId[1]!=this.item[index].d_id) {
-          this.vegetableId.push(this.item[index].d_id);
-          this.vegetable2.push(this.item[index].name);
-       }
-      // this.vegetableId.forEach(e => {
-      //   if (e!=this.item[index].d_id) {
-      //      this.vegetableId.push(this.item[index].d_id);
-      //      this.vegetable2.push(this.item[index].name);
-      //   } 
-      // });
-      
-      console.log(this.vegetableId);
-      if(this.vegetableId.length > 2) {
-       this.vegetableId.splice(0,1).push(this.item[index].d_id);
-       this.vegetable2.splice(0,1).push(this.item[index].name);
-      }
-      this.activeCai1 = this.vegetableId[0];
-      this.activeCai2 = this.vegetableId[1];
-      if (this.vegetable2[1]) {
-        this.vegetable1 = this.vegetable2[0] + ',' + this.vegetable2[1];
-      } else {
-        this.vegetable1 = this.vegetable2[0];
-      }
-      if (this.vegetableId[1]) {
-        this.dish_id = `${this.vegetableId[0]},${this.vegetableId[1]},`;
-      } else {
-        this.dish_id = `${this.vegetableId[0]},`;      
-      }
-      
+       this.item[index].select = !this.item[index].select;
+    },
+    getAllid(){
+      this.mask1=false;
+      let idselected = this.item.filter((item, index, array) => {
+        return item.select == true;
+      });
+      this.selectarr = idselected;
+      let id = [];
+      let vegetable = [];
+      this.selectarr.forEach(element => {
+        id.push(element.d_id);
+        vegetable.push(element.name);
+
+      });
+      this.dish_id = id;
+      console.log(this.dish_id);
+      this.vegetable1 = vegetable.join();
+
     },
     loading() {
       this.axios
@@ -296,11 +287,7 @@ export default {
             (this.phone = data.data.user_mobile);
             this.cookerSign = data.data.user_sign;
             this.address = data.data.city_name + ',' + data.data.area;
-            if (data.data.dish_id[1]) {
-              this.vegetable1 = data.data.dish_id[0] + ',' +data.data.dish_id[1];
-            } else {
-              this.vegetable1 = data.data.dish_id[0]              
-            }
+            this.vegetable1 = data.data.dish_id.join();
             this.urgenttel = data.data.urgent_mobile;
             this.urgentname = data.data.urgent_name;
             this.checked1 = data.data.sign;
@@ -361,7 +348,7 @@ export default {
           health_card: this.img3,
           user_truename: this.name,
           user_mobile: this.phone,
-          dish_id: this.dish_id,
+          dish_id: this.dish_id.join() + ',',
           user_sign: this.cookerSign,
           city_name: this.address1,
           area: this.address2,
@@ -381,7 +368,7 @@ export default {
           console.log(data);
           if (data.code === "200") {
             this.$bus.$emit("toast", "已发送审核");
-            this.$router.push('usercenter')
+            this.$router.push('usercenter');
           } else if (data.code === "201") {
             this.$bus.$emit("toast", data.msg);
           }
@@ -421,7 +408,7 @@ export default {
       console.log(formData.get("imgLocal")); // FormData私有类对象，访问不到，可以通过get判断值是否传进去
       let config = {
         emulateJSON: true,
-        withCredentials: true,
+        withCredentials: false,
         headers: { "Content-Type": "multipart/form-data" }
       };
       this.$axios
@@ -446,7 +433,7 @@ export default {
       console.log(formData.get("imgLocal")); // FormData私有类对象，访问不到，可以通过get判断值是否传进去
       let config = {
         emulateJSON: true,
-        withCredentials: true,
+        withCredentials: false,
         headers: { "Content-Type": "multipart/form-data" }
       };
       this.$axios
@@ -470,7 +457,7 @@ export default {
       console.log(formData.get("imgLocal")); // FormData私有类对象，访问不到，可以通过get判断值是否传进去
       let config = {
         emulateJSON: true,
-        withCredentials: true,
+        withCredentials: false,
         headers: { "Content-Type": "multipart/form-data" }
       };
       this.$axios
@@ -494,7 +481,7 @@ export default {
       console.log(formData.get("imgLocal")); // FormData私有类对象，访问不到，可以通过get判断值是否传进去
       let config = {
         emulateJSON: true,
-        withCredentials: true,
+        withCredentials: false,
         headers: { "Content-Type": "multipart/form-data" }
       };
       this.$axios
@@ -517,7 +504,7 @@ export default {
       console.log(formData.get("imgLocal")); // FormData私有类对象，访问不到，可以通过get判断值是否传进去
       let config = {
         emulateJSON: true,
-        withCredentials: true,
+        withCredentials: false,
         headers: { "Content-Type": "multipart/form-data" }
       };
       this.$axios
@@ -540,7 +527,7 @@ export default {
       console.log(formData.get("imgLocal")); // FormData私有类对象，访问不到，可以通过get判断值是否传进去
       let config = {
         emulateJSON: true,
-        withCredentials: true,
+        withCredentials: false,
         headers: { "Content-Type": "multipart/form-data" }
       };
       this.$axios
