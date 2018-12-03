@@ -141,7 +141,7 @@ export default {
           this.loading1();
           this.$bus.$emit("toast", data.msg);
         } else if (data.code === "201") {
-          this.$bus.$emit("toast", data.msg);
+          // this.$bus.$emit("toast", data.msg);
           // this.wxpay();
         }
       })
@@ -159,17 +159,9 @@ export default {
       this.status1 = false;
       this.loading1();
     },
-    // 获取oppenid
-    // if (response.data.status === "2") {
-    //       window.location.href = response.data.url;
-    //     }
      // 支付
     wxpay() {
       // window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx85c8ad7b84b0d265&redirect_uri=http%3a%2f%2fcschushi.cadhx.com%2fapi%2fwxpay%2fwxpay&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect';
-      // var myDate = new Date();
-      // var time =new Date().getTime();
-            
-      // console.log(time);
       this.axios.post("wxpay/wxpay",{
         token: this.token()
       })

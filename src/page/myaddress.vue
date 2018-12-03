@@ -22,32 +22,7 @@ export default {
   name: "myaddress",
   data() {
     return {
-      myaddress: [
-        {
-          name: "陈球球1",
-          phone: "13335649999",
-          address: "郑州市金水区北三环瀚海北金B座",
-          select: false,
-        },
-        {
-          name: "陈球球2",
-          phone: "13335649999",
-          address: "郑州市金水区北三环瀚海北金B座",
-          select: false,
-        },
-        {
-          name: "陈球球3",
-          phone: "13335649999",
-          address: "郑州市金水区北三环瀚海北金B座",
-          select: false,
-        },
-        {
-          name: "陈球球4",
-          phone: "13335649999",
-          address: "郑州市金水区北三环瀚海北金B座",
-          select: false,
-        }
-      ]
+      myaddress: []
     };
   },
 

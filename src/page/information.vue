@@ -316,7 +316,7 @@ export default {
       justify-content: space-between;
       line-height: 100px;
       span {
-        width: 120px;
+        // width: 120px;
         text-align: left;
       }
       input {

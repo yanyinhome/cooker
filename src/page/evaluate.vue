@@ -30,10 +30,10 @@ export default {
       content: this.$route.query.sign,
       number: '0',
       item: {
-        number: "8888889",
-        img: require("../assets/image/zanshi/touxiang.jpg"),
-        name: "张三",
-        content: "擅长川菜、豫菜、客家菜，辛辣菜辛辣菜辛辣菜"
+        number: "",
+        img: '',
+        name: "",
+        content: ""
       }
     };
   },

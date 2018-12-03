@@ -46,7 +46,7 @@
     <!-- 时间弹窗 -->
     <div class="mask" v-show="mask2"  @click="mask2=false">
       <div class="box">
-        <div class="title">请选择预约时间</div>
+        <div class="title">请选择预约时间<span @click="mask2=false">&emsp;&emsp;&emsp;确定&emsp;</span></div>
         <div class="content"> 
            <mt-picker ref="picker" :slots="slots" @change="onValuesChange"  :visibleItemCount=3></mt-picker>
         </div>

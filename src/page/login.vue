@@ -23,35 +23,6 @@ export default {
       password: ""
     };
   },
-
-  // if(this.IsWechat()) {
-  // 				var wurl = encodeURIComponent(window.location.href);
-  // 				if(!window.localStorage.__openId__ || window.localStorage.__openId__ === '') {
-  // 					this.code = this.getQueryString('code');
-  // 					if(!this.code || this.code === '') {
-  // 						window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + this.gappId + '&redirect_uri=' + wurl + '&response_type=code&scope=snsapi_base&state=123#wechat_redirect';
-  // 					} else {
-  // 						this.getOpenId();
-  // 					}
-  // 				}
-  // 			}
-
-  // created() {
-  //   let code = getUrlKey("code");
-  //   if (code) {
-  //     //调用接口获取openId   参考文档https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140842
-  //     getOpenIdApi(code)
-  //       .then(res => {
-  //         let openId = res.openId;
-  //         window.location.replace("/#/login");
-  //       })
-  //       .catch(res => {
-  //         window.location.replace("/#/login");
-  //       });
-  //   } else {
-  //     getCodeApi("123");
-  //   }
-  // },
   beforeRouteEnter(to, from, next) {
     next(vm => {
       if (vm.IsWechat()) {

@@ -8,7 +8,7 @@
       <p>{{message.user_mobile | hideTel}}</p>
       <p>已服务过{{message.order_num}}家庭</p>
       <p>等级：<span v-if="message.grade>0">LV{{message.grade}}</span><span v-else>LV0</span> &emsp;服务费：<span v-if="message.service>0">{{message.service}}</span><span v-else>无</span></p>
-      <div class="box3"> <div class="cai"  v-if="message.isiamic=='清真'">{{message.isiamic}}</div> <div class="cai" v-if="message.isiamic!='清真'">{{message.dish[0]}}</div> <div class="cai" v-if="message.isiamic!='清真'">{{message.dish[1]}}</div></div>
+      <div class="box3"> <div class="cai"  v-if="message.isiamic=='清真'">{{message.isiamic}}</div> <div class="cai" v-for="(item,index) in message.dish" v-if="message.isiamic!='清真'" :key="index">{{item}}&nbsp;</div></div>
     </div>
     <div class="zhengjian">
         <div class="box">
@@ -50,62 +50,8 @@ export default {
     return {
       active: false,
       id: this.$route.query.id,
-      message: {
-        // name: "张三",
-        // img1: require("../assets/image/zanshi/head.jpg"),
-        // img2: require("../assets/image/login1.png"),
-        // img3: require("../assets/image/login1.png"),
-        // phone: "188888888888",
-        // cai1: "川菜",
-        // cai2: "豫菜",
-        // price: "议价",
-        // server: "20"
-      },
-      recommend: [
-        // {
-        //   img: require("../assets/image/zanshi/head.jpg"),
-        //   name: "你好1",
-        //   time: "2018-09-12 09:30",
-        //   message:
-        //     "张师傅做的菜品非常精致，味道也很棒，家人都很喜欢，大力推荐，平台推荐的很好！&#128077"
-        // },{
-        //   img: require("../assets/image/zanshi/head.jpg"),
-        //   name: "你好2",
-        //   time: "2018-09-12 09:30",
-        //   message:
-        //     "张师傅做的菜品非常精致，味道也很棒，家人都很喜欢，大力推荐，平台推荐的很好！&#128077"
-        // },{
-        //   img: require("../assets/image/zanshi/head.jpg"),
-        //   name: "你好3",
-        //   time: "2018-09-12 09:30",
-        //   message:
-        //     "张师傅做的菜品非常精致，味道也很棒，家人都很喜欢，大力推荐，平台推荐的很好！&#128077"
-        // },{
-        //   img: require("../assets/image/zanshi/head.jpg"),
-        //   name: "你好4",
-        //   time: "2018-09-12 09:30",
-        //   message:
-        //     "张师傅做的菜品非常精致，味道也很棒，家人都很喜欢，大力推荐，平台推荐的很好！&#128077"
-        // },{
-        //   img: require("../assets/image/zanshi/head.jpg"),
-        //   name: "你好5",
-        //   time: "2018-09-12 09:30",
-        //   message:
-        //     "张师傅做的菜品非常精致，味道也很棒，家人都很喜欢，大力推荐，平台推荐的很好！&#128077"
-        // },{
-        //   img: require("../assets/image/zanshi/head.jpg"),
-        //   name: "你好6",
-        //   time: "2018-09-12 09:30",
-        //   message:
-        //     "张师傅做的菜品非常精致，味道也很棒，家人都很喜欢，大力推荐，平台推荐的很好！&#128077"
-        // },{
-        //   img: require("../assets/image/zanshi/head.jpg"),
-        //   name: "你好7",
-        //   time: "2018-09-12 09:30",
-        //   message:
-        //     "张师傅做的菜品非常精致，味道也很棒，家人都很喜欢，大力推荐，平台推荐的很好！&#128077"
-        // },
-      ],
+      message: {},
+      recommend: [],
       allLoaded: false
     };
   },

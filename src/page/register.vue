@@ -55,7 +55,6 @@ export default {
     getTelcode (){
       console.log(this.isclick);
       if (this.isclick) {
-        this.isclick = false;
         this.verification();
       } else {
         this.$bus.$emit("toast", '不能重复点击');
@@ -68,7 +67,11 @@ export default {
       } else if (!regTel.test(this.phone)) {
         this.$bus.$emit("toast", "手机号码不合法");
       } else {
-
+        this.isclick = false;
+        this.sendSMSTime = 60;
+        this.isSend = true;
+        this.btntxt = "已发送(" + this.sendSMSTime + ")s";
+        this.timer();
         this.axios
           .post("login/getcode", {
             type: "register",
@@ -79,10 +82,6 @@ export default {
             console.log(data);
             if (data.code === "200") {
               this.$bus.$emit("toast", data.msg);
-              this.sendSMSTime = 60;
-              this.isSend = true;
-              this.btntxt = "已发送(" + this.sendSMSTime + ")s";
-              this.timer();
             } else {
               this.isclick = true;
               this.disabled = false;

@@ -25,20 +25,7 @@ export default {
       address: "",
       center: { lng: 0, lat: 0 },
       zoom: 0,
-      myaddress: [
-        {
-          name: "陈球球",
-          phone: "13335649999",
-          address: "郑州市金水区北三环瀚海北金B座",
-          select: false
-        },
-        {
-          name: "陈球球1",
-          phone: "13335649999",
-          address: "郑州市金水区北三环瀚海北金B座",
-          select: false
-        }
-      ],
+      myaddress: [],
       nam: "6"
     };
   },

@@ -1,12 +1,12 @@
 <template>
   <div id='setPassword'>
-    <com-head  :opacity='0'>修改密码</com-head>
+    <!-- <com-head  :opacity='0'>修改密码</com-head>
     <div class="keepdata" @click="verification">保存</div>
     <div class="password">
        <div class="item"><span>原密码</span><input type="password" v-model="password1" placeholder="请输入旧密码"></div>
        <div class="item"><span>新密码</span><input type="password" v-model="password2" placeholder="请输入新的密码"></div>
        <div class="item"><span>确定新密码</span><input type="password" v-model="password3" placeholder="再次确认新密码"></div>
-    </div>
+    </div> -->
     
   </div>
 </template>

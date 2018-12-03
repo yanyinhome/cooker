@@ -15,11 +15,25 @@
       <router-link to="certification" tag="div" class="box"><div class="img"><img src="../assets/image/cookers.png"></div><p>认证厨师</p></router-link>
       <router-link v-if="message.status=='1'" to="qiangOrder" tag="div" class="box"><div class="img"><img src="../assets/image/qiangdan.png"></div><p>厨师抢单</p></router-link>
       <router-link v-if="message.status=='1'" to="serverOrder" tag="div" class="box"><div class="img"><img src="../assets/image/server.png"></div><p>我的订单</p></router-link>
-      <!-- <div @click="wornmes" tag="div" class="box"><div class="img"><img src="../assets/image/server.png"></div><p>会员中心</p></div>
-      <div @click="wornmes" tag="div" class="box"><div class="img"><img src="../assets/image/server.png"></div><p>优惠券</p></div> -->
+      <div @click="wornmes" class="box"><div class="img"><img src="../assets/image/cimg2.png"></div><p>会员中心</p></div>
+      <div @click="wornmes" class="box"><div class="img"><img src="../assets/image/cimg4.png"></div><p>优惠券</p></div>
+      <div @click="wornmes" class="box"><div class="img"><img src="../assets/image/cimg1.png"></div><p>意见反馈</p></div>
+      <div @click="navVisible" class="box"><div class="img"><img src="../assets/image/cimg3.png"></div><p>联系客服</p></div>
+      <!-- <div class="box box2"><div class="img"><img src="../assets/image/cimg3.png"></div> <a href="tel://19995246697">客服1</a>&emsp;<a href="tel://19995247697">客服2</a></div> -->
       <!-- <router-link to="setPassword" tag="div" class="box"><div class="img"><img src="../assets/image/password.png"></div><p>密码设置</p></router-link> -->
       <!-- <div @click="signOut" class="box"><div class="img"><img src="../assets/image/tuichu.png"></div><p>退出登录</p></div> -->
     </div>
+
+    <div class="comAlert" v-show="show">
+         <div class="alertbox">
+             <div class="alerttop">
+                 <div class="box1"><a href="tel://19995246697">19995246697</a></div>
+                 <div class="box1 box2" ><a href="tel://19995247697">19995247697</a></div>
+             </div>
+             <div class="alertfoot" @click="show=false">取消</div>
+         </div>
+     </div> 
+
     <com-foot :select="4"></com-foot>
   </div>
 </template>
@@ -29,12 +43,13 @@ export default {
   name: "usercenter",
   data() {
     return {
+      show: false,
       active:false,
       message: {
-        name: "张三",
-        img1: require("../assets/image/zanshi/touxiang.jpg"),
-        img2: require("../assets/image/login1.png"),
-        phone: "188888888888",
+        name: "",
+        img1: '',
+        img2: '',
+        phone: "",
       },
     };
   },
@@ -82,11 +97,14 @@ export default {
           console.log(error);
         });
     },
+    navVisible() {
+      this.show = true;
+    },
     toOrder () {
       this.$router.push('sureOrder');
     },
     wornmes () {
-      this.$bus.$emit('toast', '功能陆续开放中');
+      this.$bus.$emit('toast', '功能开放中');
     }  
  }
 };
@@ -174,6 +192,62 @@ export default {
       }
       p {
         font-size: 26px;
+      }
+    }
+  }
+  .comAlert {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 50;
+    background: rgba(4, 4, 15, 0.4);
+    .alertbox {
+      width: 686px;
+      height: 312px;
+      position: absolute;
+      bottom: 20px;
+      left: 32px;
+      .alerttop {
+        height: 202px;
+        background-color: rgba(255, 255, 255, 1);
+        border-radius: 10px;
+        text-align: center;
+        .box1 {
+          height: 100px;
+          line-height: 100px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          span {
+            font-size: 28px;
+          }
+          img {
+            width: 30px;
+            height: 30px;
+          }
+           a {
+            text-decoration:none; 
+            color:#222; 
+          }
+        }
+        .box2 {
+          border-top: 1Px solid #eee;
+          img {
+            width: 40px;
+            height: 36px;
+          }
+        }
+      }
+      .alertfoot {
+        margin-top: 10px;
+        height: 100px;
+        font-size: 32px;
+        text-align: center;
+        line-height: 100px;
+        background: rgba(255, 255, 255, 1);
+        border-radius: 10px;
       }
     }
   }

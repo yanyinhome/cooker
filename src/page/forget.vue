@@ -1,6 +1,6 @@
 <template>
   <div id='forget'>
-      <div class="login_top"></div>
+      <!-- <div class="login_top"></div>
       <div class="login_inp">
           <div class="box1"><img src="../assets/image/login2.png" ></div>
           <input type="text" v-model="phone" placeholder="请验证你注册的手机号">
@@ -14,7 +14,7 @@
           <div class="box1"><img src="../assets/image/login3.png" ></div>
           <input type="password" v-model="password" placeholder="请输入新的密码">
       </div>
-      <com-button :click="register">确定</com-button>
+      <com-button :click="register">确定</com-button> -->
   </div>
 </template>
 <script>

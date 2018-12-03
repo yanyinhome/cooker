@@ -2,7 +2,7 @@
   <div id='certification'>
     <com-head :opacity='0'>{{title}}</com-head>
 
-    <div class="warn" v-if="!status">* 认证厨师需缴纳保证金100.00元，认证后厨师信息不可更改，请认真对待。</div>
+    <!-- <div class="warn" v-if="!status">* 认证厨师需缴纳保证金100.00元，认证后厨师信息不可更改，请认真对待。</div> -->
     <div class="information"  v-if="!status">
         <div class="box1"  @click="portrait1">
             <span>个人照片</span>
@@ -36,7 +36,7 @@
         </div> 
         <div class="item"><span>紧急联系人姓名</span><input type="text" v-model="urgentname" placeholder="请输入紧急联系人姓名"></div>
         <div class="item"><span>紧急联系人电话</span><input type="text" v-model="urgenttel" placeholder="请输入紧急联系人电话"></div>
-        <div class="item"><span>紧急联系人地址</span><input type="text" v-model="urgent_address" placeholder="请输入紧急联系人电话"></div>
+        <div class="item"><span>紧急联系人地址</span><input type="text" v-model="urgent_address" placeholder="请输入紧急联系人地址"></div>
 
         <div class="box1"  @click="portrait2">
             <span>厨师证</span>
@@ -115,9 +115,9 @@ export default {
       activeCai1: '0',
       activeCai2: '-1',
       btnmes: "确定认证",
-      img1: require("../assets/image/zanshi/touxiang.jpg"),
-      img2: require("../assets/image/zanshi/zheng.jpg"),
-      img3: require("../assets/image/zanshi/zheng.jpg"),
+      img1: '',
+      img2:'',
+      img3: '',
       img4: '',
       img5: '',
       img6: '',
@@ -408,7 +408,7 @@ export default {
       console.log(formData.get("imgLocal")); // FormData私有类对象，访问不到，可以通过get判断值是否传进去
       let config = {
         emulateJSON: true,
-        withCredentials: false,
+        withCredentials: true,
         headers: { "Content-Type": "multipart/form-data" }
       };
       this.$axios
@@ -433,7 +433,7 @@ export default {
       console.log(formData.get("imgLocal")); // FormData私有类对象，访问不到，可以通过get判断值是否传进去
       let config = {
         emulateJSON: true,
-        withCredentials: false,
+        withCredentials: true,
         headers: { "Content-Type": "multipart/form-data" }
       };
       this.$axios
@@ -457,7 +457,7 @@ export default {
       console.log(formData.get("imgLocal")); // FormData私有类对象，访问不到，可以通过get判断值是否传进去
       let config = {
         emulateJSON: true,
-        withCredentials: false,
+        withCredentials: true,
         headers: { "Content-Type": "multipart/form-data" }
       };
       this.$axios
@@ -481,7 +481,7 @@ export default {
       console.log(formData.get("imgLocal")); // FormData私有类对象，访问不到，可以通过get判断值是否传进去
       let config = {
         emulateJSON: true,
-        withCredentials: false,
+        withCredentials: true,
         headers: { "Content-Type": "multipart/form-data" }
       };
       this.$axios
@@ -504,7 +504,7 @@ export default {
       console.log(formData.get("imgLocal")); // FormData私有类对象，访问不到，可以通过get判断值是否传进去
       let config = {
         emulateJSON: true,
-        withCredentials: false,
+        withCredentials: true,
         headers: { "Content-Type": "multipart/form-data" }
       };
       this.$axios
@@ -527,7 +527,7 @@ export default {
       console.log(formData.get("imgLocal")); // FormData私有类对象，访问不到，可以通过get判断值是否传进去
       let config = {
         emulateJSON: true,
-        withCredentials: false,
+        withCredentials: true,
         headers: { "Content-Type": "multipart/form-data" }
       };
       this.$axios

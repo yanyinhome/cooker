@@ -183,7 +183,7 @@ export default {
       border-bottom: 1Px solid rgba(238, 238, 238, 1);
       line-height: 102px;
       span {
-        width: 150px;
+        // width: 150px;
         text-align: left;
       }
       input {
