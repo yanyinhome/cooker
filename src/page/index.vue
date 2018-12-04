@@ -154,7 +154,7 @@ export default {
         console.log("跳转");
         window.location.href =
           "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx85c8ad7b84b0d265&redirect_uri=http%3a%2f%2fcschushi.cadhx.com%2fapi%2fwechat%2fset_openid&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
-
+        // https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx6369205e9b2dd4e6&redirect_uri=http://xiaoshuo.cadhx.com/login/set_openid&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect
         var openid = this.getUrlKey("openid");
         console.log("openid" + openid);
         if (!this.getCookie("openid")) {
