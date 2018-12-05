@@ -18,10 +18,10 @@
         <div class="item"><span>用餐人数</span><input type="text" v-model="num" placeholder="请输入用餐人数"></div>
         <div class="xiaogong">
           <span>小工（￥150/次）</span>
-          需要<input type="radio" id="1" value="1" v-model="checked1">
-          不需要<input type="radio" id="2" value="0" v-model="checked1">
+          需要<input type="radio" id="1" value="150" v-model="checked1">
+          不需要<input type="radio" id="2" value="" v-model="checked1">
         </div> 
-        <div class="item" v-show="checked1==='1'"><span>小工服务费</span><input type="text" v-model="servermoney" placeholder="请输入小工服务费"></div>        
+        <!-- <div class="item" v-show="checked1==='1'"><span>小工服务费</span><input type="text" v-model="servermoney" placeholder="请输入小工服务费"></div>         -->
         <div class="xiaogong grade">
           <span>请选择厨师级别</span> 
           <select v-model="selected">
@@ -68,7 +68,7 @@ export default {
       canReq: true,
       noMore: false,
       num: '',
-      checked1: '0',
+      checked1: '',
       checked2: '1',
       servermoney: '',
       selected: '请选择等级服务费',
@@ -155,22 +155,6 @@ export default {
       });
   },
   created() {
-    // var thetime = '2018-04-17 19:09:00';
-    //     var d=new   Date(Date.parse(thetime .replace(/-/g,"/")));
-    //       console.log(d);
-    //     var  curDate=new  Date();
-    // if(d <=curDate){
-    //     alert("小于当前时间");
-    // }else{
-    //     alert("大于当前时间");
-    // }
-
-    // this.loading2();
-
-    // if (localStorage.token) {
-    //   this.time = localStorage.getItem('time');
-    //   this.vegetable = localStorage.getItem('vegetable');
-    // }
     this.loading3();
     if (this.dingwei.addr_receiver) {
       this.address =
@@ -267,17 +251,16 @@ export default {
           order_remark: this.content,
           isiamic: this.checked2,
           number: this.num,
-          coolie: this.servermoney,
+          coolie: this.checked1,
           grade_id: this.selected,
         })
         .then(({ data }) => {
           console.log(data);
           if (data.code === "200") {
-            this.$router.push({ path: "./index" });
+            // this.$router.push({ path: "./index" });
             this.$bus.$emit("toast", data.msg);
-            // 移除菜系和时间
-            localStorage.removeItem("time");
-            localStorage.removeItem("vegetable");
+            const jsApiParameters = data.data;
+            this.jsSdk(jsApiParameters);
           } else if (data.code === "201") {
             this.$bus.$emit("toast", data.msg);
           }
@@ -286,36 +269,50 @@ export default {
           console.log(error);
         });
     },
+     // 支付
+    jsSdk(jsApiParameters) {
+      WeixinJSBridge.invoke(
+        "getBrandWCPayRequest",
+        {
+          appId: jsApiParameters.appId,
+          package: jsApiParameters.package,
+          nonceStr: jsApiParameters.nonceStr,
+          timeStamp: jsApiParameters.timeStamp,
+          signType: jsApiParameters.signType,
+          paySign: jsApiParameters.paySign
+        },
+        // jsApiParameters,
+        function(res) {
+          WeixinJSBridge.log(res.err_msg);
+          var result = res.err_msg;
+          if (result == "get_brand_wcpay_request:ok") {
+            alert("支付成功");
+            // var url = "http://www.hnprkj.com/#/userCenter";
+            var url = "http://chushiq.cadhx.com/#/index";
+          } else {
+            alert("你取消了支付");
+            // var url = "http://www.hnprkj.com/#/userCenter";
+            var url = "http://chushiq.cadhx.com/#/fabu";
+          }
+          window.location.href = url;
+        }
+      );
+    },
     onValuesChange(picker, values) {
       if (picker.getSlotValue(0)) {
         this.time = picker.getSlotValue(0) + " " + picker.getSlotValue(1);
       }
       console.log(picker.getSlotValue(0) + ":" + picker.getSlotValue(1));
-       // 存储时间
-      // if (!localStorage.time) {
-      //   // localStorage.removeItem("time");
-      //   localStorage.setItem("time", this.time);
-      // } 
     },
     addressTo() {
       this.$router.push({ path: "./dingwei" });
     },
     chooce(index, id) {
-      // console.log(index);
-      // this.mask1 = false;
-      // this.d_id = id;
-      // this.vegetable = this.item[index].name;
       this.d_id = id;
        if (this.vegetableId[1]!=this.item[index].d_id) {
           this.vegetableId.push(this.item[index].d_id);
           this.vegetable2.push(this.item[index].name);
        }
-      // this.vegetableId.forEach(e => {
-      //   if (e!=this.item[index].d_id) {
-      //      this.vegetableId.push(this.item[index].d_id);
-      //      this.vegetable2.push(this.item[index].name);
-      //   } 
-      // });
       
       console.log(this.vegetableId);
       if(this.vegetableId.length > 2) {

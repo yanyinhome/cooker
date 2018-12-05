@@ -27,6 +27,7 @@ import serverOrder from '../page/serverOrder';             //服务订单
 import setPassword from '../page/setPassword';             //设置密码
 
 import protocol from '../page/protocol';                   //协议
+import putForward from '../page/putForward';               //保证金提现
 
 import city from '../page/city';                           //三级联动
 
@@ -61,11 +62,6 @@ export default new Router({
 			component: usercenter,
 			name: 'usercenter'
 		}, 
-		// {
-		// 	path: 'login',
-		// 	component: login,
-		// 	name: 'login'
-		// }, 
 		{
 			path: '/register',
 			component: register,
@@ -146,6 +142,10 @@ export default new Router({
 			path: '/protocol',
 			component: protocol,
 			name: 'protocol'
+		}, {
+			path: '/putForward',
+			component: putForward,
+			name: 'putForward'
 		},
 	],
 	scrollBehavior(to, from, savedPosition) {

@@ -10,7 +10,7 @@
     <div class="nav_title" v-if="status2"><span>———</span><div class="box">已抢订单</div><span>———</span></div>
     <div class="message" v-for="(item,index) in data" :key="index">
       <div class="box1">
-        <p  v-if="item.d_name">菜系：{{item.d_name[0] +'，'+ item.d_name[1]}}</p>
+        <p  v-for="(itemname,index) in item.d_name" :key="index">菜系：<span>{{itemname}}</span></p>
         <p>预约时间：{{item.dinner + ':00'}}</p>
         <button @click="qiangdan(item.order_id)"  v-if="status1">立即抢单</button>
       </div>
@@ -38,53 +38,7 @@ export default {
       status1: true,
       status2: false,
       img: require("../assets/image/lunbo.png"),
-      data: [
-        // {
-        //   cai: "川菜",
-        //   time: "2018-09-14 11:00",
-        //   img: require("../assets/image/zanshi/head.jpg"),
-        //   name: "张三1",
-        //   phone: "188888888888",
-        //   address: "瀚海北金瀚海北金",
-        //   time: "2018-09-14 11:00"
-        // },
-        // {
-        //   cai: "川菜",
-        //   time: "2018-09-14 11:00",
-        //   img: require("../assets/image/zanshi/head.jpg"),
-        //   name: "张三2",
-        //   phone: "188888888888",
-        //   address: "瀚海北金瀚海北金",
-        //   time: "2018-09-14 11:00"
-        // },
-        // {
-        //   cai: "川菜",
-        //   time: "2018-09-14 11:00",
-        //   img: require("../assets/image/zanshi/head.jpg"),
-        //   name: "张三3",
-        //   phone: "188888888888",
-        //   address: "瀚海北金瀚海北金",
-        //   time: "2018-09-14 11:00"
-        // },
-        // {
-        //   cai: "川菜",
-        //   time: "2018-09-14 11:00",
-        //   img: require("../assets/image/zanshi/head.jpg"),
-        //   name: "张三4",
-        //   phone: "188888888888",
-        //   address: "瀚海北金瀚海北金",
-        //   time: "2018-09-14 11:00"
-        // },
-        // {
-        //   cai: "川菜",
-        //   time: "2018-09-14 11:00",
-        //   img: require("../assets/image/zanshi/head.jpg"),
-        //   name: "张三5",
-        //   phone: "188888888888",
-        //   address: "瀚海北金瀚海北金",
-        //   time: "2018-09-14 11:00"
-        // }
-      ]
+      data: []
     };
   },
 
@@ -161,13 +115,11 @@ export default {
     },
      // 支付
     wxpay() {
-      // window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx85c8ad7b84b0d265&redirect_uri=http%3a%2f%2fcschushi.cadhx.com%2fapi%2fwxpay%2fwxpay&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect';
       this.axios.post("wxpay/wxpay",{
         token: this.token()
       })
         .then(({data}) => {
           console.log(data);
-          // window.location.href = data.data;
           const jsApiParameters = data.data;
           this.jsSdk(jsApiParameters);
         });
@@ -190,14 +142,10 @@ export default {
           // alert(JSON.stringify(res));
           // return;
           if (result == "get_brand_wcpay_request:ok") {
-            console.log(1);
-            alert("充值成功");
-            // var url = "http://www.hnprkj.com/#/userCenter";
+            alert("支付成功");
             var url = "http://chushiq.cadhx.com/#/qiangOrder";
           } else {
-            console.log(2);
             alert("你取消了支付");
-            // var url = "http://www.hnprkj.com/#/userCenter";
             var url = "http://chushiq.cadhx.com/#/qiangOrder";
           }
           // window.location.href = url;

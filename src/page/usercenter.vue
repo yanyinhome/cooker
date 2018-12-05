@@ -19,6 +19,7 @@
       <div @click="wornmes" class="box"><div class="img"><img src="../assets/image/cimg4.png"></div><p>优惠券</p></div>
       <div @click="wornmes" class="box"><div class="img"><img src="../assets/image/cimg1.png"></div><p>意见反馈</p></div>
       <div @click="navVisible" class="box"><div class="img"><img src="../assets/image/cimg3.png"></div><p>联系客服</p></div>
+       <router-link to="putForward" tag="div" class="box"><div class="img"><i class="iconfont icon-jinbitixian"></i></div><p>退款</p></router-link>
       <!-- <div class="box box2"><div class="img"><img src="../assets/image/cimg3.png"></div> <a href="tel://19995246697">客服1</a>&emsp;<a href="tel://19995247697">客服2</a></div> -->
       <!-- <router-link to="setPassword" tag="div" class="box"><div class="img"><img src="../assets/image/password.png"></div><p>密码设置</p></router-link> -->
       <!-- <div @click="signOut" class="box"><div class="img"><img src="../assets/image/tuichu.png"></div><p>退出登录</p></div> -->
@@ -145,7 +146,7 @@ export default {
     }
     p:nth-of-type(1) {
       font-size: 32px;
-      line-height: 70px;
+      line-height: 40px;
     }
     p:nth-of-type(2) {
       font-size: 30px;
@@ -188,6 +189,10 @@ export default {
         overflow: hidden;
         img {
           height: 100%;
+        }
+        .iconfont {
+          font-size: 55px;
+          color: #ff7116;
         }
       }
       p {

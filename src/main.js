@@ -105,7 +105,6 @@ Vue.prototype.openid = function () {
   } else {
     return false;
   } 
-  
 };
 
 // 计算当前时间

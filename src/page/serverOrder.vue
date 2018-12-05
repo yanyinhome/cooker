@@ -10,7 +10,8 @@
     <div class="warn"  v-if="status==='0'">* 会员下单后，厨师半小时内未接单将自动取消预约。</div>
     <div class="message" :class="{navmargin: status==='0'}" v-for="(item,index) in data" :key="index">
       <div class="box1">
-        <p v-if="item.d_name">菜系：{{item.d_name[0] +'，'+ item.d_name[1]}}</p>
+        <!-- <p v-if="item.d_name">菜系：{{item.d_name[0] +'，'+ item.d_name[1]}}</p> -->
+        <p  v-for="(itemname,index) in item.d_name" :key="index">菜系：<span>{{itemname}}</span></p>
         <p>预约时间：{{item.dinner + ":00"}}</p>
       </div>
       <div class="box2">

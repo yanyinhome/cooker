@@ -102,6 +102,8 @@ export default {
         this.$bus.$emit('toast', '手机号不能为空');
       } else if (!regTel.test(this.phone)) {
         this.$bus.$emit('toast', '手机号码不合法');
+      } else if (!this.content) {
+        this.$bus.$emit('toast', '请输入详细地址');
       } else {
         if (this.status === '1') {
           //添加地址
@@ -124,8 +126,8 @@ export default {
           .then(({data}) => {
             console.log(data)
             if (data.code === '200') {
-              this.$router.push('usercenter');              
-              this.myaddress = data.data;
+              this.$router.push('myaddress');   
+              this.$bus.$emit('toast', data.msg);
             } else if (data.code === '201') {
               this.$bus.$emit('toast', data.msg);
             }
@@ -146,8 +148,9 @@ export default {
           .then(({data}) => {
             console.log(data)
             if (data.code === '200') {
-              this.$router.push('usercenter');              
+              this.$router.push('myaddress');              
               this.myaddress = data.data;
+              this.$bus.$emit('toast', data.msg);
             } else if (data.code === '201') {
               this.$bus.$emit('toast', data.msg);
             }

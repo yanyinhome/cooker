@@ -116,7 +116,7 @@ export default {
   },
   created() {
     // console.log(this.$route.query.name);
-    console.log(this.myaddress);
+    // console.log(this.myaddress);
     this.time = this.nowTime();
     this.loading();
     this.loading1();
@@ -180,7 +180,7 @@ export default {
     },
     onValuesChange(picker, values) {
       this.time = picker.getValues()[0]+ " " + picker.getValues()[1];
-      console.log(this.time);
+      // console.log(this.time);
     },
      // 预约时间
     loading () {
@@ -190,7 +190,7 @@ export default {
           if (data.code === '200') {
             this.slots[0].values = data.data;
           } else if (data.code === '201') {
-            
+            this.$bus.$emit("toast", data.msg);                        
           }
         })
         .catch((error) => {

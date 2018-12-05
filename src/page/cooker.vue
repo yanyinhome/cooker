@@ -64,143 +64,7 @@ export default {
       time: "用餐时间",
       vagetables: "菜系",
       item: ["川菜", "粤菜", "鲁菜", "苏菜", "浙菜", "闽菜", "湘菜", "薇菜"],
-      message: [
-        // {
-        //   img: require("../assets/image/login1.png"),
-        //   name: "张三1",
-        //   mes: "简介",
-        //   cai1: "川菜",
-        //   cai2: "豫菜",
-        //   price: "议价",
-        //   server: "20"
-        // },
-        // {
-        //   img: require("../assets/image/login1.png"),
-        //   name: "张三2",
-        //   mes: "简介",
-        //   cai1: "川菜",
-        //   cai2: "豫菜",
-        //   price: "议价",
-        //   server: "20"
-        // },
-        // {
-        //   img: require("../assets/image/login1.png"),
-        //   name: "张三3",
-        //   mes: "简介",
-        //   cai1: "川菜",
-        //   cai2: "豫菜",
-        //   price: "议价",
-        //   server: "20"
-        // },
-        // {
-        //   img: require("../assets/image/login1.png"),
-        //   name: "张三4",
-        //   mes: "简介",
-        //   cai1: "川菜",
-        //   cai2: "豫菜",
-        //   price: "议价",
-        //   server: "20"
-        // },
-        // {
-        //   img: require("../assets/image/login1.png"),
-        //   name: "张三5",
-        //   mes: "简介",
-        //   cai1: "川菜",
-        //   cai2: "豫菜",
-        //   price: "议价",
-        //   server: "20"
-        // },
-        // {
-        //   img: require("../assets/image/login1.png"),
-        //   name: "张三6",
-        //   mes: "简介",
-        //   cai1: "川菜",
-        //   cai2: "豫菜",
-        //   price: "议价",
-        //   server: "20"
-        // },
-        // {
-        //   img: require("../assets/image/login1.png"),
-        //   name: "张三7",
-        //   mes: "简介",
-        //   cai1: "川菜",
-        //   cai2: "豫菜",
-        //   price: "议价",
-        //   server: "20"
-        // },
-        // {
-        //   img: require("../assets/image/login1.png"),
-        //   name: "张三8",
-        //   mes: "简介",
-        //   cai1: "川菜",
-        //   cai2: "豫菜",
-        //   price: "议价",
-        //   server: "20"
-        // },
-        // {
-        //   img: require("../assets/image/login1.png"),
-        //   name: "张三9",
-        //   mes: "简介",
-        //   cai1: "川菜",
-        //   cai2: "豫菜",
-        //   price: "议价",
-        //   server: "20"
-        // },
-        // {
-        //   img: require("../assets/image/login1.png"),
-        //   name: "张三0",
-        //   mes: "简介",
-        //   cai1: "川菜",
-        //   cai2: "豫菜",
-        //   price: "议价",
-        //   server: "20"
-        // },
-        // {
-        //   img: require("../assets/image/login1.png"),
-        //   name: "张三11",
-        //   mes: "简介",
-        //   cai1: "川菜",
-        //   cai2: "豫菜",
-        //   price: "议价",
-        //   server: "20"
-        // },
-        // {
-        //   img: require("../assets/image/login1.png"),
-        //   name: "张三12",
-        //   mes: "简介",
-        //   cai1: "川菜",
-        //   cai2: "豫菜",
-        //   price: "议价",
-        //   server: "20"
-        // },
-        // {
-        //   img: require("../assets/image/login1.png"),
-        //   name: "张三13",
-        //   mes: "简介",
-        //   cai1: "川菜",
-        //   cai2: "豫菜",
-        //   price: "议价",
-        //   server: "20"
-        // },
-        // {
-        //   img: require("../assets/image/login1.png"),
-        //   name: "张三14",
-        //   mes: "简介",
-        //   cai1: "川菜",
-        //   cai2: "豫菜",
-        //   price: "议价",
-        //   server: "20"
-        // },
-        // {
-        //   img: require("../assets/image/login1.png"),
-        //   name: "张三15",
-        //   mes: "简介",
-        //   cai1: "川菜",
-        //   cai2: "豫菜",
-        //   price: "议价",
-        //   server: "20"
-        // }
-      ],
+      message: [],
       slots: [
         {
           flex: 1,
@@ -216,7 +80,7 @@ export default {
         },
         {
           flex: 1,
-          values: ["00:00", "01:00", "02:00", "03:00", "04:00", "05:00"],
+          values: ["11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00"],
           className: "slot3",
           textAlign: "left",
           defaultIndex: 1
@@ -292,12 +156,10 @@ export default {
         });
     },
     loadTop() {
-      console.log(147);
       // 加载更多数据
       this.$refs.loadmore.onTopLoaded();
     },
     loadBottom() {
-      console.log(258);
       // 加载更多数据
       this.allLoaded = true;// 若数据已全部获取完毕
       // this.$refs.loadmore.onBottomLoaded();
