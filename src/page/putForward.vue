@@ -175,7 +175,8 @@ export default {
   text-align: center;
   background-color: #fff;
   .bookcoin {
-    margin-top: 100px;
+    background-color: #fff;
+    padding-top: 100px;
     p:nth-of-type(1) {
       margin-top: 30px;
       font-size: 34px;

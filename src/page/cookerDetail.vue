@@ -8,7 +8,7 @@
       <p>{{message.user_mobile | hideTel}}</p>
       <p>已服务过{{message.order_num}}家庭</p>
       <p>等级：<span v-if="message.grade>0">LV{{message.grade}}</span><span v-else>LV0</span> &emsp;服务费：<span v-if="message.service>0">{{message.service}}</span><span v-else>无</span></p>
-      <div class="box3"> <div class="cai"  v-if="message.isiamic=='清真'">{{message.isiamic}}</div> <div class="cai" v-for="(item,index) in message.dish" v-if="message.isiamic!='清真'" :key="index">{{item}}</div>&nbsp;</div>
+      <div class="box3"> <div class="cai"  v-if="message.isiamic=='清真'">{{message.isiamic}}</div> <div class="cai" v-for="(item,index) in message.dish" v-if="message.isiamic!='清真'" :key="index">{{item}}</div></div>
     </div>
     <div class="zhengjian">
         <div class="box">
@@ -192,7 +192,7 @@ export default {
       border-top: 1Px dashed #888;
       .cai {
         display: inline-block;
-        // width:72px;
+        margin-right: 5px;
         padding: 4px 8px;
         height: 28px;
         border-radius: 15px;

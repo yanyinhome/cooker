@@ -63,12 +63,12 @@ export default {
       aaa: false,
       time: "用餐时间",
       vagetables: "菜系",
-      item: ["川菜", "粤菜", "鲁菜", "苏菜", "浙菜", "闽菜", "湘菜", "薇菜"],
+      item: [],
       message: [],
       slots: [
         {
           flex: 1,
-          values: ["今天", "明天", "03", "04", "05", "06"],
+          values: [],
           className: "slot1",
           textAlign: "right",
           defaultIndex: 1
@@ -97,13 +97,12 @@ export default {
     };
   },
   created() {
-    this.loading1();
-    this.loading2();
-    this.loading3('','');
+    this.loadingTime();
   },
   mounted() {
-    // this.$bus.$on(abc);
-    // console.log(abc);
+    this.loading1();
+    // this.loading2();
+    this.loading3('','');
   },
   methods: {
     // 菜系
@@ -113,8 +112,8 @@ export default {
           console.log(data);
           if (data.code === '200') {
             this.item = data.data;
-          } else if (data.code === '201') {
-            
+          } else if (data.code === "201") {
+            this.$bus.$emit("toast", data.msg);
           }
         })
         .catch((error) => {
@@ -122,20 +121,20 @@ export default {
         });
     },
     // 预约时间
-    loading2 () {
-      this.axios.post('index/apiTime')
-        .then(({data}) => {
-          console.log(data);
-          if (data.code === '200') {
-            this.slots[0].values = data.data;
-          } else if (data.code === '201') {
-            
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
+    // loading2 () {
+    //   this.axios.post('index/apiTime')
+    //     .then(({data}) => {
+    //       console.log(data);
+    //       if (data.code === '200') {
+    //         this.slots[0].values = data.data;
+    //       } else if (data.code === "201") {
+    //         this.$bus.$emit("toast", data.msg);
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
+    // },
     // 厨师列表
     loading3 (time,caixiId) {
       this.axios.post('cook/index',{
@@ -147,8 +146,8 @@ export default {
           console.log(data);
           if (data.code === '200') {
             this.message = data.data;
-          } else if (data.code === '201') {
-            
+          } else if (data.code === "201") {
+            this.$bus.$emit("toast", data.msg);
           }
         })
         .catch((error) => {
@@ -191,9 +190,11 @@ export default {
       }
     },
     onValuesChange(picker, values) {
-      // console.log(picker.getSlotValue(0) + ":" + picker.getSlotValue(1));
-      this.time = picker.getValues()[0] + " " + picker.getValues()[1];
-      console.log(picker.getValues()[0]);
+      if (picker.getSlotValue(0)) {
+        this.time = picker.getSlotValue(0) + " " + picker.getSlotValue(1);
+      } else {
+        this.time = this.today1();
+      }
     },
     // 选择菜系
     allCai(id) {

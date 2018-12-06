@@ -17,11 +17,11 @@
       </div> 
        <div class="item"><span>用餐人数</span><input type="text" v-model="num" placeholder="请输入用餐人数"></div>
         <div class="xiaogong">
-          <span>是否需要小工</span>
-          需要<input type="radio" id="1" value="1" v-model="checked1">
-          不需要<input type="radio" id="2" value="0" v-model="checked1">
+          <span>小工(￥150/次)</span>
+          需要<input type="radio" id="1" value="150" v-model="checked1">
+          不需要<input type="radio" id="2" value="" v-model="checked1">
         </div> 
-        <div class="item" v-show="checked1==='1'"><span>小工服务费</span><input type="text" v-model="servermoney" placeholder="请输入小工服务费"></div>        
+        <!-- <div class="item" v-show="checked1==='1'"><span>小工服务费</span><input type="text" v-model="servermoney" placeholder="请输入小工服务费"></div>         -->
        <div class="item" @click="mask = true"><span>上门时间</span><input type="text" v-model="time"  readonly="readonly" placeholder="请选择"><i class="iconfont icon-xiayi"></i></div>
     </div>
 
@@ -33,7 +33,9 @@
     <!-- 时间弹窗 -->
     <div class="mask" v-show="mask"  @click="mask = false">
       <div class="box">
-        <div class="title">请选择预约时间</div>
+        <div class="title">请选择预约时间
+          <span @click="mask=false">&emsp;&emsp;&emsp;确定&emsp;</span>
+        </div>
         <div class="content"> 
            <mt-picker ref="picker" :slots="slots" @change="onValuesChange"  :visibleItemCount=3></mt-picker>
         </div>
@@ -57,13 +59,13 @@ export default {
       time1: "",
       time2: "",
       time: "",
-      checked1: '0',
+      checked1: '',
       checked2: '1',
       servermoney: '',
       slots: [
         {
           flex: 1,
-          values: ['今天', '明天', '03', '04', '05', '06'],
+          values: [],
           className: 'slot1',
           textAlign: 'right',
           defaultIndex: 1
@@ -73,7 +75,16 @@ export default {
           className: 'slot2'
         }, {
           flex: 1,
-          values: ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00'],
+          values: ["11:00",
+            "12:00",
+            "13:00",
+            "14:00",
+            "15:00",
+            "16:00",
+            "17:00",
+            "18:00",
+            "19:00",
+            "20:00"],
           className: 'slot3',
           textAlign: 'left',
           defaultIndex: 1
@@ -115,10 +126,9 @@ export default {
       });
   },
   created() {
-    // console.log(this.$route.query.name);
-    // console.log(this.myaddress);
+    this.loadingTime();
     this.time = this.nowTime();
-    this.loading();
+    // this.loading();
     this.loading1();
   },
 
@@ -147,10 +157,6 @@ export default {
     bespeak() {
       var myDate = new Date();
       var year = myDate.getFullYear(); 
-      // var year = year < 2000 ? year + 1900 : year 
-      // var yy = year.toString().substr(2, 2); 
-
-      console.log(year);
       this.axios.post('cook/apimake',{
         token: this.token(),
         c_id: this.id,
@@ -159,7 +165,7 @@ export default {
         order_remark: this.content,
         isiamic: this.checked2,
         number: this.num,
-        coolie: this.servermoney,
+        coolie: this.checked1,
       })
         .then(({data}) => {
           console.log(data);
@@ -183,20 +189,20 @@ export default {
       // console.log(this.time);
     },
      // 预约时间
-    loading () {
-      this.axios.post('index/apiTime')
-        .then(({data}) => {
-          console.log(data);
-          if (data.code === '200') {
-            this.slots[0].values = data.data;
-          } else if (data.code === '201') {
-            this.$bus.$emit("toast", data.msg);                        
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
+    // loading () {
+    //   this.axios.post('index/apiTime')
+    //     .then(({data}) => {
+    //       console.log(data);
+    //       if (data.code === '200') {
+    //         this.slots[0].values = data.data;
+    //       } else if (data.code === '201') {
+    //         this.$bus.$emit("toast", data.msg);                        
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
+    // },
   }
 };
 </script>

@@ -12,7 +12,7 @@
       <div class="box1">
         <p  v-for="(itemname,index) in item.d_name" :key="index">菜系：<span>{{itemname}}</span></p>
         <p>预约时间：{{item.dinner + ':00'}}</p>
-        <button @click="qiangdan(item.order_id)"  v-if="status1">立即抢单</button>
+        <button @click="qiangdan(item.order_id)"  :disabled="isDisable"  v-if="status1">立即抢单</button>
       </div>
       <div class="box2">
         <div class="headimg"><img :src="item.user_avat"></div>
@@ -35,6 +35,7 @@ export default {
   name: "qiangOrder",
   data() {
     return {
+      isDisable: false,
       status1: true,
       status2: false,
       img: require("../assets/image/lunbo.png"),
@@ -83,6 +84,10 @@ export default {
       });
     },
     qiangdan (id) {
+      this.isDisable = true
+      setTimeout(() => {
+      this.isDisable = false
+      }, 1000)
       this.axios.post("user/order",{
         token: this.token(),
         order_id: id
@@ -143,12 +148,12 @@ export default {
           // return;
           if (result == "get_brand_wcpay_request:ok") {
             alert("支付成功");
-            var url = "http://chushiq.cadhx.com/#/qiangOrder";
+            var url = "http://chushiq.cadhx.com/qiangOrder";
           } else {
             alert("你取消了支付");
-            var url = "http://chushiq.cadhx.com/#/qiangOrder";
+            var url = "http://chushiq.cadhx.com/qiangOrder";
           }
-          // window.location.href = url;
+          window.location.href = url;
         }
       );
     },

@@ -56,14 +56,14 @@ Vue.prototype.$bus = new Vue();
 // });
 
 //设置cookie,增加到vue实例方便全局调用
-Vue.prototype.setCookie= function (cname, cvalue, exdays){
+Vue.prototype.setCookie = function (cname, cvalue, exdays) {
   var d = new Date();
   d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
   var expires = "expires=" + d.toGMTString();
   document.cookie = cname + "=" + cvalue + "; " + expires;
 };
 // 获取
-Vue.prototype.getCookie = function (cname){
+Vue.prototype.getCookie = function (cname) {
   var name = cname + "=";
   var ca = document.cookie.split(';');
   for (var i = 0; i < ca.length; i++) {
@@ -73,7 +73,7 @@ Vue.prototype.getCookie = function (cname){
   return "";
 };
 // 删除
-Vue.prototype.delCookie =function (name) {
+Vue.prototype.delCookie = function (name) {
   var exp = new Date();
   exp.setTime(exp.getTime() - 1);
   var cval = this.getCookie(name);
@@ -93,7 +93,7 @@ Vue.prototype.IsWechat = () => {
 Vue.prototype.token = function () {
   if (localStorage.token) {
     var getToken = localStorage.getItem('token');
-  } 
+  }
   return getToken;
 };
 
@@ -104,20 +104,53 @@ Vue.prototype.openid = function () {
     return getopenid;
   } else {
     return false;
-  } 
+  }
 };
-
 // 计算当前时间
-Vue.prototype.today = function () {
-  var time = new Date();      
-  var m = time.getMonth() + 1;   
-  var t = time.getFullYear() + "-" + m + "-"+ time.getDate() + " " + time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds()
+Vue.prototype.loadingTime = function () {
+  var timeArray = [];
+  var d = new Date();
+  var i = 2;
+  // setInterval(function(){
+  for (let i = 0; i < 31; i++) {
+    if (i < 31) {
+      var month;
+      var r = d.getDate() + 1;
+      d.setDate(Math.abs(r));
+      var day = (d.getDate() - 1) < 10 ? "0" + d.getDate() : d.getDate() - 1; r < 0
+        ? (month = d.getMonth() < 10 ? "0" + d.getMonth() : d.getMonth())
+        : (month =
+          d.getMonth() + 1 < 10
+            ? "0" + parseInt(d.getMonth() + 1)
+            : d.getMonth() + 1);
+      var year = new Date().getFullYear();
+      var timenow = month + "-" + day;
+    } else {
+      d = new Date();
+      i = 1;
+    }
+    timeArray.push(timenow);
+  }
+  this.slots[0].values = timeArray;
+},
+  // 计算当前时间
+  Vue.prototype.today = function () {
+    var time = new Date();
+    var m = time.getMonth() + 1;
+    var t = time.getFullYear() + "-" + m + "-" + time.getDate() + " " + time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds()
+    return t;
+  };
+// 计算当前时间(时)
+Vue.prototype.today1 = function () {
+  var time = new Date();
+  var m = time.getMonth() + 1;
+  var t = m + "-" + time.getDate() + " " + time.getHours() + ":00"
   return t;
 };
 // 时间前半段
 Vue.prototype.nowTime = function () {
-  var time = new Date();      
-  var m = time.getMonth() + 1;   
+  var time = new Date();
+  var m = time.getMonth() + 1;
   var t = time.getFullYear() + "-" + m + "-"
   return t;
 };
@@ -126,7 +159,7 @@ Vue.prototype.$axios = axios;
 
 // 全局过滤器，手机号中间四位隐藏
 Vue.filter('hideTel', function (value) {
-  if (!value){
+  if (!value) {
     return;
   }
   if (typeof (value) !== 'string') {
@@ -135,16 +168,16 @@ Vue.filter('hideTel', function (value) {
   return value.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2');
 });
 
-  // 局部过滤器，隐藏地址
+// 局部过滤器，隐藏地址
 Vue.filter('hideAddress', function (value) {
-  if (!value){
+  if (!value) {
     return;
   }
   if (typeof value !== "string") {
     value = value.toString();
   }
   return value.slice(0, value.indexOf("市") + 1).concat("****");
-});  
+});
 
 // axios请求
 Vue.prototype.axios = axios.create({
