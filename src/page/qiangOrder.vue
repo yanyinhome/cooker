@@ -100,8 +100,8 @@ export default {
           this.loading1();
           this.$bus.$emit("toast", data.msg);
         } else if (data.code === "201") {
-          // this.$bus.$emit("toast", data.msg);
-          // this.wxpay();
+          this.$bus.$emit("toast", data.msg);
+          this.wxpay();
         }
       })
       .catch(error => {

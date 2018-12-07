@@ -103,6 +103,8 @@ export default {
         // 支付宝提现
         if (!this.money || !this.zhifubao || !this.zhifuname) {
           this.$bus.$emit("toast", "输入信息不能为空");
+        } else if (this.money == '0') {
+          this.$bus.$emit("toast", "暂无可提现金额");
         } else {
           this.axios
             .post("user/cash", {
@@ -138,6 +140,8 @@ export default {
           !this.bank
         ) {
           this.$bus.$emit("toast", "输入信息不能为空");
+        } else if (this.money == '0') {
+          this.$bus.$emit("toast", "暂无可提现金额");
         } else {
           this.axios
             .post("user/cash", {

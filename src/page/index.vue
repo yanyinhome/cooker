@@ -13,12 +13,12 @@
       <div class="itemlist recommend" v-for="(item,index) in message1" :key="index"  @click="toDetail(item.c_id)">
         <div class="left"><img :src="item.user_avat"></div>
         <div class="center">
-          <div class="box1">{{item.user_truename}}<span v-if="item.grade>0">&emsp;LV{{item.grade}}</span><span v-else>&emsp;LV0</span></div>
+          <div class="box1">{{item.user_truename}}<span v-if="item.grade>0">&emsp;{{item.grade|grade}}</span><span v-else>&emsp;LV0</span></div>
           <div class="box2">{{item.user_sign}}</div>
           <div class="box3">  <div class="cai"  v-if="item.isiamic=='清真'">{{item.isiamic}}</div><div class="cai"  v-if="item.isiamic!='清真'">{{item.dish[0]}}</div> <div class="cai"  v-if="item.isiamic!='清真'">{{item.dish[1]}}</div> </div>
         </div>
         <div class="right">
-          <div class="box1">{{price}}</div>
+          <div class="box1">￥{{item.price}}</div>
           <div class="box2">服务过{{item.family}}家庭</div>
         </div>
       </div>
@@ -29,12 +29,12 @@
       <div class="itemlist recommend" v-for="(item,index) in message2" :key="index"  @click="toDetail(item.c_id)">
         <div class="left"><img :src="item.user_avat"></div>
         <div class="center">
-          <div class="box1">{{item.user_truename}}<span v-if="item.grade>0">&emsp;LV{{item.grade}}</span><span v-else>&emsp;LV0</span></div>          
+          <div class="box1">{{item.user_truename}}<span v-if="item.grade>0">&emsp;LV{{item.grade|grade}}</span><span v-else>&emsp;LV0</span></div>          
           <div class="box2">{{item.user_sign}}</div>
           <div class="box3">  <div class="cai"  v-if="item.isiamic=='清真'">{{item.isiamic}}</div><div class="cai"   v-if="item.isiamic!='清真'">{{item.dish[0]}}</div> <div class="cai"   v-if="item.isiamic!='清真'">{{item.dish[1]}}</div> </div>
         </div>
         <div class="right">
-          <div class="box1">{{price}}</div>
+          <div class="box1">￥{{item.price}}</div>
           <div class="box2">服务过{{item.family}}家庭</div>
         </div>
       </div>
@@ -56,7 +56,7 @@ export default {
   name: "index",
   data() {
     return {
-      price: "议价",
+      // price: "议价",
       images: [
         // require("../assets/image/lunbo.png"),
         // require("../assets/image/lunbo.png"),

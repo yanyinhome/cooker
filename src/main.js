@@ -110,19 +110,17 @@ Vue.prototype.openid = function () {
 Vue.prototype.loadingTime = function () {
   var timeArray = [];
   var d = new Date();
-  var i = 2;
-  // setInterval(function(){
-  for (let i = 0; i < 31; i++) {
-    if (i < 31) {
+  var i = 1;
+  for (let j = 0; j <= 30; j++) {
+  // console.log(d.getMonth());
+    i++;
+    if (i <= this.monthnum()) {
       var month;
       var r = d.getDate() + 1;
       d.setDate(Math.abs(r));
-      var day = (d.getDate() - 1) < 10 ? "0" + d.getDate() : d.getDate() - 1; r < 0
-        ? (month = d.getMonth() < 10 ? "0" + d.getMonth() : d.getMonth())
-        : (month =
-          d.getMonth() + 1 < 10
-            ? "0" + parseInt(d.getMonth() + 1)
-            : d.getMonth() + 1);
+      var day = (d.getDate()) < 10 ? "0" + (d.getDate()) : d.getDate() ; 
+      r > 31 ? (month = d.getMonth() + 2 < 10 ? "0" + (d.getMonth() + 2) : d.getMonth() + 2)
+        : (month = d.getMonth() + 1 < 10 ? "0" + parseInt(d.getMonth() + 1) : d.getMonth() + 1);
       var year = new Date().getFullYear();
       var timenow = month + "-" + day;
     } else {
@@ -131,15 +129,24 @@ Vue.prototype.loadingTime = function () {
     }
     timeArray.push(timenow);
   }
+  console.log(timeArray);
   this.slots[0].values = timeArray;
 },
+// 获取当前月份天数
+Vue.prototype.monthnum =function (){
+  var date = new Date();
+  var year = date.getFullYear();
+  var month = date.getMonth()+1;
+  var d = new Date(year, month, 0);
+  return d.getDate();
+}
   // 计算当前时间
-  Vue.prototype.today = function () {
+Vue.prototype.today = function () {
     var time = new Date();
     var m = time.getMonth() + 1;
     var t = time.getFullYear() + "-" + m + "-" + time.getDate() + " " + time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds()
     return t;
-  };
+};
 // 计算当前时间(时)
 Vue.prototype.today1 = function () {
   var time = new Date();
@@ -177,6 +184,14 @@ Vue.filter('hideAddress', function (value) {
     value = value.toString();
   }
   return value.slice(0, value.indexOf("市") + 1).concat("****");
+});
+// 厨师等级
+Vue.filter('grade', function (value) {
+  if (!value) {
+    return;
+  }
+  const grade = ['初级','中级','高级','技师','高级技师',]
+  return grade[value-1];
 });
 
 // axios请求
