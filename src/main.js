@@ -109,27 +109,32 @@ Vue.prototype.openid = function () {
 // 计算当前时间
 Vue.prototype.loadingTime = function () {
   var timeArray = [];
-  var d = new Date();
-  var i = 1;
-  for (let j = 0; j <= 30; j++) {
-  // console.log(d.getMonth());
-    i++;
-    if (i <= this.monthnum()) {
-      var month;
-      var r = d.getDate() + 1;
-      d.setDate(Math.abs(r));
-      var day = (d.getDate()) < 10 ? "0" + (d.getDate()) : d.getDate() ; 
-      r > 31 ? (month = d.getMonth() + 2 < 10 ? "0" + (d.getMonth() + 2) : d.getMonth() + 2)
-        : (month = d.getMonth() + 1 < 10 ? "0" + parseInt(d.getMonth() + 1) : d.getMonth() + 1);
-      var year = new Date().getFullYear();
-      var timenow = month + "-" + day;
-    } else {
-      d = new Date();
-      i = 1;
-    }
-    timeArray.push(timenow);
+  for (var i = 0; i < 30; i++) {
+    var weekDayArr = [
+      "星期日",
+      "星期一",
+      "星期二",
+      "星期三",
+      "星期四",
+      "星期五",
+      "星期六"
+    ]; //星期映射数组
+    var myDate = new Date();
+    var milliseconds = myDate.getTime() + 1000 * 60 * 60 * 24 * i; //当i为0代表当前日期，为1时可以得到明天的日期，以此类推
+    var newMyDate = new Date(milliseconds);
+    var weekDay = newMyDate.getDay(); //获取当前星期X(0-6,0代表星期天)
+    var year = newMyDate.getFullYear(); //获取当前年
+    var month = newMyDate.getMonth() + 1; //获取当前月
+    var month1;
+    month < 10 ? (month1 = "0" + month) : (month1 = month);
+    var day = newMyDate.getDate(); //获取当前日
+    var day1;
+    day < 10 ? (day1 = "0" + day) : (day1 = day);
+    var timelis = month1 + "-" + day1;
+    //  console.log(year+'/'+month+'/'+day+weekDayArr[weekDay])
+    timeArray.push(timelis);
   }
-  console.log(timeArray);
+  // console.log(timeArray);
   this.slots[0].values = timeArray;
 },
 // 获取当前月份天数
@@ -187,11 +192,8 @@ Vue.filter('hideAddress', function (value) {
 });
 // 厨师等级
 Vue.filter('grade', function (value) {
-  if (!value) {
-    return;
-  }
-  const grade = ['普通','初级','中级','高级','技师','高级技师',]
-  return grade[value-1];
+  const grade = ['普通','初级','中级','高级','技师','高级技师']
+  return grade[value];
 });
 
 // axios请求

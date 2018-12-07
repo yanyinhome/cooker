@@ -55,8 +55,8 @@ export default {
   name: "cooker",
   data() {
     return {
-      grade: '',
-      caixiId: '',
+      grade: "",
+      caixiId: "",
       mask1: false,
       mask2: false, //时间
       aaa: false,
@@ -79,7 +79,18 @@ export default {
         },
         {
           flex: 1,
-          values: ["11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00"],
+          values: [
+            "11:00",
+            "12:00",
+            "13:00",
+            "14:00",
+            "15:00",
+            "16:00",
+            "17:00",
+            "18:00",
+            "19:00",
+            "20:00"
+          ],
           className: "slot3",
           textAlign: "left",
           defaultIndex: 1
@@ -96,28 +107,27 @@ export default {
     };
   },
   created() {
-   
     this.loadingTime();
- 
   },
   mounted() {
     this.loading1();
     // this.loading2();
-    this.loading3('','');
+    this.loading3("", "");
   },
   methods: {
     // 菜系
-    loading1 () {
-      this.axios.post('index/dish_list')
-        .then(({data}) => {
+    loading1() {
+      this.axios
+        .post("index/dish_list")
+        .then(({ data }) => {
           console.log(data);
-          if (data.code === '200') {
+          if (data.code === "200") {
             this.item = data.data;
           } else if (data.code === "201") {
             this.$bus.$emit("toast", data.msg);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
     },
@@ -137,21 +147,22 @@ export default {
     //     });
     // },
     // 厨师列表
-    loading3 (time,caixiId) {
-      this.axios.post('cook/index',{
-        token: this.token(),
-        add_time: time,
-        d_id: caixiId
-      })
-        .then(({data}) => {
+    loading3(time, caixiId) {
+      this.axios
+        .post("cook/index", {
+          token: this.token(),
+          add_time: time,
+          d_id: caixiId
+        })
+        .then(({ data }) => {
           console.log(data);
-          if (data.code === '200') {
+          if (data.code === "200") {
             this.message = data.data;
           } else if (data.code === "201") {
             this.$bus.$emit("toast", data.msg);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
     },
@@ -161,7 +172,7 @@ export default {
     },
     loadBottom() {
       // 加载更多数据
-      this.allLoaded = true;// 若数据已全部获取完毕
+      this.allLoaded = true; // 若数据已全部获取完毕
       // this.$refs.loadmore.onBottomLoaded();
     },
     changeMask1() {
@@ -175,19 +186,19 @@ export default {
     // 选择时间
     allTime() {
       this.time = "不限时间";
-      if (this.vagetables === '不限菜系'||this.vagetables === '菜系') {
-        this.loading3('','');
+      if (this.vagetables === "不限菜系" || this.vagetables === "菜系") {
+        this.loading3("", "");
       } else {
-        this.loading3('',this.caixiId);
+        this.loading3("", this.caixiId);
       }
     },
-    sureTIme () {
+    sureTIme() {
       var myDate = new Date();
-      var year = myDate.getFullYear(); 
-      if (this.vagetables === '不限菜系'||this.vagetables === '菜系') {
-        this.loading3(year + '-'+ this.time, '');
+      var year = myDate.getFullYear();
+      if (this.vagetables === "不限菜系" || this.vagetables === "菜系") {
+        this.loading3(year + "-" + this.time, "");
       } else {
-        this.loading3(year + '-'+ this.time,this.caixiId);
+        this.loading3(year + "-" + this.time, this.caixiId);
       }
     },
     onValuesChange(picker, values) {
@@ -202,27 +213,27 @@ export default {
       var myDate = new Date();
       var year = myDate.getFullYear();
       this.vagetables = "不限菜系";
-      if (this.time === '不限时间'||this.time === '用餐时间') {
-        this.loading3('','');
+      if (this.time === "不限时间" || this.time === "用餐时间") {
+        this.loading3("", "");
       } else {
-        this.loading3(year + '-'+ this.time,'');
+        this.loading3(year + "-" + this.time, "");
       }
     },
-    chooce(index,id) {
+    chooce(index, id) {
       var myDate = new Date();
       var year = myDate.getFullYear();
       console.log(id);
       this.mask = false;
-      this.caiid = id;      
+      this.caiid = id;
       this.vagetables = this.item[index].name;
-      if (this.time === '不限时间'||this.time === '用餐时间') {
-        this.loading3('', id);
+      if (this.time === "不限时间" || this.time === "用餐时间") {
+        this.loading3("", id);
       } else {
-        this.loading3(year + '-'+ this.time,id);
+        this.loading3(year + "-" + this.time, id);
       }
     },
     toDetail(id) {
-      this.$router.push({ name: "cookerDetail", query: { id: id }});
+      this.$router.push({ name: "cookerDetail", query: { id: id } });
     }
   }
 };
@@ -261,7 +272,7 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1Px solid rgba(238, 238, 238, 1);
+      border-bottom: 1px solid rgba(238, 238, 238, 1);
       .left {
         width: 130px;
         height: 130px;
@@ -278,7 +289,7 @@ export default {
         box-sizing: border-box;
         .box1 {
           span {
-            color: #FFB84B;
+            color: #ffb84b;
           }
         }
         .box2 {
@@ -302,7 +313,7 @@ export default {
             text-align: center;
             box-sizing: border-box;
             color: rgba(255, 113, 22, 1);
-            border: 1Px solid rgba(255, 113, 22, 1);
+            border: 1px solid rgba(255, 113, 22, 1);
           }
         }
       }
@@ -311,7 +322,7 @@ export default {
         // margin: 0 30px;
         height: 90px;
         text-align: center;
-        border-left: 1Px solid rgba(238, 238, 238, 1);
+        border-left: 1px solid rgba(238, 238, 238, 1);
         .box1 {
           font-size: 32px;
           font-weight: 700;
@@ -400,7 +411,7 @@ export default {
           margin: 20px 30px;
           text-align: center;
           line-height: 60px;
-          border: 1Px solid rgba(153, 153, 153, 1);
+          border: 1px solid rgba(153, 153, 153, 1);
         }
       }
     }
@@ -408,8 +419,8 @@ export default {
       width: 750px;
       font-size: 30px;
       .picker-center-highlight {
-        border-bottom: 1Px solid #eee;
-        border-top: 1Px solid #eee;
+        border-bottom: 1px solid #eee;
+        border-top: 1px solid #eee;
       }
       .picker-slot-divider {
         color: #999;
