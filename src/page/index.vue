@@ -13,7 +13,7 @@
       <div class="itemlist recommend" v-for="(item,index) in message1" :key="index"  @click="toDetail(item.c_id)">
         <div class="left"><img :src="item.user_avat"></div>
         <div class="center">
-          <div class="box1">{{item.user_truename}}<span v-if="item.grade>0">&emsp;{{item.grade|grade}}</span><span v-else>&emsp;LV0</span></div>
+          <div class="box1">{{item.user_truename}}<span v-if="item.grade>0">&emsp;{{item.grade|grade}}</span><span v-else>&emsp;无等级</span></div>
           <div class="box2">{{item.user_sign}}</div>
           <div class="box3">  <div class="cai"  v-if="item.isiamic=='清真'">{{item.isiamic}}</div><div class="cai"  v-if="item.isiamic!='清真'">{{item.dish[0]}}</div> <div class="cai"  v-if="item.isiamic!='清真'">{{item.dish[1]}}</div> </div>
         </div>
@@ -29,7 +29,7 @@
       <div class="itemlist recommend" v-for="(item,index) in message2" :key="index"  @click="toDetail(item.c_id)">
         <div class="left"><img :src="item.user_avat"></div>
         <div class="center">
-          <div class="box1">{{item.user_truename}}<span v-if="item.grade>0">&emsp;LV{{item.grade|grade}}</span><span v-else>&emsp;LV0</span></div>          
+          <div class="box1">{{item.user_truename}}<span v-if="item.grade>0">&emsp;{{item.grade|grade}}</span><span v-else>&emsp;无等级</span></div>          
           <div class="box2">{{item.user_sign}}</div>
           <div class="box3">  <div class="cai"  v-if="item.isiamic=='清真'">{{item.isiamic}}</div><div class="cai"   v-if="item.isiamic!='清真'">{{item.dish[0]}}</div> <div class="cai"   v-if="item.isiamic!='清真'">{{item.dish[1]}}</div> </div>
         </div>
