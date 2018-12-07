@@ -190,7 +190,7 @@ Vue.filter('grade', function (value) {
   if (!value) {
     return;
   }
-  const grade = ['初级','中级','高级','技师','高级技师',]
+  const grade = ['普通','初级','中级','高级','技师','高级技师',]
   return grade[value-1];
 });
 
