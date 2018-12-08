@@ -295,6 +295,9 @@ export default {
             this.jsSdk(jsApiParameters);
           } else if (data.code === "201") {
             this.$bus.$emit("toast", data.msg);
+          } else if (data.code === "204") {
+            this.$bus.$emit("toast", data.msg);
+            this.$router.push('order');
           }
         })
         .catch(error => {
@@ -320,7 +323,7 @@ export default {
           if (result == "get_brand_wcpay_request:ok") {
             alert("支付成功");
             // var url = "http://www.hnprkj.com/#/userCenter";
-            var url = "http://chushiq.cadhx.com/index";
+            var url = "http://chushiq.cadhx.com/order";
           } else {
             alert("你取消了支付");
             // var url = "http://www.hnprkj.com/#/userCenter";
