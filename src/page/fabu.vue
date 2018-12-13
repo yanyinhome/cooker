@@ -48,7 +48,12 @@
           <option v-for="(item,index) in grade" :value="item.id" :key="index">{{item.severgrade}}</option>
         </select>
       </div>
-
+      <div id="example-4">
+        <input type="checkbox" id="1" value="checked" v-model="checked">
+        <label for="1">我已阅读
+          <router-link :to="{name:'protocol',query:{status:'5'}}" tag="a" class="protocol">《用户服务协议》</router-link>并同意
+        </label>
+      </div>
       <div class="beizhu">
         <textarea
           style="resize:none"
@@ -84,7 +89,8 @@
     <!-- 时间弹窗 -->
     <div class="mask" v-show="mask2" @click="mask2=false">
       <div class="box">
-        <div class="title">请选择预约时间
+        <div class="title">
+          请选择预约时间
           <span @click="mask2=false">&emsp;&emsp;&emsp;确定&emsp;</span>
         </div>
         <div class="content">
@@ -100,6 +106,7 @@ export default {
   name: "fabu",
   data() {
     return {
+      checked: true,
       isDisable: false,
       d_id: "", //菜系id
       addr_id: "", //地址id
@@ -162,23 +169,24 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
-      vm.axios.post('login/verifylogin',{
-        token: localStorage.getItem('token')
-      })
-        .then(({data}) => {
+      vm.axios
+        .post("login/verifylogin", {
+          token: localStorage.getItem("token")
+        })
+        .then(({ data }) => {
           console.log(data);
           // 如果返回值为201，则跳转到绑定
-          if (data.code === '201') {
+          if (data.code === "201") {
             vm.$bus.$emit("toast", "请先绑定手机号");
-            vm.$router.push('register');
+            vm.$router.push("register");
           } else {
             next();
           }
         })
-        .catch(function (error) {
+        .catch(function(error) {
           console.log(error);
         });
-      });
+    });
   },
   created() {
     this.loadingTime();
@@ -258,10 +266,12 @@ export default {
         });
     },
     fabu() {
-      if (!this.addr_id || !this.time ||!this.num) {
+      if (!this.addr_id || !this.time || !this.num) {
         this.$bus.$emit("toast", "请完善发布信息");
-      } else if ( this.selected == '请选择等级服务费') {
+      } else if (this.selected == "请选择等级服务费") {
         this.$bus.$emit("toast", "请选择厨师等级");
+      } else if (!this.checked) {
+        this.$bus.$emit("toast", "请先阅读用户服务协议");
       } else {
         this.fabu1();
       }
@@ -270,8 +280,8 @@ export default {
     fabu1() {
       this.isDisable = true;
       setTimeout(() => {
-      this.isDisable = false;
-      }, 1000)
+        this.isDisable = false;
+      }, 1000);
       var myDate = new Date();
       var year = myDate.getFullYear();
       this.axios
@@ -297,7 +307,7 @@ export default {
             this.$bus.$emit("toast", data.msg);
           } else if (data.code === "204") {
             this.$bus.$emit("toast", data.msg);
-            this.$router.push('order');
+            this.$router.push("order");
           }
         })
         .catch(error => {
@@ -468,6 +478,7 @@ export default {
       }
     }
     .grade {
+      margin-bottom: 30px;
       select {
         width: 360px;
         height: 60px;
@@ -479,6 +490,7 @@ export default {
     }
     .beizhu {
       position: relative;
+      margin-bottom: 20px;
       textarea {
         width: 630px;
         margin-top: 20px;
@@ -494,7 +506,7 @@ export default {
       }
     }
     .btn {
-      margin-top: 30px;
+      margin-top: 50px;
     }
   }
   .mask {

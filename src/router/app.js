@@ -5,7 +5,7 @@ import cooker from '../page/cooker';                      //厨师
 import order from '../page/order';                        //订单
 import usercenter from '../page/usercenter';              //我的
 import login from '../page/login';                        //登录
-import register from '../page/register';                  //注册
+// import register from '../page/register';                  //注册
 import forget from '../page/forget';                      //忘记密码
 
 import fabu from '../page/fabu';                          //发布
@@ -63,10 +63,11 @@ export default new Router({
 			name: 'usercenter'
 		}, 
 		{
-			path: '/register',
-			component: register,
-			name: 'register'
-		}, {
+			path: '/login',
+			component: login,
+			name: 'login'
+		},
+		 {
 			path: '/forget',
 			component: forget,
 			name: 'forget'

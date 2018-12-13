@@ -26,7 +26,7 @@ export default {
       //隐私政策
       this.loading(this.status);
     } else if (this.status === '5') {
-      //用户协议
+      //用户服务协议
       this.loading(this.status);
     }
   },
