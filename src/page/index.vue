@@ -123,30 +123,6 @@ export default {
       area: "选择城市"
     };
   },
-  // beforeRouteEnter(to, from, next) {
-  //   next(vm => {
-  //     if (vm.IsWechat()) {
-  //       // vm.$bus.$emit("toast", "是微信浏览器");
-  //       console.log(vm.getCookie("openid"));
-  //       if (!vm.getCookie("openid")) {
-  //         console.log("跳转");
-  //         window.location.href =
-  //           "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx85c8ad7b84b0d265&redirect_uri=http%3a%2f%2fcschushi.cadhx.com%2fapi%2fwechat%2fset_openid&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
-
-  //         var openid = vm.getUrlKey("openid");
-  //         console.log("openid" + openid);
-  //         if (!vm.getCookie("openid")) {
-  //           vm.setCookie("openid", openid, 3000);
-  //         } else {
-  //           vm.delCookie("openid");
-  //           vm.setCookie("openid", openid, 3000);
-  //         }
-  //       }
-  //     } else {
-  //       vm.$bus.$emit("toast", "请在微信浏览器中打开");
-  //     }
-  //   });
-  // },
   created() {
     if (this.IsWechat()) {
       // this.$bus.$emit("toast", "是微信浏览器");
@@ -155,7 +131,6 @@ export default {
         console.log("跳转");
         window.location.href =
           "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx85c8ad7b84b0d265&redirect_uri=http%3a%2f%2fcschushi.cadhx.com%2fapi%2fwechat%2fset_openid&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
-        // https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx6369205e9b2dd4e6&redirect_uri=http://xiaoshuo.cadhx.com/login/set_openid&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect
         var openid = this.getUrlKey("openid");
         console.log("openid" + openid);
         if (!this.getCookie("openid")) {
