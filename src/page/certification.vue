@@ -64,7 +64,7 @@
             <div class="tou"><div class="zheng"><img :src="img6"></div><i class="iconfont icon-xiayi"></i></div>
         </div>
         <!-- <div class="item"><span>认证保证金</span><div style="color:#EE0000">&yen;{{money}}&nbsp;</div></div> -->
-        <div class="agreement"><input type="checkbox" :disabled="checked" v-model="active"> 我已阅读并同意《 <router-link :to="{name: 'protocol',query: {status: '5'}}" tag="span"> 厨师协议 </router-link> 》内容，并同意缴纳厨师认证保障金。</div>
+        <div class="agreement"><input type="checkbox" :disabled="checked" v-model="active"> 我已阅读并同意《 <router-link :to="{name: 'protocol',query: {status: '5'}}" tag="span"> 厨师协议 </router-link> 》。</div>
         <com-button :click="renzheng1" :disabled="!active||prohibit" :class="{active: !active||prohibit}">{{btnmes}}</com-button>
     </div>
 

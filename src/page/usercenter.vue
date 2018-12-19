@@ -189,6 +189,7 @@ export default {
         overflow: hidden;
         img {
           height: 100%;
+          width: 100%;
         }
         .iconfont {
           font-size: 55px;

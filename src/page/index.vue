@@ -57,32 +57,8 @@ export default {
   name: "index",
   data() {
     return {
-      // price: "议价",
-      images: [
-        // require("../assets/image/lunbo.png"),
-        // require("../assets/image/lunbo.png"),
-        // require("../assets/image/lunbo.png")
-      ],
-      message1: [
-        // {
-        //   img: require("../assets/image/login1.png"),
-        //   name: "张三1",
-        //   mes: "简介",
-        //   cai1: "川菜",
-        //   cai2: "豫菜",
-        //   price: "议价",
-        //   server: "20"
-        // },
-        // {
-        //   img: require("../assets/image/login1.png"),
-        //   name: "张三2",
-        //   mes: "简介",
-        //   cai1: "川菜",
-        //   cai2: "豫菜",
-        //   price: "议价",
-        //   server: "20"
-        // }
-      ],
+      images: [],
+      message1: [],
       message2: [],
       myAddressSlots: [
         {

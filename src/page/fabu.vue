@@ -66,6 +66,7 @@
         ></textarea>
         <span class="number">{{number}}/50</span>
       </div>
+      <div class="money"><span>小工费：￥{{money2}}</span><span>服务费：￥{{money1}}</span><span>合计：￥{{Number(money2)+Number(money1)}}</span></div>
       <com-button class="btn" :disabled="isDisable" :click="fabu">确定发布</com-button>
     </div>
     <!-- 菜系弹窗 -->
@@ -132,6 +133,8 @@ export default {
       mask2: false,
       pickerVisible: "",
       number: "0",
+      money1: '0',
+      money2: '0',
       grade: [],
       slots: [
         {
@@ -214,6 +217,20 @@ export default {
       console.log(this.number);
       if (this.number > 49) {
         this.$bus.$emit("toast", "字数不能超过50");
+      }
+    },
+    selected(newValue, oldValue) {
+      this.grade.forEach((element,index) => {
+        if(newValue == element.id){
+          this.money1 = element.severgrade.replace(/[^0-9]/ig,"");
+        }
+      });
+    },
+    checked1(c, d) {     
+      if(!c){
+        this.money2 = 0;
+      } else {
+        this.money2 = c;
       }
     }
   },
@@ -504,6 +521,13 @@ export default {
         bottom: 8px;
         right: 8px;
       }
+    }
+    .money {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        line-height: 80px;
+        font-size: 26px;
     }
     .btn {
       margin-top: 50px;
