@@ -20,7 +20,7 @@
         <input type="checkbox" id="1" value="checked" v-model="checked">
         <label for="1">我已阅读并同意</label>
       </div>
-      <com-button :click="register" :class="{active: !checked}">确定绑定</com-button>
+      <com-button :click="register" :disabled="!checked" :class="{active: !checked}">确定绑定</com-button>
   </div>
 </template>
 <script>

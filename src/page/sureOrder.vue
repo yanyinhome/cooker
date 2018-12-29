@@ -29,7 +29,7 @@
         <textarea style="resize:none" border maxlength=50  placeholder="请填写订单备注" v-model="content" cols="80" rows="5"></textarea>
         <span class="number">{{number}}/50</span>
     </div>
-    <butFoot :click="bespeak">确定预约</butFoot>
+    <butFoot :click="bespeak" :disabled="isDisable">确定预约</butFoot>
     <!-- 时间弹窗 -->
     <div class="mask" v-show="mask"  @click="mask = false">
       <div class="box">
@@ -52,6 +52,7 @@ export default {
     return {
       id: this.$route.query.id,//厨师id
       mask: false,
+      isDisable: false,
       name: '',
       content: "",
       number: "0",
@@ -155,6 +156,13 @@ export default {
     },
     // 确定预约
     bespeak() {
+      if(this.isDisable){
+        this.$bus.$emit("toast", '不能重复操作');
+      }
+      this.isDisable = true;
+      setTimeout(() => {
+        this.isDisable = false;
+      }, 1000);
       var myDate = new Date();
       var year = myDate.getFullYear(); 
       this.axios.post('cook/apimake',{
@@ -174,12 +182,46 @@ export default {
             this.$bus.$emit("toast", data.msg);
             this.active = !this.active;
           } else if (data.code === '201') {
+            this.$bus.$emit("toast", data.msg);
+            const jsApiParameters = data.data;
+            const id = data.order_id;
+            const cookerid = data.c_id;
+            this.jsSdk(jsApiParameters,id,cookerid);
+            this.$bus.$emit("toast", data.msg);            
+          } else if (data.code === '204') {
             this.$bus.$emit("toast", data.msg);            
           }
         })
         .catch((error) => {
           console.log(error);
         });      
+    },
+    // 支付
+    jsSdk(jsApiParameters,id,cookerid) {
+      WeixinJSBridge.invoke(
+        "getBrandWCPayRequest",
+        {
+          appId: jsApiParameters.appId,
+          package: jsApiParameters.package,
+          nonceStr: jsApiParameters.nonceStr,
+          timeStamp: jsApiParameters.timeStamp,
+          signType: jsApiParameters.signType,
+          paySign: jsApiParameters.paySign
+        },
+        // jsApiParameters,
+        function(res) {
+          WeixinJSBridge.log(res.err_msg);
+          var result = res.err_msg;
+          if (result == "get_brand_wcpay_request:ok") {
+            var url = `http://chushiq.cadhx.com/waitOrder?id=${id}`;
+            alert("支付成功");
+          } else {
+            alert("你取消了支付");
+            var url = `http://chushiq.cadhx.com/sureOrder?id=${cookerid}`;
+          }
+          window.location.href = url;
+        }
+      );
     },
     rewrite (index) {
       this.$router.push('chooseAddress');
@@ -188,21 +230,6 @@ export default {
       this.time = picker.getValues()[0]+ " " + picker.getValues()[1];
       // console.log(this.time);
     },
-     // 预约时间
-    // loading () {
-    //   this.axios.post('index/apiTime')
-    //     .then(({data}) => {
-    //       console.log(data);
-    //       if (data.code === '200') {
-    //         this.slots[0].values = data.data;
-    //       } else if (data.code === '201') {
-    //         this.$bus.$emit("toast", data.msg);                        
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //     });
-    // },
   }
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
 <div id="but_foot">
-  <button class="but_foot" :class="{'but_foot_click': isClick}" @click="buttonClick">
+  <button class="but_foot" :disabled="isClick" :class="{'but_foot_click': isClick}" @click="buttonClick">
     <slot>确认</slot>
   </button>
 </div>
@@ -20,7 +20,7 @@ export default {
       this.isClick = true;
       setTimeout(() => {
         this.isClick = false;
-      }, 100);
+      }, 1000);
       this.click();
     }
   },

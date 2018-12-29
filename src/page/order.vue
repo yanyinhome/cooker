@@ -160,6 +160,7 @@ export default {
         .then(({ data }) => {
           console.log(data);
           if (data.code === "200") {
+            this.$router.go(0);
             this.$bus.$emit("toast", data.msg);
           } else if (data.code === "201") {
             this.$bus.$emit("toast", data.msg);

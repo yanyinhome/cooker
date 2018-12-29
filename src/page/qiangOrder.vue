@@ -22,6 +22,7 @@
           <p v-if="status2">联系电话：{{item.addr_phone}}</p>
           <p v-if="status1">上门地址：{{item.pmc + item.addr_cont | hideAddress}}</p>
           <p v-if="status2">上门地址：{{item.pmc + item.addr_cont}}</p>
+          <p>用餐人数：{{item.number}}</p>
           <p>下单时间：{{item.order_create_time}}</p>
         </div>
       </div>
@@ -102,6 +103,8 @@ export default {
         } else if (data.code === "201") {
           this.$bus.$emit("toast", data.msg);
           this.wxpay();
+        } else if (data.code === "204") {
+          this.$bus.$emit("toast", data.msg);
         }
       })
       .catch(error => {

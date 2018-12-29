@@ -9,6 +9,7 @@ import store from './vuex/store';
 
 // 引入组件
 import './assets/js/component';
+import './assets/js/compress';
 require('animate.css');
 
 //引入mint-ui

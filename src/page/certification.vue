@@ -65,7 +65,7 @@
         </div>
         <!-- <div class="item"><span>认证保证金</span><div style="color:#EE0000">&yen;{{money}}&nbsp;</div></div> -->
         <div class="agreement"><input type="checkbox" :disabled="checked" v-model="active"> 我已阅读并同意《 <router-link :to="{name: 'protocol',query: {status: '5'}}" tag="span"> 厨师协议 </router-link> 》。</div>
-        <com-button :click="renzheng1" :disabled="!active||prohibit" :class="{active: !active||prohibit}">{{btnmes}}</com-button>
+        <com-button :click="renzheng" :disabled="!active||prohibit" :class="{active: !active||prohibit}">{{btnmes}}</com-button>
     </div>
 
     <div id='cookerCheck' v-if="status">
@@ -290,7 +290,7 @@ export default {
             this.vegetable1 = data.data.dish_id.join();
             this.urgenttel = data.data.urgent_mobile;
             this.urgentname = data.data.urgent_name;
-            this.checked1 = data.data.sign;
+            this.checked1 = data.data.sin;
             this.checked2 = data.data.drug;
             this.checked3 = data.data.psychosis;
             this.checked4 = data.data.isiamic;
@@ -309,7 +309,7 @@ export default {
             (this.phone = data.data.user_mobile);
             this.urgenttel = data.data.urgent_mobile;
             this.urgentname = data.data.urgent_name;
-            this.checked1 = data.data.sign;
+            this.checked1 = data.data.sin;
             this.checked2 = data.data.drug;
             this.checked3 = data.data.psychosis;
             this.img4 = data.data.user_front;
@@ -325,18 +325,65 @@ export default {
         });
     },
     //认证
-    renzheng1 () {
+    renzheng () {
       let regTel = /^(1[3-9])\d{9}$/;
       if (!this.urgentname||!this.urgenttel||!this.cookerSign||!this.img1||!this.img2||!this.img3||!this.img4||!this.img5||!this.img6||!this.address1||!this.address2) {
         this.$bus.$emit("toast", "请完善信息");
       } else if (!regTel.test(this.urgenttel)) {
         this.$bus.$emit('toast', '手机号码不合法');
       } else{
-        this.renzheng();
+        if (this.checked4 == '1') {
+          //清真
+          this.renzheng1();
+        } else if (this.checked4 == '0') {
+          //
+          this.renzheng2();
+        }
       }
     },
-    renzheng() {
-      console.log(this.checked1);
+    // 清真
+    renzheng1() {
+      this.active = true;
+      this.checked = true;
+      this.prohibit = true;
+      this.axios
+        .post("user/apiGs", {
+          token: this.token(),
+          user_avat: this.img1,
+          cool_card: this.img2,
+          health_card: this.img3,
+          user_truename: this.name,
+          user_mobile: this.phone,
+          dish_id: '',
+          user_sign: this.cookerSign,
+          city_name: this.address1,
+          area: this.address2,
+          urgent_mobile: this.urgenttel,
+          urgent_name: this.urgentname,
+          urgent_address: this.urgent_address,
+          address: this.addressdetail,
+          sin: this.checked1,
+          drug: this.checked2,
+          psychosis: this.checked3, 
+          user_front: this.img4, 
+          user_side: this.img5, 
+          user_hand_card: this.img6, 
+          isiamic: '1', 
+        })
+        .then(({ data }) => {
+          console.log(data);
+          if (data.code === "200") {
+            this.$bus.$emit("toast", "已发送审核");
+            this.$router.push('usercenter');
+          } else if (data.code === "201") {
+            this.$bus.$emit("toast", data.msg);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    renzheng2() {
       this.active = true;
       this.checked = true;
       this.prohibit = true;
@@ -362,7 +409,7 @@ export default {
           user_front: this.img4, 
           user_side: this.img5, 
           user_hand_card: this.img6, 
-          isiamic: this.checked4, 
+          isiamic: '0', 
         })
         .then(({ data }) => {
           console.log(data);

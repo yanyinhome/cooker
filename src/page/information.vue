@@ -152,9 +152,6 @@ export default {
         };
       }
     },
-    postImg() {
-      //这里写接口
-    },
     compress(img, Orientation) {
       this.$bus.$emit("toast", "上传成功");
       let canvas = document.createElement("canvas");

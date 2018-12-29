@@ -7,8 +7,8 @@
       <!-- <div class="box item">
         <span>提现金额</span>
         <input type="text" v-model="money" placeholder="请输入提现金额">
-      </div> -->
-      <div class="selecttype box ">
+      </div>-->
+      <div class="selecttype box">
         <span>请选择提现方式</span>
         支付宝
         <input type="radio" id="1" value="1" v-model="checked">
@@ -46,7 +46,7 @@
           rows="5"
         ></textarea>
       </div>
-      <com-button class="btn" :click="putForward">确定</com-button>
+      <com-button class="btn" :click="putForward" :disabled="isDisable">确定</com-button>
     </div>
   </div>
 </template>
@@ -56,10 +56,11 @@ export default {
   name: "putForward",
   data() {
     return {
+      isDisable: false,
       checked: "1",
       zhifubao: "",
       zhifuname: "",
-      type: '',
+      type: "",
       money: "0",
       cardnum: "",
       bank: "",
@@ -86,12 +87,12 @@ export default {
           console.log(data);
           if (data.code === "200") {
             this.money = data.data;
-            this.type = '1'; //厨师
+            this.type = "1"; //厨师
           } else if (data.code === "201") {
             this.money = data.data;
-            this.type = '0'; //会员
+            this.type = "0"; //会员
           } else if (data.code === "204") {
-            this.$bus.$emit("toast", data.msg);            
+            this.$bus.$emit("toast", data.msg);
           }
         })
         .catch(function(error) {
@@ -101,11 +102,18 @@ export default {
     putForward() {
       if (this.checked === "1") {
         // 支付宝提现
-        if (!this.money || !this.zhifubao || !this.zhifuname) {
+        if (!this.zhifubao || !this.zhifuname) {
           this.$bus.$emit("toast", "输入信息不能为空");
-        } else if (this.money == '0') {
+        } else if (this.money == "0") {
           this.$bus.$emit("toast", "暂无可提现金额");
         } else {
+          if (this.isDisable) {
+            this.$bus.$emit("toast", "不能重复操作");
+          }
+          this.isDisable = true;
+          setTimeout(() => {
+            this.isDisable = false;
+          }, 1000);
           this.axios
             .post("user/cash", {
               token: this.token(),
@@ -120,7 +128,7 @@ export default {
               console.log(data);
               if (data.code === "200") {
                 this.$bus.$emit("toast", data.msg);
-                this.$router.push('usercenter');   
+                this.$router.push("usercenter");
               } else if (data.code === "201") {
                 this.$bus.$emit("toast", data.msg);
               } else if (data.code === "204") {
@@ -133,16 +141,18 @@ export default {
         }
       } else if (this.checked === "2") {
         // 银行卡提现
-        if (
-          !this.money ||
-          !this.bankname ||
-          !this.cardnum ||
-          !this.bank
-        ) {
+        if (!this.bankname || !this.cardnum || !this.bank) {
           this.$bus.$emit("toast", "输入信息不能为空");
-        } else if (this.money == '0') {
+        } else if (this.money == "0") {
           this.$bus.$emit("toast", "暂无可提现金额");
         } else {
+          if (this.isDisable) {
+            this.$bus.$emit("toast", "不能重复操作");
+          }
+          this.isDisable = true;
+          setTimeout(() => {
+            this.isDisable = false;
+          }, 1000);
           this.axios
             .post("user/cash", {
               token: this.token(),
@@ -158,7 +168,7 @@ export default {
               console.log(data);
               if (data.code === "200") {
                 this.$bus.$emit("toast", data.msg);
-                this.$router.push('usercenter');   
+                this.$router.push("usercenter");
               } else if (data.code === "201") {
                 this.$bus.$emit("toast", data.msg);
               } else if (data.code === "204") {
@@ -185,7 +195,7 @@ export default {
       margin-top: 30px;
       font-size: 34px;
       font-family: Didot-Bold;
-    //   font-weight: bold;
+      //   font-weight: bold;
       color: #222;
       line-height: 78px;
     }
@@ -201,7 +211,7 @@ export default {
       justify-content: space-between;
       align-items: center;
       line-height: 102px;
-      border-bottom: 1Px solid rgba(238, 238, 238, 1);
+      border-bottom: 1px solid rgba(238, 238, 238, 1);
       span {
         width: 300px;
         text-align: left;
@@ -215,7 +225,7 @@ export default {
       margin: 0px 30px;
       display: flex;
       justify-content: space-between;
-      border-bottom: 1Px solid rgba(238, 238, 238, 1);
+      border-bottom: 1px solid rgba(238, 238, 238, 1);
       line-height: 102px;
       span {
         width: 150px;
@@ -256,7 +266,7 @@ export default {
         margin-top: 20px;
         padding: 10px;
         font-size: 30px;
-        border: 1Px solid rgba(238, 238, 238, 1);
+        border: 1px solid rgba(238, 238, 238, 1);
         box-sizing: border-box;
       }
     }

@@ -112,7 +112,7 @@ export default {
         var myData = new Date().getTime(); //获取当前时间 毫秒数
         // console.log(myData);
         // var endTime = 1541001600000;
-        var leftHMS = endTime * 1000 - myData - 34000; //结束时间-当前时间=剩下时间（毫秒数）
+        var leftHMS = endTime * 1000 - myData; //结束时间-当前时间=剩下时间（毫秒数）
         var theTime = parseInt(leftHMS / 1000); // 毫秒数转化秒
         // var theTime1 = 0; // 分
         // var theTime2 = 0; // 小时
