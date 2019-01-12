@@ -26,7 +26,7 @@
       </div>
       <div class="box3">
         <p>下单时间：{{item.order_create_time + ":00"}}</p>
-        <div  @click="jieDan(item.order_id)"  class="btn" v-if="status==='0'">立即接单</div>
+        <div  class="btn" v-if="status==='0'"><button :disabled="isDisable"  @click="jieDan(item.order_id)">立即接单</button></div>
         <div  class="btn" @click="sureOrder(item.order_id)" v-else-if="status==='1'">确认已服务</div>
         <div  class="recommend" v-else  @click="lookdetail(index,item.order_id)">查看评论</div>
       </div>
@@ -40,31 +40,11 @@ export default {
   name: "serverOrder",
   data() {
     return {
+      isDisable: false,
       status: "0",
       content: "-1",
       detail: false,
-      data: [
-        // {
-        //   cai: "川菜",
-        //   time: "2018-09-14 11:00",
-        //   img: require("../assets/image/zanshi/head.jpg"),
-        //   name: "张三1",
-        //   phone: "188888888888",
-        //   address: "瀚海北金瀚海北金",
-        //   time: "2018-09-14 11:00",
-        //   content: "00"
-        // },
-        // {
-        //   cai: "川菜",
-        //   time: "2018-09-14 11:00",
-        //   img: require("../assets/image/zanshi/head.jpg"),
-        //   name: "张三2",
-        //   phone: "188888888888",
-        //   address: "河南省郑州市金水区",
-        //   time: "2018-09-14 11:00",
-        //   content: "00"
-        // }
-      ]
+      data: []
     };
   },
 
@@ -105,6 +85,7 @@ export default {
         });
     },
     loading (a) {
+      this.data=[];
       this.axios.post("user/received",{
         token: this.token(),
         status: a
@@ -123,22 +104,75 @@ export default {
       });
     },
     jieDan(id) {
-      this.status = "1";
-      this.content = "-1";
+      this.isDisable = true
+      setTimeout(() => {
+      this.isDisable = false
+      }, 2000)
       this.axios.post("user/taking",{
+        token: this.token(),
         order_id: id,
       })
       .then(({ data }) => {
         console.log(data);
-        if (data.code === "200") {
+        if (data.code === "200") {  
+          this.orderlist2();      
           this.$bus.$emit("toast", data.msg);
         } else if (data.code === "201") {
+          this.$bus.$emit("toast", data.msg);
+          this.wxpay();
+        } else if (data.code === "204") {
           this.$bus.$emit("toast", data.msg);
         }
       })
       .catch(error => {
         console.log(error);
       });
+    },
+       // 支付
+    wxpay() {
+      this.axios.post("wxpay/wxpay",{
+        token: this.token()
+      })
+        .then(({data}) => {
+          console.log(data);
+          if (data.code === "200") {
+          const jsApiParameters = data.data;
+          this.jsSdk(jsApiParameters);       
+        } else if (data.code === "201") {
+          this.$bus.$emit("toast", data.msg);
+        }
+        });
+    },
+    jsSdk(jsApiParameters) {
+      const that = this;
+      WeixinJSBridge.invoke(
+        "getBrandWCPayRequest",
+        {
+          appId: jsApiParameters.appId,
+          package: jsApiParameters.package,
+          nonceStr: jsApiParameters.nonceStr,
+          timeStamp: jsApiParameters.timeStamp,
+          signType: jsApiParameters.signType,
+          paySign: jsApiParameters.paySign
+        },
+        // jsApiParameters,
+        function(res) {
+          WeixinJSBridge.log(res.err_msg);
+          var result = res.err_msg;
+          // alert(JSON.stringify(res));
+          // return;
+          if (result == "get_brand_wcpay_request:ok") {
+            alert("支付成功");
+            // var url = "http://chushiq.cadhx.com/serverOrder";
+            that.orderlist2();
+          } else {
+            alert("你取消了支付");
+            // var url = "http://chushiq.cadhx.com/serverOrder";
+            that.orderlist1();
+          }
+          // window.location.href = url;
+        }
+      );
     },
     sureOrder(id) {
       this.axios.post("user/complete",{
@@ -284,6 +318,9 @@ export default {
         position: absolute;
         right: 5px;
         top: 10px;
+        button {
+          background: none;
+        }
       }
       .jiedan {
         border: none;

@@ -88,7 +88,7 @@ export default {
       this.isDisable = true
       setTimeout(() => {
       this.isDisable = false
-      }, 1000)
+      }, 2000)
       this.axios.post("user/order",{
         token: this.token(),
         order_id: id

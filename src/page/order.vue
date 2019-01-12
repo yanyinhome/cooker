@@ -18,7 +18,7 @@
       </div>
       <div class="orderFoot">
         <p>预约时间：{{item.dinner + ':00'}}</p>
-        <button @click="cancleOrder(item.order_id,index,item.status)" :class="{ 'evaluate': item.status === 7}">{{server[item.status]}}</button>
+        <button v-if="item.status!='1'" @click="cancleOrder(item.order_id,index,item.status)" :class="{ 'evaluate': item.status === 7}">{{server[item.status]}}</button>
       </div>
     </div>
     <div class="orderTitle">历史订单</div>
@@ -54,7 +54,7 @@ export default {
     return {
       server: [
         "待服务",
-        "取消预约",
+        "",
         "厨师已接单，等待上门",
         "厨师已接单，等待上门",
         "评价厨师",
@@ -133,8 +133,8 @@ export default {
     cancleOrder(id, index, status) {
       if (status === 1) {
         //取消预约
-        console.log(id);
-        this.closeappoint(id, index);
+        // console.log(id);
+        // this.closeappoint(id, index);
       } else if (status === 7) {
         //确认已服务
         this.sureserver(id);
@@ -171,39 +171,39 @@ export default {
         });
     },
     // 取消预约
-    closeappoint(id,index) {
-      this.$bus.$emit("comAlert", {
-        title: "温馨提示",
-        info: "你确定要删除张三的预约",
-        button: [
-          {
-            text: "确认",
-            callback: () => {
-              this.axios
-                .post("cook/remove", {
-                  order_id: id
-                })
-                .then(({ data }) => {
-                  console.log(data);
-                  if (data.code === "200") {
-                    this.message1.splice(index, 1);
-                    this.$bus.$emit("toast", data.msg);
-                  } else if (data.code === "201") {
-                    this.$bus.$emit("toast", data.msg);
-                  }
-                })
-                .catch(error => {
-                  console.log(error);
-                });
-            }
-          },
-          {
-            text: "取消",
-            callback: () => {}
-          }
-        ]
-      });
-    }
+    // closeappoint(id,index) {
+    //   this.$bus.$emit("comAlert", {
+    //     title: "温馨提示",
+    //     info: "你确定要删除张三的预约",
+    //     button: [
+    //       {
+    //         text: "确认",
+    //         callback: () => {
+    //           this.axios
+    //             .post("cook/remove", {
+    //               order_id: id
+    //             })
+    //             .then(({ data }) => {
+    //               console.log(data);
+    //               if (data.code === "200") {
+    //                 this.message1.splice(index, 1);
+    //                 this.$bus.$emit("toast", data.msg);
+    //               } else if (data.code === "201") {
+    //                 this.$bus.$emit("toast", data.msg);
+    //               }
+    //             })
+    //             .catch(error => {
+    //               console.log(error);
+    //             });
+    //         }
+    //       },
+    //       {
+    //         text: "取消",
+    //         callback: () => {}
+    //       }
+    //     ]
+    //   });
+    // }
   }
 };
 </script>
