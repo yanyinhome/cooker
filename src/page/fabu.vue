@@ -14,9 +14,9 @@
         清真
         <input type="radio" id="1" value="1" v-model="checked2">
         汉餐
-        <input type="radio" id="2" value="2" v-model="checked2">
+        <input type="radio" id="0" value="0" v-model="checked2">
       </div>
-      <div class="item" @click="loading1" v-if="checked2==2">
+      <div class="item" @click="loading1" v-if="checked2==0">
         <span>菜系</span>
         <input type="text" v-model="vegetable1" readonly="readonly" placeholder="请选择">
         <i class="iconfont icon-xiayi"></i>
