@@ -1,51 +1,74 @@
 <template>
-  <div id='cooker'>
-    <com-head :opacity='1'>厨师</com-head>
+  <div id="cooker">
+    <com-head :opacity="1">厨师</com-head>
     <div class="nav_title">
-      <div class="box" @click="changeMask2" :class="{boxactive: mask2}">{{time}}<i class="iconfont" :class="[mask2? 'icon-shang' : 'icon-xia','iconfont']"></i></div>
-      <div class="box" @click="changeMask1" :class="{boxactive: mask1}">{{vagetables}}<i class="iconfont" :class="[mask1? 'icon-shang' : 'icon-xia','iconfont']"></i></div>
+      <div class="box" @click="changeMask2" :class="{boxactive: mask2}">
+        {{time}}
+        <i class="iconfont" :class="[mask2? 'icon-shang' : 'icon-xia','iconfont']"></i>
+      </div>
+      <div class="box" @click="changeMask1" :class="{boxactive: mask1}">
+        {{vagetables}}
+        <i class="iconfont" :class="[mask1? 'icon-shang' : 'icon-xia','iconfont']"></i>
+      </div>
     </div>
     <div class="outside">
-    <mt-loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded">
-
-      <div class="itemlist recommend" v-for="(item,index) in message" :key="index" @click="toDetail(item.c_id)">
-        <div class="left"><img :src="item.user_avat"></div>
-        <div class="center">
-          <div class="box1">{{item.user_truename}}<span>&emsp;{{item.grade|grade}}</span></div>
-          <div class="box2">{{item.user_sign}}</div>
-          <div class="box3"> <div class="cai"  v-if="item.isiamic=='清真'">{{item.isiamic}}</div> <div class="cai" v-if="item.isiamic!='清真'">{{item.dish[0]}}</div>&nbsp; <div class="cai"  v-if="item.isiamic!='清真'&&item.dish[1]">{{item.dish[1]}}</div></div>
+      <mt-loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded">
+        <div
+          class="itemlist recommend"
+          v-for="(item,index) in message"
+          :key="index"
+          @click="toDetail(item.c_id)"
+        >
+          <div class="left">
+            <img :src="item.user_avat">
+          </div>
+          <div class="center">
+            <div class="box1">
+              {{item.user_truename}}
+              <span>&emsp;{{item.grade|grade}}</span>
+            </div>
+            <div class="box2">{{item.user_sign}}</div>
+            <div class="box3">
+              <div class="cai" v-if="item.isiamic=='清真'">{{item.isiamic}}</div>
+              <div class="cai" v-if="item.isiamic!='清真'">{{item.dish[0]}}</div>&nbsp;
+              <div class="cai" v-if="item.isiamic!='清真'&&item.dish[1]">{{item.dish[1]}}</div>
+            </div>
+          </div>
+          <div class="right">
+            <div class="box1">{{item.price}}</div>
+            <div class="box2">服务过{{item.family}}家庭</div>
+          </div>
         </div>
-        <div class="right">
-          <div class="box1">{{item.price}}</div>
-          <div class="box2">服务过{{item.family}}家庭</div>
-        </div>
-      </div>
-      <!-- <div slot="bottom" class="mint-loadmore-bottom">
+        <!-- <div slot="bottom" class="mint-loadmore-bottom">
         <span v-show="bottomStatus !== 'loading'" :class="{ 'rotate': bottomStatus === 'drop' }">↓</span>
         <span v-show="bottomStatus === 'loading'">Loading...</span>
-      </div> -->
-    </mt-loadmore>
-
-    </div> 
+        </div>-->
+      </mt-loadmore>
+    </div>
     <!-- 菜系遮罩 -->
     <div class="mask" v-show="mask1" @click="mask1=false">
       <div class="box">
         <div class="title" @click="allCai">不限菜系</div>
         <div class="content">
-          <div v-for="(item,index) in item" :key="index"><div class="item"  @click="chooce(index,item.d_id)">{{item.name}}</div> </div> 
+          <div v-for="(item,index) in item" :key="index">
+            <div class="item" @click="chooce(index,item.d_id)">{{item.name}}</div>
+          </div>
         </div>
       </div>
     </div>
     <!-- 时间弹窗 -->
-    <div class="mask" v-if="mask2"  @click="mask2=false">
+    <div class="mask" v-if="mask2" @click="mask2=false">
       <div class="box" :class="{box_click: '!mask2'}">
         <div class="title" @click="allTime">不限时间</div>
-        <div class="content"> 
-           <mt-picker ref="picker" :slots="slots" @change="onValuesChange" :visibleItemCount=3></mt-picker>
-           <div class="btn"><button>取消</button><button @click="sureTIme()">确定</button></div>
+        <div class="content">
+          <mt-picker ref="picker" :slots="slots" @change="onValuesChange" :visibleItemCount="3"></mt-picker>
+          <div class="btn">
+            <button>取消</button>
+            <button @click="sureTIme()">确定</button>
+          </div>
         </div>
       </div>
-    </div> 
+    </div>
 
     <com-foot :select="1"></com-foot>
   </div>
